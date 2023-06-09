@@ -10,6 +10,6 @@ def setPWM(pin: int, value: int):
 
 def readPWM(pin: int):
     pwm = PWM(Pin(pin))
-    return pwm.duty_u16()
+    return pwm.duty_u16() / 257
 
 
