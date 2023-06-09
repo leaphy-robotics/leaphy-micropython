@@ -1,5 +1,4 @@
 from machine import Pin,PWM
-from time import sleep
 
 def setPWM(pin: int, value: int):
     if not value > -1 and not value < 256: raise ValueError("PWM value must be between 0 and 255")
