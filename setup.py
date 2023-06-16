@@ -1,7 +1,7 @@
 import setuptools
 
 
-setuptools.setup(name='leaphy-extensions-rp2040',
+setuptools.setup(name='LeaphyMicropython',
                  version='1.0.0',
                  description='Python Package Boilerplate',
                  long_description=open('README.md').read().strip(),

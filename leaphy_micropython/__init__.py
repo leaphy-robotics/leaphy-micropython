@@ -6,4 +6,3 @@ from .src.Servo import servoMoveTo180, convertAngleToU16180
 from .src.Sonar import getDistanceSonar
 # END IMPORTS
 
-def readDigital(pin: int):
