@@ -33,17 +33,18 @@ rp2040_leaphy = {
 }
 
 def getBoardType():
-    unique_id = unique_id()
+    id_u: str = unique_id()
 
-    decoded_id = ''.join(['{:02X}'.format(byte) for byte in unique_id])
-
-    if decoded_id == "E6611C08CB7E3222":
+    decoded_id: str = ''.join(['{:02X}'.format(byte) for byte in id_u])
+    print(decoded_id)
+    if str(decoded_id).startswith("E6611C08CB"):
+        print("a")
         return "rp2040_nano_maker"
     else:
-        return decoded_id
+        return "unknown"
 
-def pinToGPIO(pin):
-    board_type = getBoardType()
+def pinToGPIO(pin: int):
+    board_type: str = getBoardType()
     board_to_pins = {
         "rp2040_nano_maker": rp2040_nano_maker,
         "rp2040_leaphy": rp2040_leaphy,
