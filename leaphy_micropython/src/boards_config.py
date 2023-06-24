@@ -36,9 +36,7 @@ def getBoardType():
     id_u: str = unique_id()
 
     decoded_id: str = ''.join(['{:02X}'.format(byte) for byte in id_u])
-    print(decoded_id)
     if str(decoded_id).startswith("E6611C08CB"):
-        print("a")
         return "rp2040_nano_maker"
     else:
         return "unknown"
