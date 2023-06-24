@@ -23,7 +23,6 @@ def servoMoveTo180(pin: int, angle: int):
     oldPos: int = pwm.duty_u16()
     anglesU16: int = convertAngleToU16180(angle)
     for pos in range(oldPos, anglesU16, 50 if oldPos < anglesU16 else -50):
-        print(pos)
         pwm.duty_u16(pos)
         sleep(0.01)
 
