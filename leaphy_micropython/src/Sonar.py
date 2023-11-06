@@ -23,3 +23,6 @@ def getDistanceSonar(trigPin: int, echoPin: int):
     if distance == 0:
       distance = 1313
     return round(distance)
+
+
+

@@ -1,6 +1,20 @@
 from machine import unique_id
 
-rp2040_nano_maker = {
+GND = -1
+RUN = -2
+NOTHING = 0
+VCC = -3
+EN = -4
+VSYS = -5
+VBUS = -6
+
+
+"""
+PINS: 
+    Key = Physical Pin
+    Value = GPIO Pin
+"""
+RP_NANO_MAKER = {
     "pins": {
         0: 0,
         1: 1,
@@ -27,9 +41,58 @@ rp2040_nano_maker = {
     }
 }
 
-rp2040_leaphy = {
+"""
+PINS: 
+    Key = Physical Pin
+    Value = GPIO Pin
+"""
+PICO_W = {
     "pins": {
+        1: 0,
+        2: 1,
+        4: 2,
+        5: 3,
+        6: 4,
+        7: 5,
+        8: GND,
+        9: 6,
+        10: 7,
+        11: 8,
+        12: 9,
+        14: 10,
+        15: 11,
+        16: 12,
+        17: 13,
+        18: GND,
+        19: 14,
+        20: 15,
+        21: 16,
+        22: 17,
+        23: GND,
+        24: 18,
+        25: 19,
+        26: 20,
+        27: 21,
+        28: GND,
+        29: 22,
+        30: RUN,
+        31: 26,
+        32: 27,
+        33: GND,
+        34: 28,
+        35: NOTHING,
+        36: VCC,
+        37: EN,
+        38: GND,
+        39: VSYS,
+        40: VBUS
+
     }
+}
+
+BOARDS = {
+    "RP_NANO_MAKER": RP_NANO_MAKER,
+    "PICO_W": PICO_W,
 }
 
 def getBoardType():
@@ -37,14 +100,8 @@ def getBoardType():
 
     decoded_id: str = ''.join(['{:02X}'.format(byte) for byte in id_u])
     if str(decoded_id).startswith("E6611C08CB"):
-        return "rp2040_nano_maker"
-    else:
-        return "unknown"
+        return "RP_NANO_MAKER"
+    return "unknown"
 
 def pinToGPIO(pin: int):
-    board_type: str = getBoardType()
-    board_to_pins = {
-        "rp2040_nano_maker": rp2040_nano_maker,
-        "rp2040_leaphy": rp2040_leaphy,
-    }
-    return board_to_pins[board_type]["pins"][pin]
+    return BOARDS[getBoardType()]["pins"][pin]

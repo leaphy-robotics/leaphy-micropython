@@ -26,6 +26,3 @@ def servoMoveTo180(pin: int, angle: int):
         pwm.duty_u16(pos)
         sleep(0.01)
 
-
-
-

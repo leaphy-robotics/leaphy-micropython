@@ -1,7 +1,0 @@
-[tool.poetry]
-name = "LeaphyMicropython"
-version = "1.0.0"
-description = "Source Code for the Leaphy MicroPython Robot (RP2040 Nano)"
-authors = [
-    "Koen van Urk (koen@leaphy.nl)",
-]
