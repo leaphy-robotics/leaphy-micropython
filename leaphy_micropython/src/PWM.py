@@ -23,3 +23,10 @@ def readPWM(pin: int):
     return pwm.duty_u16() / 257
 
 
+def set_pin(pin: int, value: int):
+    """Sets a pin to high or low"""
+    pin = pinToGPIO(pin)
+    pin = PWM(Pin(pin))
+    if value < 0 or value > 1: raise ValueError("Pin values must be in between 0 and 1")
+    pin.value(value)
+    return

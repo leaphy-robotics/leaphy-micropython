@@ -1,28 +1,20 @@
-from machine import Pin, PWM, time_pulse_us
-from utime import sleep_us
 from .boards_config import pinToGPIO
+from machine import Pin
+import utime
 
-def getDistanceSonar(trigPin: int, echoPin: int):
-    """ Get distance from sonar,\n
-        trigPin: int, echoPin: int\n
-        returns a value between 0 and 1313"""
-    trigPin = pinToGPIO(trigPin)
-    echoPin = pinToGPIO(echoPin)
-    duration: float
-    distance: float
-    tries: int = 0
-    echo = Pin(echoPin, Pin.IN)
-    trig = Pin(trigPin, Pin.OUT)
-    trig.low()
-    sleep_us(2)
-    trig.high()
-    sleep_us(10)
-    trig.low()
-    duration = time_pulse_us(echo, 1, 29000)
-    distance = (duration / 2.0) / 29
-    if distance == 0:
-      distance = 1313
-    return round(distance)
-
-
-
+def read_distance(trigPin: int, echoPin):
+    """Reads distance from object"""
+    trigger = pinToGPIO(trigPin)
+    echo = pinToGPIO(echoPin)
+    trigger.low()
+    utime.sleep_us(2)
+    trigger.high()
+    utime.sleep_us(5)
+    trigger.low()
+    while echo.value() == 0:
+        signaloff = utime.ticks_us()
+    while echo.value() == 1:
+        signalon = utime.ticks_us()
+    timepassed = signalon - signaloff
+    distance = (timepassed * 0.0343) / 2
+    return distance
