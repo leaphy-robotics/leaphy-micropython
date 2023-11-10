@@ -50,6 +50,7 @@ PICO_W = {
     "pins": {
         1: 0,
         2: 1,
+        3: GND,
         4: 2,
         5: 3,
         6: 4,
@@ -101,6 +102,8 @@ def getBoardType():
     decoded_id: str = ''.join(['{:02X}'.format(byte) for byte in id_u])
     if str(decoded_id).startswith("E6611C08CB"):
         return "RP_NANO_MAKER"
+    elif str(decoded_id).startswith("E661640843158139"):
+        return "PICO_W"
     return "unknown"
 
 def pinToGPIO(pin: int):

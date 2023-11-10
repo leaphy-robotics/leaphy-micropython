@@ -1,4 +1,4 @@
-from .boards_config import pinToGPIO
+from boards_config import pinToGPIO
 from time import sleep
 from machine import Pin, PWM
 

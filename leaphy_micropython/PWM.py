@@ -1,5 +1,5 @@
 from machine import Pin,PWM
-from .boards_config import pinToGPIO
+from boards_config import pinToGPIO
 
 
 def setPWM(pin: int, value: int):
