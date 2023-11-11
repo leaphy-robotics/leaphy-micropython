@@ -1,10 +1,13 @@
 from machine import Pin, PWM
-from boards_config import pinToGPIO
+from PWM import set_pwm
 
-def set_buzzer(pin : int, loud : int):
-    """Turns a buzzer and you can choose how hard the sound is."""
-    buzzerpin = pinToGPIO(pin)
-    buzzer = PWM(Pin(buzzerpin))
-    buzzer.freq(255)
-    if loud < 0 or loud > 255: raise ValueError("buzzer values must be in between 0 and 255")
-    buzzer.duty_u16(loud * 257)
+
+def set_buzzer(pin: int, freq: int):
+    """
+    Sets the buzzer
+    :param pin: int, the pin of the buzzer
+    :param freq: int, the frequency of the buzzer
+    """
+    if freq < 0 or freq > 255:
+        raise ValueError("Buzzer values must be in between 0 and 255")
+    set_pwm(pin, freq, 255)
