@@ -1,0 +1,17 @@
+{
+    "urls": [
+        ["__init__.py", "github:leaphy-robotics/leaphy-micropython/__init__.py"],
+        ["boards_config.py", "github:leaphy-robotics/leaphy-micropython/utils/boards_config.py"],
+        ["PWM.py", "github:leaphy-robotics/leaphy-micropython/utils/PWM.py"],
+        ["Sonar.py", "github:leaphy-robotics/leaphy-micropython/sensors/sonar/Sonar.py"],
+        ["TimeOfLight.py", "github:leaphy-robotics/leaphy-micropython/sensors/timeoflight/TimeOfLight.py"],
+        ["Buzzer.py", "github:leaphy-robotics/leaphy-micropython/actuators/buzzer/Buzzer.py"],
+        ["DCMotor.py", "github:leaphy-robotics/leaphy-micropython/actuators/dcmotor/DCMotor.py"],
+        ["RGBLed.py", "github:leaphy-robotics/leaphy-micropython/actuators/rgbled/RGBLed.py"],
+        ["Servo.py", "github:leaphy-robotics/leaphy-micropython/actuators/servo/Servo.py"]
+    ],
+    "deps": [
+        ["utime", "latest"]
+    ],
+    "version": "1.0"
+}
