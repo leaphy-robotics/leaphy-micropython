@@ -1,14 +1,14 @@
 {
     "urls": [
-        ["leaphy_micropython/__init__.py", "github:leaphy-robotics/leaphy-micropython/__init__.py"],
-        ["leaphy_micropython/boards_config.py", "github:leaphy-robotics/leaphy-micropython/utils/boards_config.py"],
-        ["leaphy_micropython/PWM.py", "github:leaphy-robotics/leaphy-micropython/utils/PWM.py"],
-        ["leaphy_micropython/Sonar.py", "github:leaphy-robotics/leaphy-micropython/sensors/sonar/Sonar.py"],
-        ["leaphy_micropython/TimeOfLight.py", "github:leaphy-robotics/leaphy-micropython/sensors/timeoflight/TimeOfLight.py"],
-        ["leaphy_micropython/Buzzer.py", "github:leaphy-robotics/leaphy-micropython/actuators/buzzer/Buzzer.py"],
-        ["leaphy_micropython/DCMotor.py", "github:leaphy-robotics/leaphy-micropython/actuators/dcmotor/DCMotor.py"],
-        ["leaphy_micropython/RGBLed.py", "github:leaphy-robotics/leaphy-micropython/actuators/rgbled/RGBLed.py"],
-        ["leaphy_micropython/Servo.py", "github:leaphy-robotics/leaphy-micropython/actuators/servo/Servo.py"]
+        ["leaphymicropython/__init__.py", "github:leaphy-robotics/leaphy-micropython/__init__.py"],
+        ["leaphymicropython/boards_config.py", "github:leaphy-robotics/leaphy-micropython/utils/boards_config.py"],
+        ["leaphymicropython/PWM.py", "github:leaphy-robotics/leaphy-micropython/utils/PWM.py"],
+        ["leaphymicropython/Sonar.py", "github:leaphy-robotics/leaphy-micropython/sensors/sonar/Sonar.py"],
+        ["leaphymicropython/TimeOfLight.py", "github:leaphy-robotics/leaphy-micropython/sensors/timeoflight/TimeOfLight.py"],
+        ["leaphymicropython/Buzzer.py", "github:leaphy-robotics/leaphy-micropython/actuators/buzzer/Buzzer.py"],
+        ["leaphymicropython/DCMotor.py", "github:leaphy-robotics/leaphy-micropython/actuators/dcmotor/DCMotor.py"],
+        ["leaphymicropython/RGBLed.py", "github:leaphy-robotics/leaphy-micropython/actuators/rgbled/RGBLed.py"],
+        ["leaphymicropython/Servo.py", "github:leaphy-robotics/leaphy-micropython/actuators/servo/Servo.py"]
     ],
     "deps": [
         ["utime", "latest"]
