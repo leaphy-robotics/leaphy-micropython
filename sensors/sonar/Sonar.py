@@ -1,22 +1,24 @@
-from utils.boards_config import pinToGPIO
+from boards_config import pin_to_gpio
 from machine import Pin
 import utime
 
-def read_distance(trigPin: int, echoPin):
+
+def read_distance(trigPin: int, echoPin: int):
     """Reads distance from object"""
-    triggerPin = pinToGPIO(trigPin)
-    echopin = pinToGPIO(echoPin)
-    trigger = Pin(triggerPin, Pin.OUT)
-    echo = Pin(echopin, Pin.IN)
+    trigger_pin = pin_to_gpio(trigPin)
+    echo_pin = pin_to_gpio(echoPin)
+    trigger = Pin(trigger_pin, Pin.OUT)
+    echo = Pin(echo_pin, Pin.IN)
     trigger.low()
     utime.sleep_us(2)
     trigger.high()
     utime.sleep_us(5)
     trigger.low()
+    signal_on: int
+    signal_off: int
     while echo.value() == 0:
-        signaloff = utime.ticks_us()
+        signal_off = utime.ticks_us()
     while echo.value() == 1:
-        signalon = utime.ticks_us()
-    timepassed = signalon - signaloff
-    distance = (timepassed * 0.0343) / 2
-    return distance
+        signal_on = utime.ticks_us()
+    time_passed = signal_on - signal_off
+    return (time_passed * 0.0343) / 2

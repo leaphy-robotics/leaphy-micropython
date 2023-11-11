@@ -1,11 +1,16 @@
 from machine import Pin, PWM
+from PWM import set_pwm
+
 
 class RGBLed:
-    """Turns a rgbled on to a self chosen color or a standard color"""
+    """
+    A class to control an RGB LED
+    """
+
     Colors = {
         "Red": (255, 0, 0),
         "Blue": (0, 0, 255),
-        "Groen": (0, 255, 0),
+        "Green": (0, 255, 0),
         "Yellow": (255, 255, 0),
         "Orange": (255, 165, 0),
         "Purple": (128, 0, 128),
@@ -13,27 +18,38 @@ class RGBLed:
         "Brown": (139, 69, 19),
     }
 
-    def __init__(self, rpin: int, gpin: int, bpin: int):
-        """Makes all the variables"""
-        self.red = PWM(Pin(rpin))
-        self.green = PWM(Pin(gpin))
-        self.blue = PWM(Pin(bpin))
+    def __init__(self, red_pin: int, green_pin: int, blue_pin: int):
+        """
+        Creates an RGB LED
+        :param red_pin: int, the pin of the red led
+        :param green_pin: int, the pin of the green led
+        :param blue_pin: int, the pin of the blue led
+        """
+        self.red = red_pin
+        self.green = green_pin
+        self.blue = blue_pin
 
-    def set_pins(self, rpin: int, gpin: int, bpin: int):
-        """Defines the pins"""
-        self.red = PWM(Pin(rpin))
-        self.green = PWM(Pin(gpin))
-        self.blue = PWM(Pin(bpin))
+    def set_pins(self, red_pin: int, green_pin: int, blue_pin: int):
+        """
+        Sets the pins of the rgbled
+        :param red_pin: int, the pin of the red led
+        :param green_pin: int, the pin of the green led
+        :param blue_pin: int, the pin of the blue led
+        """
+        self.red = red_pin
+        self.green = green_pin
+        self.blue = blue_pin
 
     def set_color(self, r: int, g: int, b: int):
-        """Gives the pins the values"""
-        self.red.freq(255)
-        self.blue.freq(255)
-        self.green.freq(255)
-
-        self.red.duty_u16(r * 257)
-        self.green.duty_u16(g * 257)
-        self.blue.duty_u16(b * 257)
+        """
+        Sets the color of the rgbled
+        :param r: int, the red value
+        :param g: int, the green value
+        :param b: int, the blue value
+        """
+        set_pwm(self.red, r, 255)
+        set_pwm(self.green, g, 255)
+        set_pwm(self.blue, b, 255)
 
     def print_base_colors(self):
         """Prints the color values of the list"""

@@ -1,3 +1,3 @@
-from actuators.buzzer.Buzzer import set_buzzer
+from leaphy_micropython.Buzzer import set_buzzer
 
 set_buzzer(1, 100)

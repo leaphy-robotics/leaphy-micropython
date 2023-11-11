@@ -1,32 +1,52 @@
 from machine import Pin,PWM
-from boards_config import pinToGPIO
+from boards_config import pin_to_gpio
 
 
-def setPWM(pin: int, value: int):
-    """ Set PWM,\n
-        pin: int, value: int\n
-        value must be between 0 and 255\n
+def set_pwm(pin: int, value: int, freq: int = 1000):
+    """ Sets a pwm pin
+    :param pin: int, the pin to set
+    :param value: int, the value to set the pin to
+    :param freq: int, the frequency of the pwm
     """
-    pin = pinToGPIO(pin)
-    if not value > -1 and not value < 256: raise ValueError("PWM value must be between 0 and 255")
+    pin = pin_to_gpio(pin)
+    if freq < 0 or freq > 255:
+        raise ValueError("PWM value must be between 0 and 255")
     pwm = PWM(Pin(pin))
-    pwm.freq(1000)
+    pwm.freq(freq)
     pwm.duty_u16(value * 257)
 
 
-def readPWM(pin: int):
-    """ Read PWM,\n
-        pin: int\n
-        returns a value between 0 and 1"""
-    pin = pinToGPIO(pin)
+def read_pwm(pin: int):
+    """
+    Reads a pwm pin
+    :param pin: int, the pin to read
+    :return: int, the value of the pin
+    """
+    pin = pin_to_gpio(pin)
     pwm = PWM(Pin(pin))
     return pwm.duty_u16() / 257
 
 
 def set_pin(pin: int, value: int):
-    """Sets a pin to high or low"""
-    pin = pinToGPIO(pin)
+    """
+    Sets a pin
+    :param pin: int, the pin to set
+    :param value: int, the value to set the pin to
+    """
+    pin = pin_to_gpio(pin)
     pin = PWM(Pin(pin))
-    if value < 0 or value > 1: raise ValueError("Pin values must be in between 0 and 1")
+    if value < 0 or value > 1:
+        raise ValueError("Pin values must be in between 0 and 1")
     pin.value(value)
-    return
+
+
+def read_pin(pin: int):
+    """
+    Reads a pin
+    :param pin: int, the pin to read
+    :return: int, the value of the pin
+    """
+    pin = pin_to_gpio(pin)
+    pin = Pin(pin)
+    return pin.value()
+
