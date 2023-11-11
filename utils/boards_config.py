@@ -100,9 +100,9 @@ def getBoardType():
     id_u: str = unique_id()
 
     decoded_id: str = ''.join(['{:02X}'.format(byte) for byte in id_u])
-    if str(decoded_id).startswith("E6611C08CB"):
+    if str(decoded_id).startswith("E6611C"):
         return "RP_NANO_MAKER"
-    elif str(decoded_id).startswith("E661640843158139"):
+    elif str(decoded_id).startswith("E66164"):
         return "PICO_W"
     return "unknown"
 
