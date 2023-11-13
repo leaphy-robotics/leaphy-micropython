@@ -1,5 +1,5 @@
 from machine import Pin, PWM
-from PWM import set_pwm
+from utils.PWM import set_pwm
 
 
 def set_buzzer(pin: int, freq: int):

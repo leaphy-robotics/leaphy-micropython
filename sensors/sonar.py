@@ -1,4 +1,4 @@
-from boards_config import pin_to_gpio
+from utils.boards_config import pin_to_gpio
 from machine import Pin
 import utime
 
