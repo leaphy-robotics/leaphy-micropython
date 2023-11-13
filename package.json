@@ -3,10 +3,10 @@
         ["leaphymicropython/utils/boards_config.py", "github:leaphy-robotics/leaphy-micropython/utils/boards_config.py"],
         ["leaphymicropython/utils/PWM.py", "github:leaphy-robotics/leaphy-micropython/utils/PWM.py"],
         ["leaphymicropython/sensors/sonar.py", "github:leaphy-robotics/leaphy-micropython/sensors/sonar.py"],
-        ["leaphymicropython/actuators/buzzer.py", "github:leaphy-robotics/leaphy-micropython/actuators/Buzzer.py"],
+        ["leaphymicropython/actuators/buzzer.py", "github:leaphy-robotics/leaphy-micropython/actuators/buzzer.py"],
         ["leaphymicropython/actuators/DCMotor.py", "github:leaphy-robotics/leaphy-micropython/actuators/DCMotor.py"],
         ["leaphymicropython/actuators/RGBLed.py", "github:leaphy-robotics/leaphy-micropython/actuators/RGBLed.py"],
-        ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/actuators/Servo.py"]
+        ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/actuators/servo.py"]
     ],
     "deps": [],
     "version": "1.0"
