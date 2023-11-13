@@ -1,5 +1,5 @@
 from machine import Pin,PWM
-from boards_config import pin_to_gpio
+from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
 def set_pwm(pin: int, value: int, freq: int = 1000):
