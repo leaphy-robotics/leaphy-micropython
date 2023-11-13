@@ -1,4 +1,4 @@
-from utils.boards_config import pin_to_gpio
+from leaphymicropython.utils.boards_config import pin_to_gpio
 from time import sleep
 from machine import Pin, PWM
 
