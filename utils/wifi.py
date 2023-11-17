@@ -8,3 +8,4 @@ def connect(ssid, password):
     while not wlan.isconnected():
         sleep(1)
         print("Connecting to WiFi...")
+
