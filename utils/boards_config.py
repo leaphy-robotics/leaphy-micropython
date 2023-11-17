@@ -96,19 +96,23 @@ BOARDS = {
     "PICO_W": PICO_W,
 }
 
+id_u: str = unique_id()
+
+decoded_id: str = ''.join(['{:02X}'.format(byte) for byte in id_u])
+board = "UNKNOWN_BOARD"
+
+if str(decoded_id).startswith("E6611C"):
+    board = "RP_NANO_MAKER"
+elif str(decoded_id).startswith("E66164"):
+    board = "PICO_W"
+
 
 def get_board_type():
-    """ Get board type,\n
-        returns which board it is
+    """ 
+    Get board type,    
+    :return: which board it is
     """
-    id_u: str = unique_id()
-
-    decoded_id: str = ''.join(['{:02X}'.format(byte) for byte in id_u])
-    if str(decoded_id).startswith("E6611C"):
-        return "RP_NANO_MAKER"
-    elif str(decoded_id).startswith("E66164"):
-        return "PICO_W"
-    return "Unknown board!"
+    return board
 
 
 def pin_to_gpio(pin: int):
