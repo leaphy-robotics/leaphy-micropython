@@ -1,5 +1,5 @@
 from machine import Pin, PWM
-from leaphymicropython.utils.PWM import set_pwm
+from leaphymicropython.utils.pins import set_pwm
 
 
 class RGBLed:
