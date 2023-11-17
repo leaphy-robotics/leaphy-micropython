@@ -2,12 +2,16 @@
     "urls": [
         ["leaphymicropython/utils/boards_config.py", "github:leaphy-robotics/leaphy-micropython/utils/boards_config.py"],
         ["leaphymicropython/utils/pins.py", "github:leaphy-robotics/leaphy-micropython/utils/pins.py"],
+        ["leaphymicropython/utils/__init__.py", "github:leaphy-robotics/leaphy-micropython/utils/__init__.py"],
         ["leaphymicropython/sensors/sonar.py", "github:leaphy-robotics/leaphy-micropython/sensors/sonar.py"],
         ["leaphymicropython/sensors/linesensor.py", "github:leaphy-robotics/leaphy-micropython/sensors/linesensor.py"],
+        ["leaphymicropython/sensors/__init__.py", "github:leaphy-robotics/leaphy-micropython/sensors/__init__.py"],
         ["leaphymicropython/actuators/buzzer.py", "github:leaphy-robotics/leaphy-micropython/actuators/buzzer.py"],
         ["leaphymicropython/actuators/DCMotor.py", "github:leaphy-robotics/leaphy-micropython/actuators/DCMotor.py"],
         ["leaphymicropython/actuators/RGBLed.py", "github:leaphy-robotics/leaphy-micropython/actuators/RGBLed.py"],
-        ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/actuators/servo.py"]
+        ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/actuators/servo.py"],
+        ["leaphymicropython/actuators/__init__.py", "github:leaphy-robotics/leaphy-micropython/actuators/__init__.py"],
+        ["leaphymicropython/__init__.py", "github:leaphy-robotics/leaphy-micropython/__init__.py"]
     ],
     "deps": [],
     "version": "1.0"
