@@ -40,7 +40,7 @@ def set_pin(pin: int, value: int):
     pin.value(value)
 
 
-def read_pin(pin: int):
+def read_pin(pin: int) -> bool:
     """
     Reads a pin
     :param pin: int, the pin to read
