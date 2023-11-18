@@ -34,7 +34,7 @@ def set_pin(pin: int, value: int):
     :param value: int, the value to set the pin to
     """
     pin = pin_to_gpio(pin)
-    pin = PWM(Pin(pin, Pin.OUT))
+    pin = Pin(pin, Pin.OUT)
     if value < 0 or value > 1:
         raise ValueError("Pin values must be in between 0 and 1")
     pin.value(value)
