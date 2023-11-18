@@ -1,6 +1,6 @@
 """A module for the new leaphy line sensor"""
 from machine import Pin
-from utils.boards_config import pin_to_gpio
+from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
 def read_line_sensor(pin: int) -> int:
