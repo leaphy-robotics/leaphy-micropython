@@ -1,5 +1,4 @@
 """A module for the new leaphy line sensor"""
-from machine import Pin
 from leaphymicropython.utils.pins import read_pin
 
 
