@@ -2,14 +2,14 @@ from machine import Pin,PWM
 from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
-def set_pwm(pin: int, value: int, freq: int = 1000):
+def set_pwm(pin: int, value: int, freq: int = 50):
     """ Sets a pwm pin
     :param pin: int, the pin to set
     :param value: int, the value to set the pin to
     :param freq: int, the frequency of the pwm
     """
     pin = pin_to_gpio(pin)
-    if freq < 0 or freq > 255:
+    if value < 0 or value > 255:
         raise ValueError("PWM value must be between 0 and 255")
     pwm = PWM(Pin(pin))
     pwm.freq(freq)
@@ -40,7 +40,7 @@ def set_pin(pin: int, value: int):
     pin.value(value)
 
 
-def read_pin(pin: int) -> bool:
+def read_pin(pin: int) -> int:
     """
     Reads a pin
     :param pin: int, the pin to read
@@ -48,5 +48,4 @@ def read_pin(pin: int) -> bool:
     """
     pin = pin_to_gpio(pin)
     pin = Pin(pin, Pin.IN)
-    return pin.value()
-
+    pin.value()

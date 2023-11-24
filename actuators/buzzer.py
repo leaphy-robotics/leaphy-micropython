@@ -1,4 +1,3 @@
-from machine import Pin, PWM
 from leaphymicropython.utils.pins import set_pwm
 
 
@@ -10,4 +9,4 @@ def set_buzzer(pin: int, freq: int):
     """
     if freq < 0 or freq > 255:
         raise ValueError("Buzzer values must be in between 0 and 255")
-    set_pwm(pin, freq, 255)
+    set_pwm(pin, 255, freq)
