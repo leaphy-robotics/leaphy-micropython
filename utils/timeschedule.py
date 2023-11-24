@@ -1,4 +1,4 @@
-"""import time"""
+"""import modules"""
 from time import sleep
 
 def sleep_minute(minutes: int):
