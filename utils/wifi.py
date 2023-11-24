@@ -1,5 +1,5 @@
 import network
-from timeschedule import sleep
+from time import sleep
 
 def connect(ssid, password):
     wlan = network.WLAN(network.STA_IF)
