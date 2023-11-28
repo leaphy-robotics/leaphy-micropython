@@ -7,7 +7,7 @@
         ["leaphymicropython/actuators/buzzer.py", "github:leaphy-robotics/leaphy-micropython/actuators/buzzer.py"],
         ["leaphymicropython/actuators/DCMotor.py", "github:leaphy-robotics/leaphy-micropython/actuators/DCMotor.py"],
         ["leaphymicropython/actuators/RGBLed.py", "github:leaphy-robotics/leaphy-micropython/actuators/RGBLed.py"],
-        ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/actuators/servo.py"],
+        ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/actuators/servo.py"]
     ],
     "deps": [],
     "version": "1.0"
