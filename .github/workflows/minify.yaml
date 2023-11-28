@@ -29,7 +29,11 @@ jobs:
         run: |
           pyminify ./ --in-place
       - name: Upload to minified branch
-        uses: actions/upload-artifact@v2
-        with:
-          name: minified
-          path: ./
+        run: |
+          gh auth login --with-token < token.txt
+          git checkout -b minified
+          git add .
+          git commit -m "Minify code"
+          git push origin minified
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
