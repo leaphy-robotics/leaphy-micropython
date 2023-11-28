@@ -30,7 +30,7 @@ jobs:
           pyminify ./ --in-place
       - name: Upload to minified branch
         run: |
-          gh auth login --with-token {{ GITHUB_TOKEN }}
+          gh auth login --with-token ${{ secrets.GITHUB_TOKEN }}
           git checkout -b minified
           git add .
           git commit -m "Minify code"
