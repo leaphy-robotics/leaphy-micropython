@@ -28,12 +28,9 @@ jobs:
       - name: Minify
         run: |
           pyminify ./ --in-place
-      - name: Upload to minified branch
+      - name: Make a pull request to the minified branch
         run: |
           gh auth login --with-token ${{ secrets.GITHUB_TOKEN }}
-          git checkout -b minified
-          git add .
-          git commit -m "Minify code"
-          git push origin minified
+          gh pr create --title "Minify code" --body "Minified code" --head minified --base main --repo ${{ github.repository }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
