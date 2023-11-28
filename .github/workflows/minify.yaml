@@ -27,7 +27,7 @@ jobs:
           pip install python-minifier
       - name: Minify
         run: |
-          pyminify ./
+          pyminify ./ --in-place
       - name: Upload to minified branch
         uses: actions/upload-artifact@v2
         with:
