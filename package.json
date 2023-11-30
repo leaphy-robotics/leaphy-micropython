@@ -6,6 +6,7 @@
         ["leaphymicropython/utils/wifi.py", "github:leaphy-robotics/leaphy-micropython/utils/wifi.py"],
         ["leaphymicropython/sensors/sonar.py", "github:leaphy-robotics/leaphy-micropython/sensors/sonar.py"],
         ["leaphymicropython/sensors/linesensor.py", "github:leaphy-robotics/leaphy-micropython/sensors/linesensor.py"],
+        ["leaphymicropython/sensors/dht22.py", "github:leaphy-robotics/leaphy-micropython/sensors/dht22.py"],
         ["leaphymicropython/actuators/buzzer.py", "github:leaphy-robotics/leaphy-micropython/actuators/buzzer.py"],
         ["leaphymicropython/actuators/DCMotor.py", "github:leaphy-robotics/leaphy-micropython/actuators/DCMotor.py"],
         ["leaphymicropython/actuators/RGBLed.py", "github:leaphy-robotics/leaphy-micropython/actuators/RGBLed.py"],
