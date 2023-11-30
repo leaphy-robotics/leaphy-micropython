@@ -8,6 +8,7 @@ class DHT22():
     def __init__(self, pin: int):
         """
         Sets the pins for the dht22
+        Fix docstrings here.
         """
         self.sensor = dht.DHT22(machine.Pin(pin))
     def read_temperature(self) -> float:
