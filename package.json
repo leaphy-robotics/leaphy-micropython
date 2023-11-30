@@ -12,6 +12,8 @@
         ["leaphymicropython/actuators/RGBLed.py", "github:leaphy-robotics/leaphy-micropython/actuators/RGBLed.py"],
         ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/actuators/servo.py"]
     ],
-    "deps": [],
+    "deps": [
+        Forgot DHT22 library here
+    ],
     "version": "1.0"
 }
