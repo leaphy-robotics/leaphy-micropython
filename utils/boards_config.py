@@ -36,8 +36,8 @@ RP_NANO_MAKER = {
         17: 29,
         18: 12,
         19: 13,
-        20: 14, # A6
-        21: 15, # A7
+        20: 14,  # A6
+        21: 15,  # A7
     }
 }
 
@@ -86,8 +86,7 @@ PICO_W = {
         37: EN,
         38: GND,
         39: VSYS,
-        40: VBUS
-
+        40: VBUS,
     }
 }
 
@@ -98,7 +97,7 @@ BOARDS = {
 
 id_u: str = unique_id()
 
-decoded_id: str = ''.join(['{:02X}'.format(byte) for byte in id_u])
+decoded_id: str = "".join(["{:02X}".format(byte) for byte in id_u])
 board = "UNKNOWN_BOARD"
 
 if str(decoded_id).startswith("E6611C"):
@@ -108,8 +107,8 @@ elif str(decoded_id).startswith("E66164"):
 
 
 def get_board_type():
-    """ 
-    Get board type,    
+    """
+    Get board type,
     :return: which board it is
     """
     return board

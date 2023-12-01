@@ -55,4 +55,3 @@ class RGBLed:
         """Prints the color values of the list"""
         for kleur, rgb in self.Colors.items():
             print(f"{kleur}: RGB{rgb}")
-

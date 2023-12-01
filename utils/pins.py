@@ -1,9 +1,9 @@
-from machine import Pin,PWM
+from machine import Pin, PWM
 from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
 def set_pwm(pin: int, value: int, freq: int = 50):
-    """ Sets a pwm pin
+    """Sets a pwm pin
     :param pin: int, the pin to set
     :param value: int, the value to set the pin to
     :param freq: int, the frequency of the pwm

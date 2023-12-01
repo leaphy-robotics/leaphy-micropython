@@ -3,6 +3,7 @@ from machine import Pin
 
 class DCMotor:
     """DC Motor class"""
+
     In1: Pin
     In2: Pin
     EN_A: Pin
@@ -20,13 +21,13 @@ class DCMotor:
         :param en_a: int, the pin of the enable pin a
         :param en_b: int, the pin of the enable pin b
         """
-        self.In1 = Pin(in1,Pin.OUT)
-        self.In2 = Pin(in2,Pin.OUT)
-        self.EN_A = Pin(en_a,Pin.OUT)
-        self.In3 = Pin(in3,Pin.OUT)
-        self.In4 = Pin(in4,Pin.OUT)
-        self.EN_B = Pin(en_b,Pin.OUT)
-        
+        self.In1 = Pin(in1, Pin.OUT)
+        self.In2 = Pin(in2, Pin.OUT)
+        self.EN_A = Pin(en_a, Pin.OUT)
+        self.In3 = Pin(in3, Pin.OUT)
+        self.In4 = Pin(in4, Pin.OUT)
+        self.EN_B = Pin(en_b, Pin.OUT)
+
     def set_pins(self, in1: int, in2: int, in3: int, in4: int, en_a: int, en_b: int):
         """
         Sets the pins of the DC motor
@@ -88,4 +89,3 @@ class DCMotor:
         self.In2.low()
         self.In3.low()
         self.In4.low()
-        
