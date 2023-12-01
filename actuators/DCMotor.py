@@ -5,7 +5,7 @@ from leaphymicropython.utils.boards_config import pin_to_gpio
 class DCMotor:
     """DC Motor class"""
 
-    def init(self, in_1: int, in_2: int, in_3: int, in_4: int, en_a: int, en_b: int):
+    def __init__(self, in_1: int, in_2: int, in_3: int, in_4: int, en_a: int, en_b: int):
         """
         Creates a DC motor
         :param in_1: int, the pin of the in1
