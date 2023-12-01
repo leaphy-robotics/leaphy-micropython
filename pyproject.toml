@@ -4,4 +4,4 @@ max-line-length = 120
 
 [tool.pylint.MASTER]
 max-line-length = 120
-disable = ["missing-module-docstring", "import-error"]
+disable = ["missing-module-docstring", "import-error", "too-many-arguments"]
