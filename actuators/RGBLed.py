@@ -1,4 +1,3 @@
-from machine import Pin, PWM
 from leaphymicropython.utils.pins import set_pwm
 
 
