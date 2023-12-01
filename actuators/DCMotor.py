@@ -1,13 +1,11 @@
-from leaphymicropython.utils.boards_config import pin_to_gpio
 from machine import Pin
+from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
 class DCMotor:
     """DC Motor class"""
 
-    def __init__(
-        self, in_1: int, in_2: int, in_3: int, in_4: int, en_a: int, en_b: int
-    ):
+    def init(self, in_1: int, in_2: int, in_3: int, in_4: int, en_a: int, en_b: int):
         """
         Creates a DC motor
         :param in_1: int, the pin of the in1
@@ -23,16 +21,14 @@ class DCMotor:
         in_3 = pin_to_gpio(in_3)
         in_4 = pin_to_gpio(in_4)
         en_b = pin_to_gpio(en_b)
-        self.In1 = Pin(in_1, Pin.OUT)
-        self.In2 = Pin(in_2, Pin.OUT)
-        self.EN_A = Pin(en_a, Pin.OUT)
-        self.In3 = Pin(in_3, Pin.OUT)
-        self.In4 = Pin(in_4, Pin.OUT)
-        self.EN_B = Pin(en_b, Pin.OUT)
+        self.in_1 = Pin(in_1, Pin.OUT)
+        self.in_2 = Pin(in_2, Pin.OUT)
+        self.en_a = Pin(en_a, Pin.OUT)
+        self.in_3 = Pin(in_3, Pin.OUT)
+        self.in_4 = Pin(in_4, Pin.OUT)
+        self.en_b = Pin(en_b, Pin.OUT)
 
-    def set_pins(
-        self, in_1: int, in_2: int, in_3: int, in_4: int, en_a: int, en_b: int
-    ):
+    def set_pins(self, in_1: int, in_2: int, in_3: int, in_4: int, en_a: int, en_b: int):
         """
         Sets the pins of the DC motor
         :param in_1: int, the pin of the in1
@@ -42,12 +38,12 @@ class DCMotor:
         :param en_a: int, the pin of the enable pin a
         :param en_b: int, the pin of the enable pin b
         """
-        self.In1 = Pin(in_1, Pin.OUT)
-        self.In2 = Pin(in_2, Pin.OUT)
-        self.EN_A = Pin(en_a, Pin.OUT)
-        self.In3 = Pin(in_3, Pin.OUT)
-        self.In4 = Pin(in_4, Pin.OUT)
-        self.EN_B = Pin(en_b, Pin.OUT)
+        self.in_1 = Pin(in_1, Pin.OUT)
+        self.in_2 = Pin(in_2, Pin.OUT)
+        self.en_a = Pin(en_a, Pin.OUT)
+        self.in_3 = Pin(in_3, Pin.OUT)
+        self.in_4 = Pin(in_4, Pin.OUT)
+        self.en_b = Pin(en_b, Pin.OUT)
 
     def move_forward(self):
         """
