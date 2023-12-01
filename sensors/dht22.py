@@ -1,6 +1,6 @@
 import dht
 import machine
-from leaphymicropython.utils.boards.config import pin_to_gpio
+from leaphymicropython.utils.boards_config import pin_to_gpio
 
 class DHT22():
     """
