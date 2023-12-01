@@ -41,7 +41,7 @@ class RGBLed:
 
     def set_color(self, r: int, g: int, b: int):
         """
-        Sets the color of the rgbled
+        Sets the color of the rgb-led
         :param r: int, the red value
         :param g: int, the green value
         :param b: int, the blue value

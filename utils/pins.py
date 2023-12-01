@@ -48,4 +48,4 @@ def read_pin(pin: int) -> int:
     """
     pin = pin_to_gpio(pin)
     pin = Pin(pin, Pin.IN)
-    pin.value()
+    return pin.value()
