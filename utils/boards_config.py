@@ -10,7 +10,7 @@ VBUS = -6
 
 
 """
-PINS: 
+PINS:
     Key = Physical Pin
     Value = GPIO Pin
 """
@@ -36,13 +36,13 @@ RP_NANO_MAKER = {
         17: 29,
         18: 12,
         19: 13,
-        20: 14, # A6
-        21: 15, # A7
+        20: 14,  # A6
+        21: 15,  # A7
     }
 }
 
 """
-PINS: 
+PINS:
     Key = Physical Pin
     Value = GPIO Pin
 """
@@ -86,8 +86,7 @@ PICO_W = {
         37: EN,
         38: GND,
         39: VSYS,
-        40: VBUS
-
+        40: VBUS,
     }
 }
 
@@ -96,24 +95,27 @@ BOARDS = {
     "PICO_W": PICO_W,
 }
 
-id_u: str = unique_id()
-
-decoded_id: str = ''.join(['{:02X}'.format(byte) for byte in id_u])
-board = "UNKNOWN_BOARD"
-
-if str(decoded_id).startswith("E6611C"):
-    board = "RP_NANO_MAKER"
-elif str(decoded_id).startswith("E66164"):
-    board = "PICO_W"
-
 
 def get_board_type():
-    """ 
-    Get board type,    
+    """
+    Get board type,
     :return: which board it is
     """
+    id_u: bytes = unique_id()
+    decoded_id: str = "".join([f"{byte:02X}" for byte in id_u])
+    board = "UNKNOWN_BOARD"
+
+    if str(decoded_id).startswith("E6611C"):
+        board = "RP_NANO_MAKER"
+    elif str(decoded_id).startswith("E66164"):
+        board = "PICO_W"
     return board
 
 
 def pin_to_gpio(pin: int):
+    """
+    Convert physical pin to GPIO
+    :param pin: The pin to convert
+    :return: GPIO pin number
+    """
     return BOARDS[get_board_type()]["pins"][pin]

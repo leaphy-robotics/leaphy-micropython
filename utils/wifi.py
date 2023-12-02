@@ -1,6 +1,7 @@
 from time import sleep
 import network
 
+
 def connect(ssid: str, password: str) -> str:
     """
     Connects the pico to the Wi-Fi

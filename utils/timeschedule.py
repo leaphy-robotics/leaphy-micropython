@@ -1,5 +1,6 @@
 from time import sleep
 
+
 def sleep_minute(minutes: int):
     """
     Sleep for minutes amount of time
