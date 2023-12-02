@@ -8,10 +8,10 @@
         ["leaphymicropython/sensors/linesensor.py", "github:leaphy-robotics/leaphy-micropython/sensors/linesensor.py"],
         ["leaphymicropython/sensors/dht22.py", "github:leaphy-robotics/leaphy-micropython/sensors/dht22.py"],
         ["leaphymicropython/actuators/buzzer.py", "github:leaphy-robotics/leaphy-micropython/actuators/buzzer.py"],
-        ["leaphymicropython/actuators/DCMotor.py", "github:leaphy-robotics/leaphy-micropython/actuators/DCMotor.py"],
-        ["leaphymicropython/actuators/RGBLed.py", "github:leaphy-robotics/leaphy-micropython/actuators/RGBLed.py"],
+        ["leaphymicropython/actuators/dcmotor.py", "github:leaphy-robotics/leaphy-micropython/actuators/dcmotor.py"],
+        ["leaphymicropython/actuators/rgbled.py", "github:leaphy-robotics/leaphy-micropython/actuators/rgbled.py"],
         ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/actuators/servo.py"]
     ],
     "deps": [],
-    "version": "1.0"
+    "version": "1.1"
 }
