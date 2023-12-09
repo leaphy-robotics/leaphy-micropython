@@ -1,5 +1,6 @@
-from leaphymicropython.utils.boards_config import pin_to_gpio
 from machine import Pin, PWM
+
+from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
 def servo_angle(pin: int, angle: int) -> None:
