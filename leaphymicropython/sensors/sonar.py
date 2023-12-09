@@ -1,6 +1,7 @@
 import utime
-from leaphymicropython.utils.boards_config import pin_to_gpio
 from machine import Pin
+
+from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
 def read_distance(trig_pin: int, echo_pin: int) -> float:
