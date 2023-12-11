@@ -1,4 +1,4 @@
-from machine import Pin, PWM
+from machine import Pin, PWM, ADC
 from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
@@ -49,3 +49,14 @@ def read_pin(pin: int) -> int:
     pin = pin_to_gpio(pin)
     pin = Pin(pin, Pin.IN)
     return pin.value()
+
+
+def read_adc(pin : int) -> int:
+    """
+    reads an analog pin
+    :param pin: the pin to read
+    :return: returns the value
+    """
+    pin = pin_to_gpio(pin)
+    adcpin = ADC(Pin(pin))
+    return adcpin.read_u16()
