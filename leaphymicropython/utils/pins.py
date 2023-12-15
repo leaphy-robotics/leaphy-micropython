@@ -60,5 +60,3 @@ def read_adc(pin: int) -> int:
     pin = pin_to_gpio(pin)
     adcpin = ADC(Pin(pin))
     return int(adcpin.read_u16() / 257)
-
-
