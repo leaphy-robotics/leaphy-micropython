@@ -24,7 +24,7 @@ def read_pwm(pin: int):
     """
     pin = pin_to_gpio(pin)
     pwm = PWM(Pin(pin))
-    return pwm.duty_u16() / 257
+    return int(pwm.duty_u16() / 257)
 
 
 def set_pin(pin: int, value: int):
@@ -59,4 +59,6 @@ def read_adc(pin: int) -> int:
     """
     pin = pin_to_gpio(pin)
     adcpin = ADC(Pin(pin))
-    return adcpin.read_u16()
+    return int(adcpin.read_u16() / 257)
+
+

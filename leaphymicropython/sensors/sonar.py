@@ -1,6 +1,5 @@
 import utime
 from machine import Pin
-
 from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
