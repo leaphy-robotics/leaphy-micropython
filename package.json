@@ -4,6 +4,7 @@
         ["leaphymicropython/utils/pins.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/pins.py"],
         ["leaphymicropython/utils/timeschedule.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/timeschedule.py"],
         ["leaphymicropython/utils/wifi.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/wifi.py"],
+        ["leaphymicropython/utils/i2c.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/i2c.py"],
         ["leaphymicropython/sensors/sonar.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/sonar.py"],
         ["leaphymicropython/sensors/linesensor.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/linesensor.py"],
         ["leaphymicropython/sensors/dht22.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/dht22.py"],
@@ -13,5 +14,5 @@
         ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/servo.py"]
     ],
     "deps": [],
-    "version": "1.2.1"
+    "version": "1.2.2"
 }
