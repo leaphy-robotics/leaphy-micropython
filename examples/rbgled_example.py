@@ -1,6 +1,6 @@
 """Lets the rgb-led blink"""
-from leaphymicropython.actuators.rgbled import RGBLed
 from time import sleep
+from leaphymicropython.actuators.rgbled import RGBLed
 
 led = RGBLed(1, 2, 4)
 while True:
