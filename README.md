@@ -2,7 +2,7 @@
 Source Code for the Leaphy MicroPython Library
 
 # How to install the package on your microcontroller:
-    First connect it to the wifi you need to do this in the repl from your microcontroller:
+    First connect your microcontroller to the wifi you need to do this in the repl from your microcontroller:
     import network
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
