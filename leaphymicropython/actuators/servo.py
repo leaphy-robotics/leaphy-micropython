@@ -3,7 +3,7 @@ from machine import Pin, PWM
 from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
-def servo_angle(pin: int, angle: int) -> None:
+def set_servo_angle(pin: int, angle: int) -> None:
     """
     Puts the servo on an angle
     :param pin: The pin number to which the servo motor is connected
