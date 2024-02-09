@@ -1,6 +1,6 @@
 import math
 from time import sleep
-from machine import I2C, Pin
+from machine import I2C
 
 
 class Compass:
@@ -14,12 +14,15 @@ class Compass:
         self.set_mode(0x01, 0x0C, 0x10, 0x00)
 
     def _write_reg(self, r: int, v: int) -> None:
+        """Write register"""
         self.i2c.writeto(self.ADDR, bytes([r, v]))
 
     def set_mode(self, mode: int, odr: int, rng: int, osr: int) -> None:
+        """set compass mode"""
         self._write_reg(9, mode | odr | rng | osr)
 
     def read_compass(self) -> tuple[int, int, int]:
+        """Read compass"""
         self.i2c.writeto(self.ADDR, bytes(0))
         sleep(0.01)
         buffer: bytes = self.i2c.readfrom(self.ADDR, 6, False)
@@ -30,5 +33,6 @@ class Compass:
 
     @staticmethod
     def get_azimuth(x, y) -> int:
+        """get azimuth"""
         heading: float = math.atan2(y, x) * 180.0 / math.pi
         return int(heading % 360)
