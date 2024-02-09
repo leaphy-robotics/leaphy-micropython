@@ -1,5 +1,6 @@
-from leaphymicropython.sensors.compass import Compass
 from time import sleep
+from leaphymicropython.sensors.compass import Compass
+
 
 compass = Compass()
 
