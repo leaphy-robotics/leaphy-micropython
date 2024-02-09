@@ -9,7 +9,7 @@ Source Code for the Leaphy MicroPython Library
     wlan.connect(“wifi name”, “wifi password”)
     After that you are going to install the package with mip still in your repl:
     import mip
-    mip.install(“github:leaphy-robotics/leaphy-micropython”)
+    mip.install("github:leaphy-robotics/leaphy-micropython")
 # Microcontrollers that we support:
     nano rp2040 maker
     Pico w
