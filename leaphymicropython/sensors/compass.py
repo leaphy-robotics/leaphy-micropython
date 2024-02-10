@@ -49,8 +49,8 @@ class ChangeBitsToBytes:
         return register_value
 
     def __set__(self, obj, value: int) -> None:
-        """Sets the value to the specified register.
-
+        """
+        Sets the value to the specified register.
         :param obj: The object representing the device to write to.
         :param value: The value to set in the register.
         """
@@ -69,5 +69,5 @@ class ChangeBitsToBytes:
         value <<= self.start_bit_position
         register_value |= value
         register_value = register_value.to_bytes(self.register_width, "big")
-
+        "#big indicates that the most significant digit should come first"
         obj.i2c.writeto_mem(obj.address, self.register_address, register_value)
