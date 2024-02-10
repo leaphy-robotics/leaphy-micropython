@@ -1,6 +1,6 @@
 import struct
-from micropython import const
 from time import sleep
+from micropython import const
 
 
 class ChangeBitsToBytes:
@@ -29,11 +29,10 @@ class ChangeBitsToBytes:
         self.register_width = register_width
         self.is_lsb_first = is_lsb_first
 
-    def get_register_value(self, obj, obj_type=None) -> int:
+    def get_register_value(self, obj) -> int:
         """
         Reads a value from the specified register.
         :param obj: The object representing the device to read from.
-        :param obj_type: Optional parameter specifying the type of the object.
         :return: The value read from the register.
         """
         memory_value = obj.i2c.readfrom_mem(
@@ -93,7 +92,7 @@ class RegisterStruct:
         Gets the value of the register.
 
         :param obj: The object representing the device.
-        :param objtype: The type of the object.
+        :param obj_type: The type of the object.
         :return: The value of the register.
         """
         mem_value = obj.i2c.readfrom_mem(obj.address, self.register, self.length)
