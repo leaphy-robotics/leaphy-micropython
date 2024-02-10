@@ -69,5 +69,46 @@ class ChangeBitsToBytes:
         value <<= self.start_bit_position
         register_value |= value
         register_value = register_value.to_bytes(self.register_width, "big")
-        "#big indicates that the most significant digit should come first"
         obj.i2c.writeto_mem(obj.address, self.register_address, register_value)
+
+
+class RegisterStruct:
+    """
+    Represents a structure for handling register data.
+    """
+
+    def __init__(self, register_address: int, format_string: str) -> None:
+        """
+        Initializes the RegisterStruct with the given register address and format string.
+
+        :param register_address: int, the address of the register
+        :param format_string: str, the format string specifying the data structure
+        """
+        self.format = format_string
+        self.register = register_address
+        self.length = struct.calcsize(format_string)
+
+    def __get__(self, obj, obj_type=None):
+        """
+        Gets the value of the register.
+
+        :param obj: The object representing the device.
+        :param objtype: The type of the object.
+        :return: The value of the register.
+        """
+        mem_value = obj.i2c.readfrom_mem(obj.address, self.register, self.length)
+        if self.length <= 2:
+            value = struct.unpack(self.format, mem_value)[0]
+        else:
+            value = struct.unpack(self.format, mem_value)
+        return value
+
+    def __set__(self, obj, value):
+        """
+        Sets the value of the register.
+
+        :param obj: The object representing the device.
+        :param value: The value to set.
+        """
+        mem_value = struct.pack(self.format, value)
+        obj.i2c.writeto_mem(obj.address, self.register, mem_value)
