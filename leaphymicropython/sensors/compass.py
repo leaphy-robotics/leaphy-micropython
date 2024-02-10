@@ -5,8 +5,9 @@ from time import sleep
 
 class ChangeBitsToBytes:
     """
-    Changes bits from a byte register.
+    Changes bits from a byte register
     """
+
     def __init__(
         self,
         num_bits: int,
@@ -35,7 +36,9 @@ class ChangeBitsToBytes:
         :param obj_type: Optional parameter specifying the type of the object.
         :return: The value read from the register.
         """
-        memory_value = obj.i2c.readfrom_mem(obj.address, self.register_address, self.register_width)
+        memory_value = obj.i2c.readfrom_mem(
+            obj.address, self.register_address, self.register_width
+        )
         register_value = 0
         byte_order = range(len(memory_value) - 1, -1, -1)
         if not self.is_lsb_first:
@@ -51,7 +54,9 @@ class ChangeBitsToBytes:
         :param obj: The object representing the device to write to.
         :param value: The value to set in the register.
         """
-        memory_value = obj.i2c.readfrom_mem(obj.address, self.register_address, self.register_width)
+        memory_value = obj.i2c.readfrom_mem(
+            obj.address, self.register_address, self.register_width
+        )
 
         register_value = 0
         byte_order = range(len(memory_value) - 1, -1, -1)
@@ -66,8 +71,3 @@ class ChangeBitsToBytes:
         register_value = register_value.to_bytes(self.register_width, "big")
 
         obj.i2c.writeto_mem(obj.address, self.register_address, register_value)
-
-
-
-
-
