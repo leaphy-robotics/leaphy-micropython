@@ -1,38 +1,73 @@
-import math
+import struct
+from micropython import const
 from time import sleep
-from machine import I2C
 
 
-class Compass:
-    """A class to connect and read a compass sensor"""
+class ChangeBitsToBytes:
+    """
+    Changes bits from a byte register.
+    """
+    def __init__(
+        self,
+        num_bits: int,
+        register_address: int,
+        start_bit_position: int,
+        register_width: int = 1,
+        is_lsb_first: bool = True,
+    ) -> None:
+        """
+        :param num_bits: int, the number of bits in the register
+        :param register_address: int, the address of the register
+        :param start_bit_position: int, the position of the starting bit
+        :param register_width: int, the width of the register (default is 1)
+        :param is_lsb_first: bool, indicates whether the least significant bit is first (default is True)
+        """
+        self.bit_mask = ((1 << num_bits) - 1) << start_bit_position
+        self.register_address = register_address
+        self.start_bit_position = start_bit_position
+        self.register_width = register_width
+        self.is_lsb_first = is_lsb_first
 
-    ADDR = 0x0D
+    def get_register_value(self, obj, obj_type=None) -> int:
+        """
+        Reads a value from the specified register.
+        :param obj: The object representing the device to read from.
+        :param obj_type: Optional parameter specifying the type of the object.
+        :return: The value read from the register.
+        """
+        memory_value = obj.i2c.readfrom_mem(obj.address, self.register_address, self.register_width)
+        register_value = 0
+        byte_order = range(len(memory_value) - 1, -1, -1)
+        if not self.is_lsb_first:
+            byte_order = reversed(byte_order)
+        for i in byte_order:
+            register_value = (register_value << 8) | memory_value[i]
+        register_value = (register_value & self.bit_mask) >> self.start_bit_position
+        return register_value
 
-    def __init__(self):
-        self.i2c = I2C(0, freq=400000)
-        self._write_reg(0x0B, 0x01)
-        self.set_mode(0x01, 0x0C, 0x10, 0x00)
+    def __set__(self, obj, value: int) -> None:
+        """Sets the value to the specified register.
 
-    def _write_reg(self, r: int, v: int) -> None:
-        """Write register"""
-        self.i2c.writeto(self.ADDR, bytes([r, v]))
+        :param obj: The object representing the device to write to.
+        :param value: The value to set in the register.
+        """
+        memory_value = obj.i2c.readfrom_mem(obj.address, self.register_address, self.register_width)
 
-    def set_mode(self, mode: int, odr: int, rng: int, osr: int) -> None:
-        """set compass mode"""
-        self._write_reg(9, mode | odr | rng | osr)
+        register_value = 0
+        byte_order = range(len(memory_value) - 1, -1, -1)
+        if not self.is_lsb_first:
+            byte_order = range(len(memory_value))
+        for i in byte_order:
+            register_value = (register_value << 8) | memory_value[i]
+        register_value &= ~self.bit_mask
 
-    def read_compass(self) -> tuple[int, int, int]:
-        """Read compass"""
-        self.i2c.writeto(self.ADDR, bytes(0))
-        sleep(0.01)
-        buffer: bytes = self.i2c.readfrom(self.ADDR, 6, False)
-        x: int = buffer[1] << 8 | buffer[0]
-        y: int = buffer[3] << 8 | buffer[2]
-        z: int = buffer[5] << 8 | buffer[4]
-        return x, y, z
+        value <<= self.start_bit_position
+        register_value |= value
+        register_value = register_value.to_bytes(self.register_width, "big")
 
-    @staticmethod
-    def get_azimuth(x, y) -> int:
-        """get azimuth"""
-        heading: float = math.atan2(y, x) * 180.0 / math.pi
-        return int(heading % 360)
+        obj.i2c.writeto_mem(obj.address, self.register_address, register_value)
+
+
+
+
+
