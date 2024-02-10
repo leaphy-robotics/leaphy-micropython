@@ -2,6 +2,30 @@ import struct
 from time import sleep
 from micropython import const
 
+_REGISTER_WHOAMI = const(0x0D)
+_REGISTER_SET_RESET = const(0x0B)
+_REGISTER_OPERATION_MODE = const(0x09)
+_REGISTER_STATUS = const(0x06)
+
+OVERSAMPLE_64 = const(0b11)
+OVERSAMPLE_128 = const(0b10)
+OVERSAMPLE_256 = const(0b01)
+OVERSAMPLE_512 = const(0b00)
+
+FIELD_RANGE_2G = const(0b00)
+FIELD_RANGE_8G = const(0b01)
+
+
+OUTPUT_DATA_RATE_10 = const(0b00)
+OUTPUT_DATA_RATE_50 = const(0b01)
+OUTPUT_DATA_RATE_100 = const(0b10)
+OUTPUT_DATA_RATE_200 = const(0b11)
+
+MODE_STANDBY = const(0b00)
+MODE_CONTINUOUS = const(0b01)
+
+RESET_VALUE = const(0b01)
+
 
 class ChangeBitsToBytes:
     """
