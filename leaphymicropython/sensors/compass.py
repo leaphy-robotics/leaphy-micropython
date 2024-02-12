@@ -27,6 +27,7 @@ MODE_CONTINUOUS = const(0b01)
 
 RESET_VALUE = const(0b01)
 
+
 class ChangeBitsToBytes:
     """
     Class to handle manipulation of bits within a byte register.
@@ -181,7 +182,12 @@ class Compass:
 
         :return: int, the oversample setting.
         """
-        oversample_values = (OVERSAMPLE_512, OVERSAMPLE_256, OVERSAMPLE_128, OVERSAMPLE_64)
+        oversample_values = (
+            OVERSAMPLE_512,
+            OVERSAMPLE_256,
+            OVERSAMPLE_128,
+            OVERSAMPLE_64,
+        )
         return oversample_values[self._oversample]
 
     @oversample.setter
@@ -229,7 +235,12 @@ class Compass:
 
         :return: int, the output data rate setting.
         """
-        data_rate_values = (OUTPUT_DATA_RATE_10, OUTPUT_DATA_RATE_50, OUTPUT_DATA_RATE_100, OUTPUT_DATA_RATE_200)
+        data_rate_values = (
+            OUTPUT_DATA_RATE_10,
+            OUTPUT_DATA_RATE_50,
+            OUTPUT_DATA_RATE_100,
+            OUTPUT_DATA_RATE_200,
+        )
         return data_rate_values[self._output_data_rate]
 
     @output_data_rate.setter
@@ -239,7 +250,12 @@ class Compass:
 
         :param value: int, the value to set as output data rate.
         """
-        if value not in (OUTPUT_DATA_RATE_10, OUTPUT_DATA_RATE_50, OUTPUT_DATA_RATE_100, OUTPUT_DATA_RATE_200):
+        if value not in (
+            OUTPUT_DATA_RATE_10,
+            OUTPUT_DATA_RATE_50,
+            OUTPUT_DATA_RATE_100,
+            OUTPUT_DATA_RATE_200,
+        ):
             raise ValueError("Value must be a valid data rate setting")
         self._output_data_rate = value
 
