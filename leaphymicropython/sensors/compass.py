@@ -1,3 +1,4 @@
+# pylint: disable=too-many-instance-attributes
 import struct
 from time import sleep
 from micropython import const
@@ -116,7 +117,7 @@ class RegisterStruct:
         self.register = register_address
         self.length = struct.calcsize(format_string)
 
-    def __get__(self, obj, obj_type=None):
+    def __get__(self, obj, obj_type=None) -> tuple:
         """
         Get the value of the register.
 
@@ -142,6 +143,7 @@ class RegisterStruct:
         obj.i2c.writeto_mem(obj.address, self.register, mem_value)
 
 
+# pylint: disable=too-many-instance-attributes
 class Compass:
     """
     Class representing a compass sensor.
