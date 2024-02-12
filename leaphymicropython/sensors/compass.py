@@ -164,8 +164,7 @@ class Compass:
         self._output_data_rate = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 2)
         self._mode_control = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 0)
         self._data_ready_register = ChangeBitsToBytes(1, _REGISTER_STATUS, 2)
-        self._measures = RegisterStruct(0x00, "<hhhBh")
-
+        self._measures: tuple = RegisterStruct(0x00, "<hhhBh")
         if self._device_id != 0xFF:
             raise RuntimeError("Failed to find the QMC5883L!")
         self._reset = 0x01
@@ -188,7 +187,7 @@ class Compass:
             OVERSAMPLE_128,
             OVERSAMPLE_64,
         )
-        return oversample_values[self._oversample]
+        return oversample_values[self.oversample]
 
     @oversample.setter
     def oversample(self, value: int) -> None:
@@ -209,7 +208,7 @@ class Compass:
         :return: int, the field range setting.
         """
         field_range_values = (FIELD_RANGE_2G, FIELD_RANGE_8G)
-        return field_range_values[self._field_range]
+        return field_range_values[self.field_range]
 
     @field_range.setter
     def field_range(self, value: int) -> None:
@@ -241,7 +240,7 @@ class Compass:
             OUTPUT_DATA_RATE_100,
             OUTPUT_DATA_RATE_200,
         )
-        return data_rate_values[self._output_data_rate]
+        return data_rate_values[self.output_data_rate]
 
     @output_data_rate.setter
     def output_data_rate(self, value: int) -> None:
@@ -267,7 +266,7 @@ class Compass:
         :return: int, the mode control setting.
         """
         mode_values = (MODE_STANDBY, MODE_CONTINUOUS)
-        return mode_values[self._mode_control]
+        return mode_values[self.mode_control]
 
     @mode_control.setter
     def mode_control(self, value: int) -> None:
