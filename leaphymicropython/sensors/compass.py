@@ -166,7 +166,7 @@ class Compass:
         self._output_data_rate = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 2)
         self._mode_control = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 0)
         self._data_ready_register = ChangeBitsToBytes(1, _REGISTER_STATUS, 2)
-        self._measures: tuple = RegisterStruct(0x00, "<hhhBh")
+        self._measures = RegisterStruct(0x00, "<hhhBh")
         if self._device_id != 0xFF:
             raise RuntimeError("Failed to find the QMC5883L!")
         self._reset = 0x01
@@ -180,7 +180,6 @@ class Compass:
     def oversample(self) -> int:
         """
         Get the oversample setting.
-
         :return: int, the oversample setting.
         """
         oversample_values = (
@@ -195,7 +194,6 @@ class Compass:
     def oversample(self, value: int) -> None:
         """
         Set the oversample setting.
-
         :param value: int, the value to set as oversample.
         """
         if value not in (OVERSAMPLE_512, OVERSAMPLE_256, OVERSAMPLE_128, OVERSAMPLE_64):
@@ -206,7 +204,6 @@ class Compass:
     def field_range(self) -> int:
         """
         Get the field range setting.
-
         :return: int, the field range setting.
         """
         field_range_values = (FIELD_RANGE_2G, FIELD_RANGE_8G)
@@ -216,7 +213,6 @@ class Compass:
     def field_range(self, value: int) -> None:
         """
         Set the field range setting.
-
         :param value: int, the value to set as field range.
         """
         if value not in (FIELD_RANGE_2G, FIELD_RANGE_8G):
@@ -233,7 +229,6 @@ class Compass:
     def output_data_rate(self) -> int:
         """
         Get the output data rate setting.
-
         :return: int, the output data rate setting.
         """
         data_rate_values = (
@@ -248,7 +243,6 @@ class Compass:
     def output_data_rate(self, value: int) -> None:
         """
         Set the output data rate setting.
-
         :param value: int, the value to set as output data rate.
         """
         if value not in (
@@ -290,6 +284,6 @@ class Compass:
         """
         while self._data_ready_register != 1:
             sleep(0.001)
-        x, y, z, _, _ = self._measures
+        x, y, z, _, _ = self._measures  # pylint: disable=unpacking-non-sequence
 
         return x / self.resolution, y / self.resolution, z / self.resolution
