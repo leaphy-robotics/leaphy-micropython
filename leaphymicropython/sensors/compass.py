@@ -1,4 +1,3 @@
-# pylint: disable=too-many-instance-attributes
 import struct
 from time import sleep
 from micropython import const
