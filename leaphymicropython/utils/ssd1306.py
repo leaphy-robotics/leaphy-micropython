@@ -1,7 +1,9 @@
-# MicroPython SSD1306 OLED driver, I2C and SPI interfaces created by Adafruit
+# MicroPython SSD1306 OLED driver, I2C and SPI interfaces
+# pylint: disable=all
+# This file is written by adafruit so that is why I disabled all the pylint function
 import time
 import framebuf
-from machine import const
+from micropython import const
 
 # register definitions
 SET_CONTRAST = const(0x81)
@@ -24,18 +26,22 @@ SET_CHARGE_PUMP = const(0x8D)
 
 
 class SSD1306:
+    """
+    A class for the SSD1306 display
+    """
+
     def __init__(self, width, height, external_vcc):
         self.width = width
         self.height = height
         self.external_vcc = external_vcc
         self.pages = self.height // 8
-        # Note the subclass must initialize self.framebuf to a framebuffer.
-        # This is necessary because the underlying data buffer is different
-        # between I2C and SPI implementations (I2C needs an extra byte).
         self.poweron()
         self.init_display()
 
     def init_display(self):
+        """
+        Initialize the display and the addresses
+        """
         for cmd in (
             SET_DISP | 0x00,  # off
             # address setting
@@ -73,6 +79,9 @@ class SSD1306:
         self.show()
 
     def poweroff(self):
+        """
+        Turn off the display
+        """
         self.write_cmd(SET_DISP | 0x00)
 
     def contrast(self, contrast):
@@ -156,6 +165,9 @@ class SSD1306_SPI(SSD1306):
         super().__init__(width, height, external_vcc)
 
     def write_cmd(self, cmd):
+        """
+        write a command
+        """
         self.spi.init(baudrate=self.rate, polarity=0, phase=0)
         self.cs.high()
         self.dc.low()
@@ -164,6 +176,9 @@ class SSD1306_SPI(SSD1306):
         self.cs.high()
 
     def write_framebuf(self):
+        """
+        Write framebuf
+        """
         self.spi.init(baudrate=self.rate, polarity=0, phase=0)
         self.cs.high()
         self.dc.high()
@@ -172,6 +187,9 @@ class SSD1306_SPI(SSD1306):
         self.cs.high()
 
     def poweron(self):
+        """
+        Turns on the display
+        """
         self.res.high()
         time.sleep_ms(1)
         self.res.low()

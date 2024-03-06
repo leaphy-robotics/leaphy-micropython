@@ -1,7 +1,7 @@
 from machine import Pin, SoftI2C
 
 
-def find_i2c_address(scl_pin: int, sda_pin: int) -> None:
+def find_i2c_address(scl_pin: int, sda_pin: int) -> list[hex]:
     """
     Find an I2C address for a device
     """
@@ -16,3 +16,4 @@ def find_i2c_address(scl_pin: int, sda_pin: int) -> None:
 
     for device in devices:
         print("I2C hexadecimal address: ", hex(device))
+    return devices
