@@ -163,10 +163,10 @@ class SSD1306:
         """
         self.framebuf.text(string, x, y, col)
 
-    def _write_cmd(self, cmd):
+    def write_cmd(self, _cmd):
         """
         Write a command to the display.
-        :param cmd: int, command value
+        :param _cmd: int, command value
         """
         return
 
