@@ -1,6 +1,5 @@
 # MicroPython SSD1306 OLED driver, I2C and SPI interfaces
-# pylint: disable=all
-# This file is written by adafruit so that is why I disabled all the pylint function
+
 import time
 import framebuf
 from micropython import const
@@ -35,7 +34,8 @@ class SSD1306:
         self.height = height
         self.external_vcc = external_vcc
         self.pages = self.height // 8
-        self.poweron()
+        self.framebuf = None  # Initialize the frame buffer
+        self.power_on()
         self.init_display()
 
     def init_display(self):
@@ -75,10 +75,11 @@ class SSD1306:
             SET_DISP | 0x01,
         ):  # on
             self.write_cmd(cmd)
+        self.framebuf = framebuf.FrameBuffer(bytearray((self.width // 8) * self.height), self.width, self.height, framebuf.MONO_HLSB)
         self.fill(0)
         self.show()
 
-    def poweroff(self):
+    def power_off(self):
         """
         Turn off the display
         """
@@ -118,22 +119,24 @@ class SSD1306:
     def text(self, string, x, y, col=1):
         self.framebuf.text(string, x, y, col)
 
+    def write_cmd(self, cmd):
+        pass
+
+    def write_framebuf(self):
+        pass
+
+    def power_on(self):
+        pass
+
 
 class SSD1306_I2C(SSD1306):
     def __init__(self, width, height, i2c, addr=0x3C, external_vcc=False):
         self.i2c = i2c
         self.addr = addr
         self.temp = bytearray(2)
-        # Add an extra byte to the data buffer to hold an I2C data/command byte
-        # to use hardware-compatible I2C transactions.  A memoryview of the
-        # buffer is used to mask this byte from the framebuffer operations
-        # (without a major memory hit as memoryview doesn't copy to a separate
-        # buffer).
         self.buffer = bytearray(((height // 8) * width) + 1)
         self.buffer[0] = 0x40  # Set first byte of data buffer to Co=0, D/C=1
-        self.framebuf = framebuf.FrameBuffer1(
-            memoryview(self.buffer)[1:], width, height
-        )
+        self.framebuf = framebuf.FrameBuffer(self.buffer, width, height, framebuf.MONO_HLSB)
         super().__init__(width, height, external_vcc)
 
     def write_cmd(self, cmd):
@@ -146,7 +149,7 @@ class SSD1306_I2C(SSD1306):
         # hardware I2C interfaces.
         self.i2c.writeto(self.addr, self.buffer)
 
-    def poweron(self):
+    def power_on(self):
         pass
 
 
@@ -161,7 +164,7 @@ class SSD1306_SPI(SSD1306):
         self.res = res
         self.cs = cs
         self.buffer = bytearray((height // 8) * width)
-        self.framebuf = framebuf.FrameBuffer1(self.buffer, width, height)
+        self.framebuf = framebuf.FrameBuffer(self.buffer, width, height, framebuf.MONO_HLSB)
         super().__init__(width, height, external_vcc)
 
     def write_cmd(self, cmd):
@@ -186,7 +189,7 @@ class SSD1306_SPI(SSD1306):
         self.spi.write(self.buffer)
         self.cs.high()
 
-    def poweron(self):
+    def power_on(self):
         """
         Turns on the display
         """
