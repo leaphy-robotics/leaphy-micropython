@@ -183,7 +183,11 @@ class SSD1306:
         pass
 
 
-class SSD1306_I2C(SSD1306):
+class SSD1306I2C(SSD1306):
+    """
+    A class for the ssd1306 I2C driver
+    """
+
     def __init__(self, width, height, i2c, addr=0x3C, external_vcc=False):
         """
         Initialize SSD1306 display over I2C with specified width, height, I2C interface,
@@ -228,10 +232,15 @@ class SSD1306_I2C(SSD1306):
         pass
 
 
-class SSD1306_SPI(SSD1306):
+class SSD1306SPI(SSD1306):
+    """
+    SSD1306 implementation of spi
+    """
+
     def __init__(self, width, height, spi, dc, res, cs, external_vcc=False):
         """
-        Initialize SSD1306 display over SPI with specified width, height, SPI interface, data/command pin, reset pin, chip select pin, and external VCC configuration.
+        Initialize SSD1306 display over SPI with specified width, height, SPI interface, data/command pin, reset pin,
+        chip select pin, and external VCC configuration.
         :param width: int, width of the display
         :param height: int, height of the display
         :param spi: object, SPI interface
