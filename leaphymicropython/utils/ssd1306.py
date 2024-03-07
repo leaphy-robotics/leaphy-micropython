@@ -75,7 +75,12 @@ class SSD1306:
             SET_DISP | 0x01,
         ):  # on
             self.write_cmd(cmd)
-        self.framebuf = framebuf.FrameBuffer(bytearray((self.width // 8) * self.height), self.width, self.height, framebuf.MONO_HLSB)
+        self.framebuf = framebuf.FrameBuffer(
+            bytearray((self.width // 8) * self.height),
+            self.width,
+            self.height,
+            framebuf.MONO_HLSB,
+        )
         self.fill(0)
         self.show()
 
@@ -136,7 +141,9 @@ class SSD1306_I2C(SSD1306):
         self.temp = bytearray(2)
         self.buffer = bytearray(((height // 8) * width) + 1)
         self.buffer[0] = 0x40  # Set first byte of data buffer to Co=0, D/C=1
-        self.framebuf = framebuf.FrameBuffer(self.buffer, width, height, framebuf.MONO_HLSB)
+        self.framebuf = framebuf.FrameBuffer(
+            self.buffer, width, height, framebuf.MONO_HLSB
+        )
         super().__init__(width, height, external_vcc)
 
     def write_cmd(self, cmd):
@@ -164,7 +171,9 @@ class SSD1306_SPI(SSD1306):
         self.res = res
         self.cs = cs
         self.buffer = bytearray((height // 8) * width)
-        self.framebuf = framebuf.FrameBuffer(self.buffer, width, height, framebuf.MONO_HLSB)
+        self.framebuf = framebuf.FrameBuffer(
+            self.buffer, width, height, framebuf.MONO_HLSB
+        )
         super().__init__(width, height, external_vcc)
 
     def write_cmd(self, cmd):
