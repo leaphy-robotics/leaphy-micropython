@@ -168,19 +168,19 @@ class SSD1306:
         Write a command to the display.
         :param cmd: int, command value
         """
-        pass
+        return
 
     def write_framebuf(self):
         """
         Write the frame buffer to the display.
         """
-        pass
+        return
 
     def power_on(self):
         """
         Turn on the display.
         """
-        pass
+        return
 
 
 class SSD1306I2C(SSD1306):
@@ -224,12 +224,6 @@ class SSD1306I2C(SSD1306):
         # Blast out the frame buffer using a single I2C transaction to support
         # hardware I2C interfaces.
         self.i2c.writeto(self.addr, self.buffer)
-
-    def power_on(self):
-        """
-        Turn on the display over I2C.
-        """
-        pass
 
 
 class SSD1306SPI(SSD1306):
