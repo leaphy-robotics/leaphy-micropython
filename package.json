@@ -12,7 +12,8 @@
         ["leaphymicropython/actuators/buzzer.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/buzzer.py"],
         ["leaphymicropython/actuators/dcmotor.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/dcmotor.py"],
         ["leaphymicropython/actuators/rgbled.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/rgbled.py"],
-        ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/servo.py"]
+        ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/servo.py"],
+        ["leaphymicropython/actuators/ssd1306.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/ssd1306.py"]
     ],
     "deps": [],
     "version": "1.3.1"
