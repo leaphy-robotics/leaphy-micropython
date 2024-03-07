@@ -285,7 +285,7 @@ class SSD1306SPI(SSD1306):
         Turn on the display over SPI.
         """
         self.res.high()
-        time.sleep_ms(1)
+        time.sleep_ms(1)  # pylint disable=no-member
         self.res.low()
-        time.sleep_ms(10)
+        time.sleep_ms(10)  # pylint disable=no-member
         self.res.high()
