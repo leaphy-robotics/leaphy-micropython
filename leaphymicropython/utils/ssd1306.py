@@ -30,6 +30,12 @@ class SSD1306:
     """
 
     def __init__(self, width, height, external_vcc):
+        """
+        Initialize SSD1306 display with specified width, height, and external VCC configuration.
+        :param width: int, width of the display
+        :param height: int, height of the display
+        :param external_vcc: bool, external VCC configuration
+        """
         self.width = width
         self.height = height
         self.external_vcc = external_vcc
@@ -40,7 +46,7 @@ class SSD1306:
 
     def init_display(self):
         """
-        Initialize the display and the addresses
+        Initialize the display and the addresses.
         """
         for cmd in (
             SET_DISP | 0x00,  # off
@@ -86,18 +92,29 @@ class SSD1306:
 
     def power_off(self):
         """
-        Turn off the display
+        Turn off the display.
         """
         self.write_cmd(SET_DISP | 0x00)
 
     def contrast(self, contrast):
+        """
+        Adjust contrast of the display.
+        :param contrast: int, contrast value
+        """
         self.write_cmd(SET_CONTRAST)
         self.write_cmd(contrast)
 
     def invert(self, invert):
+        """
+        Invert the display (or not).
+        :param invert: int, 0 for normal display, 1 for inverted display
+        """
         self.write_cmd(SET_NORM_INV | (invert & 1))
 
     def show(self):
+        """
+        Show the contents of the frame buffer on the display.
+        """
         x0 = 0
         x1 = self.width - 1
         if self.width == 64:
@@ -113,29 +130,70 @@ class SSD1306:
         self.write_framebuf()
 
     def fill(self, col):
+        """
+        Fill the entire display with the specified color.
+        :param col: int, color value (0 or 1)
+        """
         self.framebuf.fill(col)
 
     def pixel(self, x, y, col):
+        """
+        Set a pixel at the specified position to the specified color.
+        :param x: int, x-coordinate of the pixel
+        :param y: int, y-coordinate of the pixel
+        :param col: int, color value (0 or 1)
+        """
         self.framebuf.pixel(x, y, col)
 
     def scroll(self, dx, dy):
+        """
+        Scroll the contents of the display by the specified deltas.
+        :param dx: int, horizontal delta
+        :param dy: int, vertical delta
+        """
         self.framebuf.scroll(dx, dy)
 
     def text(self, string, x, y, col=1):
+        """
+        Display text on the screen starting from the specified position with the specified color.
+        :param string: str, text to display
+        :param x: int, x-coordinate of the starting position
+        :param y: int, y-coordinate of the starting position
+        :param col: int, color value (0 or 1)
+        """
         self.framebuf.text(string, x, y, col)
 
     def write_cmd(self, cmd):
+        """
+        Write a command to the display.
+        :param cmd: int, command value
+        """
         pass
 
     def write_framebuf(self):
+        """
+        Write the frame buffer to the display.
+        """
         pass
 
     def power_on(self):
+        """
+        Turn on the display.
+        """
         pass
 
 
 class SSD1306_I2C(SSD1306):
     def __init__(self, width, height, i2c, addr=0x3C, external_vcc=False):
+        """
+        Initialize SSD1306 display over I2C with specified width, height, I2C interface,
+        address, and external VCC configuration.
+        :param width: int, width of the display
+        :param height: int, height of the display
+        :param i2c: object, I2C interface
+        :param addr: int, I2C address of the display
+        :param external_vcc: bool, external VCC configuration
+        """
         self.i2c = i2c
         self.addr = addr
         self.temp = bytearray(2)
@@ -147,21 +205,41 @@ class SSD1306_I2C(SSD1306):
         super().__init__(width, height, external_vcc)
 
     def write_cmd(self, cmd):
+        """
+        Write a command to the display over I2C.
+        :param cmd: int, command value
+        """
         self.temp[0] = 0x80  # Co=1, D/C#=0
         self.temp[1] = cmd
         self.i2c.writeto(self.addr, self.temp)
 
     def write_framebuf(self):
+        """
+        Write the frame buffer to the display over I2C.
+        """
         # Blast out the frame buffer using a single I2C transaction to support
         # hardware I2C interfaces.
         self.i2c.writeto(self.addr, self.buffer)
 
     def power_on(self):
+        """
+        Turn on the display over I2C.
+        """
         pass
 
 
 class SSD1306_SPI(SSD1306):
     def __init__(self, width, height, spi, dc, res, cs, external_vcc=False):
+        """
+        Initialize SSD1306 display over SPI with specified width, height, SPI interface, data/command pin, reset pin, chip select pin, and external VCC configuration.
+        :param width: int, width of the display
+        :param height: int, height of the display
+        :param spi: object, SPI interface
+        :param dc: object, data/command pin
+        :param res: object, reset pin
+        :param cs: object, chip select pin
+        :param external_vcc: bool, external VCC configuration
+        """
         self.rate = 10 * 1024 * 1024
         dc.init(dc.OUT, value=0)
         res.init(res.OUT, value=0)
@@ -178,7 +256,8 @@ class SSD1306_SPI(SSD1306):
 
     def write_cmd(self, cmd):
         """
-        write a command
+        Write a command to the display over SPI.
+        :param cmd: int, command value
         """
         self.spi.init(baudrate=self.rate, polarity=0, phase=0)
         self.cs.high()
@@ -189,7 +268,7 @@ class SSD1306_SPI(SSD1306):
 
     def write_framebuf(self):
         """
-        Write framebuf
+        Write the frame buffer to the display over SPI.
         """
         self.spi.init(baudrate=self.rate, polarity=0, phase=0)
         self.cs.high()
@@ -200,7 +279,7 @@ class SSD1306_SPI(SSD1306):
 
     def power_on(self):
         """
-        Turns on the display
+        Turn on the display over SPI.
         """
         self.res.high()
         time.sleep_ms(1)
