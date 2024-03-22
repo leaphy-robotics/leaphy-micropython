@@ -65,7 +65,7 @@ class ChangeBitsToBytes:
         """
         memory_value = obj._i2c.readfrom_mem(
             obj.address, self.register_address, self.register_width
-        )
+        )  # pylint: disable=protected-access
         register_value = 0
         byte_order = range(len(memory_value) - 1, -1, -1)
         if not self.is_lsb_first:
@@ -84,7 +84,7 @@ class ChangeBitsToBytes:
         """
         memory_value = obj._i2c.readfrom_mem(
             obj.address, self.register_address, self.register_width
-        )
+        )  # pylint: disable=protected-access
 
         register_value = 0
         byte_order = range(len(memory_value) - 1, -1, -1)
@@ -97,7 +97,9 @@ class ChangeBitsToBytes:
         value <<= self.start_bit_position
         register_value |= value
         register_value = register_value.to_bytes(self.register_width, "big")
-        obj._i2c.writeto_mem(obj.address, self.register_address, register_value)
+        obj._i2c.writeto_mem(
+            obj.address, self.register_address, register_value
+        )  # pylint: disable=protected-access
 
 
 class RegisterStruct:
@@ -124,7 +126,9 @@ class RegisterStruct:
         :param obj_type: The type of the object.
         :return: The value of the register.
         """
-        mem_value = obj.i2c.readfrom_mem(obj.address, self.register, self.length)
+        mem_value = obj._i2c.readfrom_mem(
+            obj.address, self.register, self.length
+        )  # pylint: disable=protected-access
         if self.length <= 2:
             value = struct.unpack(self.format, mem_value)[0]
         else:
@@ -139,7 +143,9 @@ class RegisterStruct:
         :param value: The value to set.
         """
         mem_value = struct.pack(self.format, value)
-        obj._i2c.writeto_mem(obj.address, self.register, mem_value)
+        obj._i2c.writeto_mem(
+            obj.address, self.register, mem_value
+        )  # pylint: disable=protected-access
 
 
 # pylint: disable=too-many-instance-attributes
