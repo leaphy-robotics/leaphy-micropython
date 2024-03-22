@@ -15,6 +15,6 @@ import mip
 mip.install(“github:leaphy-robotics/leaphy-micropython”)
 ```
 # Supported microcontrollers
-* Nano RP2040 Maker
+* Maker Nano RP2040
 * Pico W
 * Nano RP2040 Connect
