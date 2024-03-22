@@ -12,7 +12,7 @@ wlan.connect(“wifi name”, “wifi password”)
 Theb we are going to install the package with mip still in REPL mode
 ```py
 import mip
-mip.install(“github:leaphy-robotics/leaphy-micropython”)
+mip.install("github:leaphy-robotics/leaphy-micropython")
 ```
 # Supported microcontrollers
 * Maker Nano RP2040
