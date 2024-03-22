@@ -18,3 +18,4 @@ mip.install("github:leaphy-robotics/leaphy-micropython")
 * Maker Nano RP2040
 * Pico W
 * Nano RP2040 Connect
+
