@@ -63,7 +63,7 @@ class ChangeBitsToBytes:
         :param obj: The object representing the device to read from.
         :return: The value read from the register.
         """
-        memory_value = obj.i2c.readfrom_mem(
+        memory_value = obj._i2c.readfrom_mem(
             obj.address, self.register_address, self.register_width
         )
         register_value = 0
@@ -82,7 +82,7 @@ class ChangeBitsToBytes:
         :param obj: The object representing the device to write to.
         :param value: The value to set in the register.
         """
-        memory_value = obj.i2c.readfrom_mem(
+        memory_value = obj._i2c.readfrom_mem(
             obj.address, self.register_address, self.register_width
         )
 
@@ -97,7 +97,7 @@ class ChangeBitsToBytes:
         value <<= self.start_bit_position
         register_value |= value
         register_value = register_value.to_bytes(self.register_width, "big")
-        obj.i2c.writeto_mem(obj.address, self.register_address, register_value)
+        obj._i2c.writeto_mem(obj.address, self.register_address, register_value)
 
 
 class RegisterStruct:
@@ -139,7 +139,7 @@ class RegisterStruct:
         :param value: The value to set.
         """
         mem_value = struct.pack(self.format, value)
-        obj.i2c.writeto_mem(obj.address, self.register, mem_value)
+        obj._i2c.writeto_mem(obj.address, self.register, mem_value)
 
 
 # pylint: disable=too-many-instance-attributes
@@ -147,6 +147,16 @@ class Compass:
     """
     Class representing a compass sensor.
     """
+
+    _device_id = RegisterStruct(_REGISTER_WHOAMI, "H")
+    _reset = RegisterStruct(_REGISTER_SET_RESET, "H")
+    _conf_reg = RegisterStruct(_REGISTER_OPERATION_MODE, "H")
+    _oversample = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 6)
+    _field_range = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 4)
+    _output_data_rate = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 2)
+    _mode_control = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 0)
+    _data_ready_register = ChangeBitsToBytes(1, _REGISTER_STATUS, 2)
+    _measures = RegisterStruct(0x00, "<hhhBh")
 
     def __init__(self, i2c, address: int = 0xD) -> None:
         """
@@ -157,15 +167,7 @@ class Compass:
         """
         self._i2c = i2c
         self._address = address
-        self._device_id = RegisterStruct(_REGISTER_WHOAMI, "H")
-        self._reset = RegisterStruct(_REGISTER_SET_RESET, "H")
-        self._conf_reg = RegisterStruct(_REGISTER_OPERATION_MODE, "H")
-        self._oversample = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 6)
-        self._field_range = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 4)
-        self._output_data_rate = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 2)
-        self._mode_control = ChangeBitsToBytes(2, _REGISTER_OPERATION_MODE, 0)
-        self._data_ready_register = ChangeBitsToBytes(1, _REGISTER_STATUS, 2)
-        self._measures = RegisterStruct(0x00, "<hhhBh")
+
         if self._device_id != 0xFF:
             raise RuntimeError("Failed to find the QMC5883L!")
         self._reset = 0x01
@@ -234,7 +236,7 @@ class Compass:
             OUTPUT_DATA_RATE_10,
             OUTPUT_DATA_RATE_50,
             OUTPUT_DATA_RATE_100,
-            OUTPUT_DATA_RATE_200,
+            OUTPUT_DATA_RATE_200,50
         )
         return data_rate_values[self.output_data_rate]
 
