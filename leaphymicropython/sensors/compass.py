@@ -63,9 +63,9 @@ class ChangeBitsToBytes:
         :param obj: The object representing the device to read from.
         :return: The value read from the register.
         """
-        memory_value = obj._i2c.readfrom_mem(
+        memory_value = obj._i2c.readfrom_mem(  # pylint: disable=protected-access
             obj.address, self.register_address, self.register_width
-        )  # pylint: disable=protected-access
+        )
         register_value = 0
         byte_order = range(len(memory_value) - 1, -1, -1)
         if not self.is_lsb_first:
