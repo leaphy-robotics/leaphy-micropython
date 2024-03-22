@@ -143,7 +143,7 @@ def get_board_type():
         board = "RP_NANO_MAKER"
     elif str(decoded_id).startswith("E66164"):
         board = "PICO_W"
-    elif str(decoded_id).startswith("503533"):
+    elif str(decoded_id).startswith("502365"):
         board = "NANO_CONNECT"
     return board
 
