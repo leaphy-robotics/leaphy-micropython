@@ -236,7 +236,8 @@ class Compass:
             OUTPUT_DATA_RATE_10,
             OUTPUT_DATA_RATE_50,
             OUTPUT_DATA_RATE_100,
-            OUTPUT_DATA_RATE_200,50
+            OUTPUT_DATA_RATE_200,
+            50,
         )
         return data_rate_values[self.output_data_rate]
 
