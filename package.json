@@ -4,6 +4,7 @@
         ["leaphymicropython/utils/pins.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/pins.py"],
         ["leaphymicropython/utils/timeschedule.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/timeschedule.py"],
         ["leaphymicropython/utils/wifi.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/wifi.py"],
+        ["leaphymicropython/utils/i2c_address_finder.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/i2c_address_finder.py"]
         ["leaphymicropython/sensors/sonar.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/sonar.py"],
         ["leaphymicropython/sensors/linesensor.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/linesensor.py"],
         ["leaphymicropython/sensors/dht22.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/dht22.py"],
@@ -11,7 +12,8 @@
         ["leaphymicropython/actuators/buzzer.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/buzzer.py"],
         ["leaphymicropython/actuators/dcmotor.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/dcmotor.py"],
         ["leaphymicropython/actuators/rgbled.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/rgbled.py"],
-        ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/servo.py"]
+        ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/servo.py"],
+        ["leaphymicropython/actuators/ssd1306.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/ssd1306.py"]
     ],
     "deps": [],
     "version": "1.3.1"
