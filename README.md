@@ -1,7 +1,7 @@
 # Leaphy Micropython
 Source Code for the Leaphy MicroPython Library
 
-# How to install the package on your microcontroller:
+# How to install the package on your microcontroller
 First connect your microcontroller to the wifi, you need to do this in the REPL mode in a terminal
 ```py
 import network
@@ -14,7 +14,7 @@ Theb we are going to install the package with mip still in REPL mode
 import mip
 mip.install(“github:leaphy-robotics/leaphy-micropython”)
 ```
-# Microcontrollers that we support:
+# Supported microcontrollers
 * Nano RP2040 Maker
 * Pico W
 * Nano RP2040 Connect
