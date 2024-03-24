@@ -5,11 +5,12 @@ from pathlib import Path
 
 import sys
 
-GITHUB_PREFIX="github:leaphy-robotics/leaphy-micropython/leaphymicropython"
+GITHUB_PREFIX = "github:leaphy-robotics/leaphy-micropython/leaphymicropython"
+
 
 def check_package_json() -> bool:
-    """ Validate paths in the package.json file """
-    with open('package.json', "r", encoding="utf8") as package_file:
+    """Validate paths in the package.json file"""
+    with open("package.json", "r", encoding="utf8") as package_file:
         package = json.load(package_file)
         for url in package["urls"]:
             if not Path(url[0]).exists():
