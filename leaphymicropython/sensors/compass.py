@@ -63,7 +63,7 @@ class ChangeBitsToBytes:
         :param obj: The object representing the device to read from.
         :return: The value read from the register.
         """
-        memory_value = obj._i2c.readfrom_mem(  # pylint: disable=protected-access
+        memory_value = obj.i2c.readfrom_mem(
             obj.address, self.register_address, self.register_width
         )
         register_value = 0
@@ -82,9 +82,9 @@ class ChangeBitsToBytes:
         :param obj: The object representing the device to write to.
         :param value: The value to set in the register.
         """
-        memory_value = obj._i2c.readfrom_mem(
+        memory_value = obj.i2c.readfrom_mem(
             obj.address, self.register_address, self.register_width
-        )  # pylint: disable=protected-access
+        )
 
         register_value = 0
         byte_order = range(len(memory_value) - 1, -1, -1)
@@ -97,9 +97,7 @@ class ChangeBitsToBytes:
         value <<= self.start_bit_position
         register_value |= value
         register_value = register_value.to_bytes(self.register_width, "big")
-        obj._i2c.writeto_mem(
-            obj.address, self.register_address, register_value
-        )  # pylint: disable=protected-access
+        obj.i2c.writeto_mem(obj.address, self.register_address, register_value)
 
 
 class RegisterStruct:
@@ -126,9 +124,7 @@ class RegisterStruct:
         :param obj_type: The type of the object.
         :return: The value of the register.
         """
-        mem_value = obj._i2c.readfrom_mem(
-            obj.address, self.register, self.length
-        )  # pylint: disable=protected-access
+        mem_value = obj.i2c.readfrom_mem(obj.address, self.register, self.length)
         if self.length <= 2:
             value = struct.unpack(self.format, mem_value)[0]
         else:
@@ -143,9 +139,7 @@ class RegisterStruct:
         :param value: The value to set.
         """
         mem_value = struct.pack(self.format, value)
-        obj._i2c.writeto_mem(
-            obj.address, self.register, mem_value
-        )  # pylint: disable=protected-access
+        obj.i2c.writeto_mem(obj.address, self.register, mem_value)
 
 
 # pylint: disable=too-many-instance-attributes
@@ -171,7 +165,7 @@ class Compass:
         :param i2c: The I2C bus object.
         :param address: int, the address of the compass sensor (default is 0xD)
         """
-        self._i2c = i2c
+        self.i2c = i2c
         self._address = address
 
         if self._device_id != 0xFF:
