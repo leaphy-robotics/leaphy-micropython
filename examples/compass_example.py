@@ -1,10 +1,33 @@
-from time import sleep
-from leaphymicropython.sensors.compass import Compass
+import time
+from math import degrees, atan2
+
+from machine import I2C
+
+from leaphymicropython.sensors.compass import QMC5883L
+
+i2c = I2C(0)
+qmc = QMC5883L(i2c)
+print(qmc.magnetic)
 
 
-compass = Compass()
+def vector_2_degrees(x, y):
+    """
+    vector 2 degree function
+    """
+    angle = degrees(atan2(y, x))
+    if angle < 0:
+        angle = angle + 360
+    return angle
+
+
+def get_heading(sensor):
+    """
+    get heading
+    """
+    mag_x, mag_y, _ = sensor.magnetic
+    return vector_2_degrees(mag_x, mag_y)
+
 
 while True:
-    x, y, z = compass.read_compass()
-    print(compass.get_azimuth(x, y))
-    sleep(1)
+    print(f"heading: {get_heading(qmc):.2f} degrees")
+    time.sleep(0.2)
