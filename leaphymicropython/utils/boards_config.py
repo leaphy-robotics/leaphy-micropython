@@ -125,7 +125,7 @@ NANO_CONNECT = {
 """
 PINS:
     Key = Physical Pin
-    Value = GPIO Pins
+    Value = GPIO Pin
 """
 PICO = {
     "pins": {
