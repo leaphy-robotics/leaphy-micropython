@@ -1,3 +1,4 @@
+# pylint: skip-file
 import ssd1306
 from machine import Pin, SoftI2C
 
