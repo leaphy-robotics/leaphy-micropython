@@ -176,7 +176,7 @@ BOARDS = {
     "RP_NANO_MAKER": RP_NANO_MAKER,
     "PICO_W": PICO_W,
     "NANO_CONNECT": NANO_CONNECT,
-    "PICO": PICO
+    "PICO": PICO,
 }
 
 
