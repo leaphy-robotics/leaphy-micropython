@@ -122,11 +122,61 @@ NANO_CONNECT = {
     }
 }
 
+"""
+PINS:
+    Key = Physical Pin
+    Value = GPIO Pin
+"""
+PICO = {
+    "pins": {
+        1: 0,
+        2: 1,
+        3: GND,
+        4: 2,
+        5: 3,
+        6: 4,
+        7: 5,
+        8: GND,
+        9: 6,
+        10: 7,
+        11: 8,
+        12: 9,
+        14: 10,
+        15: 11,
+        16: 12,
+        17: 13,
+        18: GND,
+        19: 14,
+        20: 15,
+        21: 16,
+        22: 17,
+        23: GND,
+        24: 18,
+        25: 19,
+        26: 20,
+        27: 21,
+        28: GND,
+        29: 22,
+        30: RUN,
+        31: 26,
+        32: 27,
+        33: GND,
+        34: 28,
+        35: NOTHING,
+        36: VCC,
+        37: EN,
+        38: GND,
+        39: VSYS,
+        40: VBUS,
+    }
+}
+
 
 BOARDS = {
     "RP_NANO_MAKER": RP_NANO_MAKER,
     "PICO_W": PICO_W,
     "NANO_CONNECT": NANO_CONNECT,
+    "PICO": PICO
 }
 
 
@@ -145,6 +195,8 @@ def get_board_type():
         board = "PICO_W"
     elif str(decoded_id).startswith("503533"):
         board = "NANO_CONNECT"
+    if str(decoded_id).startswith("E66054"):
+        board = "PICO"
     return board
 
 
