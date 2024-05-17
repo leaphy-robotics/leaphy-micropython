@@ -6,6 +6,7 @@ class BLUETOOTH:
     """
     A class for the use of bluetooth
     """
+
     def __init__(self, baudrate: int) -> None:
         """
         set baudrate
