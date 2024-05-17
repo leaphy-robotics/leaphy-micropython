@@ -23,6 +23,6 @@ class BLUETOOTH:
 
     def write_uart(self, data: bytes) -> None:
         """
-        write uart
+        write uart to your bluetooth module
         """
-        pass
+        self.uart.write(data)
