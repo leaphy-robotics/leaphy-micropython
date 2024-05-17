@@ -20,3 +20,9 @@ class BLUETOOTH:
             data = self.uart.read()
             return data
         return b""
+
+    def write_uart(self, data: bytes) -> None:
+        """
+        write uart
+        """
+        pass
