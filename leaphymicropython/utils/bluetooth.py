@@ -2,7 +2,6 @@ from machine import UART
 
 
 class BLUETOOTH:
-    # pylint: disable=too-few-public-methods
     """
     A class for the use of bluetooth
     """
@@ -19,4 +18,5 @@ class BLUETOOTH:
         """
         if self.uart.any() > 0:
             data = self.uart.read()
-        return data
+            return data
+        return b""
