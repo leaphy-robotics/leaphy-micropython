@@ -1,7 +1,7 @@
 from machine import UART
 
 
-class BLUETOOTH:
+class Bluetooth:
     """
     A class for the use of bluetooth
     """
