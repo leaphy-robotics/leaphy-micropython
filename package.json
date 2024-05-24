@@ -5,6 +5,7 @@
         ["leaphymicropython/utils/timeschedule.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/timeschedule.py"],
         ["leaphymicropython/utils/wifi.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/wifi.py"],
         ["leaphymicropython/utils/i2c_address_finder.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/i2c_address_finder.py"],
+        ["leaphymicropython/utils/bluetooth.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/bluetooth.py"],
         ["leaphymicropython/sensors/sonar.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/sonar.py"],
         ["leaphymicropython/sensors/linesensor.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/linesensor.py"],
         ["leaphymicropython/sensors/dht22.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/dht22.py"],
