@@ -51,7 +51,7 @@ def read_pin(pin: int) -> int:
     return pin.value()
 
 
-def read_adc(pin: int) -> int:
+def read_analog(pin: int) -> int:
     """
     reads an analog pin
     :param pin: the pin to read
