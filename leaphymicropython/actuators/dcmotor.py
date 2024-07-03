@@ -79,13 +79,13 @@ class DCMotor:
         if direction == 1:
             self.convert_cw(speed)
             set_pwm(self.motor_a, self.value_speed_cw, 20000)
-            set_pwm(self.motor_a, self.value_speed_cw / 8, 20000)
+            set_pwm(self.motor_b, self.value_speed_cw / 8, 20000)
             set_pin(self.enable_a, True)
             set_pin(self.enable_b, True)
         elif direction == 0:
             self.convert_ccw(speed)
             set_pwm(self.motor_a, self.value_speed_cw, 20000)
-            set_pwm(self.motor_a, self.value_speed_cw / 8, 20000)
+            set_pwm(self.motor_b, self.value_speed_cw / 8, 20000)
             set_pin(self.enable_a, True)
             set_pin(self.enable_b, True)
 
@@ -99,13 +99,13 @@ class DCMotor:
         if direction == 1:
             self.convert_cw(speed)
             set_pwm(self.motor_a, self.value_speed_cw / 8, 20000)
-            set_pwm(self.motor_a, self.value_speed_cw, 20000)
+            set_pwm(self.motor_b, self.value_speed_cw, 20000)
             set_pin(self.enable_a, True)
             set_pin(self.enable_b, True)
         elif direction == 0:
             self.convert_ccw(speed)
             set_pwm(self.motor_a, self.value_speed_cw / 8, 20000)
-            set_pwm(self.motor_a, self.value_speed_cw, 20000)
+            set_pwm(self.motor_b, self.value_speed_cw, 20000)
             set_pin(self.enable_a, True)
             set_pin(self.enable_b, True)
 
