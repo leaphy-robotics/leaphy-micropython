@@ -9,10 +9,6 @@ class DHT22:
     """
 
     def __init__(self, pin: int):
-        """
-        Sets the pins for the dht22
-        :param pin: sets the pin for the dht22
-        """
         pin = pin_to_gpio(pin)
         self.sensor = dht.DHT22(machine.Pin(pin))
 
