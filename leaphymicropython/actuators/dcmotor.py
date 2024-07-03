@@ -3,6 +3,10 @@ from leaphymicropython.utils.pins import set_pwm, set_pin
 
 
 class DCMotor:
+    """
+    This class represents a DCMotor object
+    """
+
     def __init__(
         self, motor_a: int = 2, motor_b: int = 4, enable_a: int = 3, enable_b: int = 11
     ):
@@ -106,5 +110,8 @@ class DCMotor:
             set_pin(self.enable_b, True)
 
     def stop(self):
+        """
+        Stops the motor
+        """
         set_pin(self.enable_a, False)
         set_pin(self.enable_b, False)
