@@ -1,95 +1,110 @@
-from machine import Pin
 from leaphymicropython.utils.boards_config import pin_to_gpio
+from leaphymicropython.utils.pins import set_pwm, set_pin
+
 
 
 class DCMotor:
-    """DC Motor class"""
 
-    def __init__(
-        self, in_1: int, in_2: int, in_3: int, in_4: int, en_a: int, en_b: int
-    ):
+    def __init__(self, motor_a: int = 2, motor_b: int = 4, enable_a: int = 3, enable_b: int = 11):
         """
-        Creates a DC motor
-        :param in_1: int, the pin of the in1
-        :param in_2: int, the pin of the in2
-        :param in_3: int, the pin of the in3
-        :param in_4: int, the pin of the in4
-        :param en_a: int, the pin of the enable pin a
-        :param en_b: int, the pin of the enable pin b
-        """
-        in_1 = pin_to_gpio(in_1)
-        in_2 = pin_to_gpio(in_2)
-        en_a = pin_to_gpio(en_a)
-        in_3 = pin_to_gpio(in_3)
-        in_4 = pin_to_gpio(in_4)
-        en_b = pin_to_gpio(en_b)
-        self.in_1 = Pin(in_1, Pin.OUT)
-        self.in_2 = Pin(in_2, Pin.OUT)
-        self.en_a = Pin(en_a, Pin.OUT)
-        self.in_3 = Pin(in_3, Pin.OUT)
-        self.in_4 = Pin(in_4, Pin.OUT)
-        self.en_b = Pin(en_b, Pin.OUT)
+        Constructs all the necessary attributes for the DC Motor object.
 
-    def set_pins(
-        self, in_1: int, in_2: int, in_3: int, in_4: int, en_a: int, en_b: int
-    ):
+        :param motor_a: GPIO pin number for motor A. Default is 2.
+        :param motor_b: GPIO pin number for motor B. Default is 4.
+        :param enable_a: GPIO pin number to enable motor A. Default is 3.
+        :param enable_b: GPIO pin number to enable motor B. Default is 11.
         """
-        Sets the pins of the DC motor
-        :param in_1: int, the pin of the in1
-        :param in_2: int, the pin of the in2
-        :param in_3: int, the pin of the in3
-        :param in_4: int, the pin of the in4
-        :param en_a: int, the pin of the enable pin a
-        :param en_b: int, the pin of the enable pin b
-        """
-        self.in_1 = Pin(in_1, Pin.OUT)
-        self.in_2 = Pin(in_2, Pin.OUT)
-        self.en_a = Pin(en_a, Pin.OUT)
-        self.in_3 = Pin(in_3, Pin.OUT)
-        self.in_4 = Pin(in_4, Pin.OUT)
-        self.en_b = Pin(en_b, Pin.OUT)
+        self.value_speed_cw = None
+        self.value_speed_ccw = None
+        self.motor_a = pin_to_gpio(motor_a)
+        self.motor_b = pin_to_gpio(motor_b)
+        self.enable_a = pin_to_gpio(enable_a)
+        self.enable_b = pin_to_gpio(enable_b)
 
-    def move_forward(self):
+    def convert_cw(self, speed: int) -> float:
         """
-        Moves the DC motor forward
-        """
-        self.in_1.high()
-        self.in_2.low()
-        self.in_3.high()
-        self.in_4.low()
+        Converts speed to a value suitable for clockwise rotation.
 
-    def move_backward(self):
+        :param speed: The speed value to convert.
+        :return: The converted speed value for clockwise rotation.
         """
-        Moves the DC motor backward
-        """
-        self.in_1.low()
-        self.in_2.high()
-        self.in_3.low()
-        self.in_4.high()
+        self.value_speed_cw = (127.5 / 255) * speed
+        return round(self.value_speed_cw)
 
-    def turn_right(self):
+    def convert_ccw(self, speed: int) -> float:
         """
-        Moves the DC motor to the right
-        """
-        self.in_1.low()
-        self.in_2.low()
-        self.in_3.low()
-        self.in_4.high()
+        Converts speed to a value suitable for counterclockwise rotation.
 
-    def turn_left(self):
+        :param speed: The speed value to convert.
+        :return: The converted speed value for counterclockwise rotation.
         """
-        Moves the DC motor to the left
+        self.value_speed_ccw = (127.5 / 255) * speed + 127.5
+        return round(self.value_speed_ccw)
+
+    def forward(self, speed: int):
         """
-        self.in_1.low()
-        self.in_2.high()
-        self.in_3.low()
-        self.in_4.low()
+        Moves the motor forward at the specified speed.
+
+        :param speed: The speed value for forward motion.
+        """
+        self.convert_ccw(speed)
+        set_pwm(self.motor_a, self.value_speed_cw, 20000)
+        set_pwm(self.motor_b, self.value_speed_cw, 20000)
+        set_pin(self.enable_a, True)
+        set_pin(self.enable_b, True)
+
+    def backward(self, speed: int):
+        """
+        Moves the motor backward at the specified speed.
+
+        :param speed: The speed value for backward motion.
+        """
+        self.convert_ccw(speed)
+        set_pwm(self.motor_a, self.value_speed_ccw, 20000)
+        set_pwm(self.motor_b, self.value_speed_ccw, 20000)
+        set_pin(self.enable_a, True)
+        set_pin(self.enable_b, True)
+
+    def left(self, speed: int, direction: int):
+        """
+        Turns the motor left at the specified speed and direction.
+
+        :param speed: The speed value for turning.
+        :param direction: The direction for turning (1 for CW, 0 for CCW).
+        """
+        if direction == 1:
+            self.convert_cw(speed)
+            set_pwm(self.motor_a, self.value_speed_cw, 20000)
+            set_pwm(self.motor_a, self.value_speed_cw / 8, 20000)
+            set_pin(self.enable_a, True)
+            set_pin(self.enable_b, True)
+        elif direction == 0:
+            self.convert_ccw(speed)
+            set_pwm(self.motor_a, self.value_speed_cw, 20000)
+            set_pwm(self.motor_a, self.value_speed_cw / 8, 20000)
+            set_pin(self.enable_a, True)
+            set_pin(self.enable_b, True)
+
+    def right(self, speed: int, direction: int):
+        """
+        Turns the motor right at the specified speed and direction.
+
+        :param speed: The speed value for turning.
+        :param direction: The direction for turning (1 for CW, 0 for CCW).
+        """
+        if direction == 1:
+            self.convert_cw(speed)
+            set_pwm(self.motor_a, self.value_speed_cw / 8, 20000)
+            set_pwm(self.motor_a, self.value_speed_cw, 20000)
+            set_pin(self.enable_a, True)
+            set_pin(self.enable_b, True)
+        elif direction == 0:
+            self.convert_ccw(speed)
+            set_pwm(self.motor_a, self.value_speed_cw / 8, 20000)
+            set_pwm(self.motor_a, self.value_speed_cw, 20000)
+            set_pin(self.enable_a, True)
+            set_pin(self.enable_b, True)
 
     def stop(self):
-        """
-        Stops the DC motor
-        """
-        self.in_1.low()
-        self.in_2.low()
-        self.in_3.low()
-        self.in_4.low()
+        set_pin(self.enable_a, False)
+        set_pin(self.enable_b, False)
