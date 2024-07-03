@@ -33,7 +33,7 @@ class DCMotor:
         :return: The converted speed value for clockwise rotation.
         """
         self.value_speed_cw = (127.5 / 255) * speed
-        return round(self.value_speed_cw)
+        return self.value_speed_cw
 
     def convert_ccw(self, speed: int) -> float:
         """
@@ -43,7 +43,7 @@ class DCMotor:
         :return: The converted speed value for counterclockwise rotation.
         """
         self.value_speed_ccw = (127.5 / 255) * speed + 127.5
-        return round(self.value_speed_ccw)
+        return self.value_speed_ccw
 
     def forward(self, speed: int):
         """
