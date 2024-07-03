@@ -2,10 +2,10 @@ from leaphymicropython.utils.boards_config import pin_to_gpio
 from leaphymicropython.utils.pins import set_pwm, set_pin
 
 
-
 class DCMotor:
-
-    def __init__(self, motor_a: int = 2, motor_b: int = 4, enable_a: int = 3, enable_b: int = 11):
+    def __init__(
+        self, motor_a: int = 2, motor_b: int = 4, enable_a: int = 3, enable_b: int = 11
+    ):
         """
         Constructs all the necessary attributes for the DC Motor object.
 

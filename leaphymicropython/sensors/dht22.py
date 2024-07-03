@@ -9,7 +9,6 @@ class DHT22:
     """
 
     def __init__(self, pin: int):
-
         pin = pin_to_gpio(pin)
         self.sensor = dht.DHT22(machine.Pin(pin))
 
