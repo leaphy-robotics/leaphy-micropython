@@ -4,7 +4,7 @@ from leaphymicropython.utils.pins import set_pwm, set_pin
 
 class DCMotor:
     """
-    This class represents a DCMotor object -> This class controls a DC motor shield with 2 PWM and 2 enable pins
+    This class controls a DC motor shield with 2 PWM and 2 enable pins
     """
 
     def __init__(
