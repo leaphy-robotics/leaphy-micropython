@@ -7,9 +7,9 @@ First connect your microcontroller to the wifi, you need to do this in the REPL 
 import network
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect(“wifi name”, “wifi password”)
+wlan.connect("wifi name", "wifi password")
 ```
-Theb we are going to install the package with mip still in REPL mode
+Then we are going to install the package with mip still in REPL mode
 ```py
 import mip
 mip.install("github:leaphy-robotics/leaphy-micropython")
