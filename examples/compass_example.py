@@ -27,7 +27,3 @@ def get_heading(sensor):
     """
     mag_x, mag_y, _ = sensor.magnetic
     return vector_2_degrees(mag_x, mag_y)
-
-
-
-
