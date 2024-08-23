@@ -1,3 +1,4 @@
+"""Let ypu read values from a compass sensor."""
 import time
 from math import degrees, atan2
 
@@ -28,6 +29,5 @@ def get_heading(sensor):
     return vector_2_degrees(mag_x, mag_y)
 
 
-while True:
-    print(f"heading: {get_heading(qmc):.2f} degrees")
-    time.sleep(0.2)
+
+
