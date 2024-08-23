@@ -1,5 +1,4 @@
 """Let ypu read values from a compass sensor."""
-import time
 from math import degrees, atan2
 
 from machine import I2C
