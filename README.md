@@ -7,15 +7,66 @@ Source Code for the Leaphy MicroPython Library
 * Nano RP2040 Connect
 
 
-# How to install the package on your microcontroller
-First connect your microcontroller to the wifi, you need to do this in the REPL mode in a terminal
+# How to Install the Package on Your Microcontroller
+
+
+
+### What is REPL Mode?
+REPL (Read-Eval-Print Loop) mode allows you to execute Python code one line at a time directly on your microcontroller. This mode is useful for testing and debugging as you can see immediate results of your commands.
+
+### Methods for Installing the Package
+For Linux Users:
+If you're using Linux, you can easily access REPL mode using tio, a terminal tool that interacts with your microcontroller via USB.
+
+#### Install tio:
+
+First, install tio by running the following command in your terminal:
+
+```bash
+sudo apt install tio
+```
+### Launch tio on the USB Port:
+
+Connect to your microcontroller by launching tio on the appropriate USB port.
+
+```bash
+tio /dev/ttyACM0
+````
+This will bring you into REPL mode, indicated by the prompt:
+
+```py
+>>>
+```
+
+### Using Thonny IDE:
+If you prefer a graphical interface, you can use Thonny, a Python IDE designed for beginners, but also suitable for microcontroller programming.
+
+#### Install Thonny:
+
+Download and install Thonny from thonny.org
+
+#### Connect to Your Microcontroller:
+
+Open Thonny and ensure your microcontroller is connected. At the bottom of the Thonny window, you should see the REPL prompt:
+
+```py
+>>>
+```
+
+
+## Install the Package:
+Install the Package:
+To begin, you need to connect your microcontroller to Wi-Fi. This is done in REPL mode, follow these steps:
+
+Connect to the wifi:
 ```py
 import network
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect("wifi name", "wifi password")
 ```
-Then we are going to install the package with mip still in REPL mode
+You can now type the following command in the REPL to install the package:
+
 ```py
 import mip
 mip.install("github:leaphy-robotics/leaphy-micropython")
