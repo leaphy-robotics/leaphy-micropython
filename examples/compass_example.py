@@ -1,4 +1,4 @@
-import time
+"""Let you read values from a compass sensor."""
 from math import degrees, atan2
 
 from machine import I2C
@@ -26,8 +26,3 @@ def get_heading(sensor):
     """
     mag_x, mag_y, _ = sensor.magnetic
     return vector_2_degrees(mag_x, mag_y)
-
-
-while True:
-    print(f"heading: {get_heading(qmc):.2f} degrees")
-    time.sleep(0.2)
