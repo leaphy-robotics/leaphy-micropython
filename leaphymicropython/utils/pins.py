@@ -59,4 +59,4 @@ def read_analog(pin: int) -> int:
     """
     pin = pin_to_gpio(pin)
     adcpin = ADC(Pin(pin))
-    return round(adcpin.read_u16() / 257)
+    return adcpin.read_u16()
