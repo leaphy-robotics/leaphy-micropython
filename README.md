@@ -174,8 +174,8 @@ Start by importing the required libraries:
 from time import sleep
 from leaphymicropython.actuators.dcmotor import DCMotor
 from leaphymicropython.sensors.sonar import read_distance
-Initialize the motor and sensor:
 ```
+
 
 ## Use a loop to continuously read the distance and control the motor based on the distance:
 
@@ -273,7 +273,7 @@ from time import sleep
 from leaphymicropython.actuators.rgbled import RGBLed
 ```
 
-## Initialize the RGB LED:
+## Initialize the RGB LED:  
 
 Create an RGBLed object by specifying the pins connected to the red, green, and blue channels:
 
