@@ -2,6 +2,7 @@
 from leaphymicropython.utils.pins import read_pin
 from leaphymicropython.utils.pins import read_analog
 
+
 def read_line_sensor(pin: int) -> bool:
     """
     Sets a pin
@@ -10,10 +11,10 @@ def read_line_sensor(pin: int) -> bool:
     """
     return read_pin(pin)
 
-def calibrate_analog_line_sensor(pin: int,
-                                 below_white: int,
-                                 above_black: int,
-                                 test='yes'):
+
+def calibrate_analog_line_sensor(
+    pin: int, below_white: int, above_black: int, test="yes"
+):
     """
     Maps analog line sensor output to white | black | unclear
 
@@ -25,12 +26,12 @@ def calibrate_analog_line_sensor(pin: int,
     :return: color: white | black | unclear
     """
     value = read_analog(pin)
-    color = 'unclear'
+    color = "unclear"
     if value < below_white:
-        color = 'white'
+        color = "white"
     elif value > above_black:
-        color = 'black'
+        color = "black"
 
-    if test == 'yes':
+    if test == "yes":
         print(value, color)
     return color
