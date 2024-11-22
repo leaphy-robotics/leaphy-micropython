@@ -1,34 +1,33 @@
-# MicroPython SSD1306 OLED driver, I2C and SPI interfaces
-
 import time
 import framebuf
 from micropython import const
 
+# pylint: disable=all
+
 # register definitions
-SET_CONTRAST = const(0x81)
-SET_ENTIRE_ON = const(0xA4)
-SET_NORM_INV = const(0xA6)
-SET_DISP = const(0xAE)
-SET_MEM_ADDR = const(0x20)
-SET_COL_ADDR = const(0x21)
-SET_PAGE_ADDR = const(0x22)
+SET_CONTRAST        = const(0x81)
+SET_ENTIRE_ON       = const(0xa4)
+SET_NORM_INV        = const(0xa6)
+SET_DISP            = const(0xae)
+SET_MEM_ADDR        = const(0x20)
+SET_COL_ADDR        = const(0x21)
+SET_PAGE_ADDR       = const(0x22)
 SET_DISP_START_LINE = const(0x40)
-SET_SEG_REMAP = const(0xA0)
-SET_MUX_RATIO = const(0xA8)
-SET_COM_OUT_DIR = const(0xC0)
-SET_DISP_OFFSET = const(0xD3)
-SET_COM_PIN_CFG = const(0xDA)
-SET_DISP_CLK_DIV = const(0xD5)
-SET_PRECHARGE = const(0xD9)
-SET_VCOM_DESEL = const(0xDB)
-SET_CHARGE_PUMP = const(0x8D)
+SET_SEG_REMAP       = const(0xa0)
+SET_MUX_RATIO       = const(0xa8)
+SET_COM_OUT_DIR     = const(0xc0)
+SET_DISP_OFFSET     = const(0xd3)
+SET_COM_PIN_CFG     = const(0xda)
+SET_DISP_CLK_DIV    = const(0xd5)
+SET_PRECHARGE       = const(0xd9)
+SET_VCOM_DESEL      = const(0xdb)
+SET_CHARGE_PUMP     = const(0x8d)
 
 
 class SSD1306:
     """
     A class for the SSD1306 display
     """
-
     def __init__(self, width, height, external_vcc):
         """
         Initialize SSD1306 display with specified width, height, and external VCC configuration.
@@ -40,8 +39,10 @@ class SSD1306:
         self.height = height
         self.external_vcc = external_vcc
         self.pages = self.height // 8
-        self.framebuf = None  # Initialize the frame buffer
-        self.power_on()
+        # Note the subclass must initialize self.framebuf to a framebuffer.
+        # This is necessary because the underlying data buffer is different
+        # between I2C and SPI implementations (I2C needs an extra byte).
+        self.poweron()
         self.init_display()
 
     def init_display(self):
@@ -49,48 +50,32 @@ class SSD1306:
         Initialize the display and the addresses.
         """
         for cmd in (
-            SET_DISP | 0x00,  # off
+            SET_DISP | 0x00, # off
             # address setting
-            SET_MEM_ADDR,
-            0x00,  # horizontal
+            SET_MEM_ADDR, 0x00, # horizontal
             # resolution and layout
             SET_DISP_START_LINE | 0x00,
-            SET_SEG_REMAP | 0x01,  # column addr 127 mapped to SEG0
-            SET_MUX_RATIO,
-            self.height - 1,
-            SET_COM_OUT_DIR | 0x08,  # scan from COM[N] to COM0
-            SET_DISP_OFFSET,
-            0x00,
-            SET_COM_PIN_CFG,
-            0x02 if self.height == 32 else 0x12,
+            SET_SEG_REMAP | 0x01, # column addr 127 mapped to SEG0
+            SET_MUX_RATIO, self.height - 1,
+            SET_COM_OUT_DIR | 0x08, # scan from COM[N] to COM0
+            SET_DISP_OFFSET, 0x00,
+            SET_COM_PIN_CFG, 0x02 if self.height == 32 else 0x12,
             # timing and driving scheme
-            SET_DISP_CLK_DIV,
-            0x80,
-            SET_PRECHARGE,
-            0x22 if self.external_vcc else 0xF1,
-            SET_VCOM_DESEL,
-            0x30,  # 0.83*Vcc
+            SET_DISP_CLK_DIV, 0x80,
+            SET_PRECHARGE, 0x22 if self.external_vcc else 0xf1,
+            SET_VCOM_DESEL, 0x30, # 0.83*Vcc
             # display
-            SET_CONTRAST,
-            0xFF,  # maximum
-            SET_ENTIRE_ON,  # output follows RAM contents
-            SET_NORM_INV,  # not inverted
+            SET_CONTRAST, 0xff, # maximum
+            SET_ENTIRE_ON, # output follows RAM contents
+            SET_NORM_INV, # not inverted
             # charge pump
-            SET_CHARGE_PUMP,
-            0x10 if self.external_vcc else 0x14,
-            SET_DISP | 0x01,
-        ):  # on
+            SET_CHARGE_PUMP, 0x10 if self.external_vcc else 0x14,
+            SET_DISP | 0x01): # on
             self.write_cmd(cmd)
-        self.framebuf = framebuf.FrameBuffer(
-            bytearray((self.width // 8) * self.height),
-            self.width,
-            self.height,
-            framebuf.MONO_HLSB,
-        )
         self.fill(0)
         self.show()
 
-    def power_off(self):
+    def poweroff(self):
         """
         Turn off the display.
         """
@@ -163,32 +148,12 @@ class SSD1306:
         """
         self.framebuf.text(string, x, y, col)
 
-    def write_cmd(self, _cmd):
-        """
-        Write a command to the display.
-        :param _cmd: int, command value
-        """
-        return
 
-    def write_framebuf(self):
-        """
-        Write the frame buffer to the display.
-        """
-        return
-
-    def power_on(self):
-        """
-        Turn on the display.
-        """
-        return
-
-
-class SSD1306I2C(SSD1306):
+class SSD1306_I2C(SSD1306):
     """
     A class for the ssd1306 I2C driver
     """
-
-    def __init__(self, width, height, i2c, addr=0x3C, external_vcc=False):
+    def __init__(self, width, height, i2c, addr=0x3c, external_vcc=False):
         """
         Initialize SSD1306 display over I2C with specified width, height, I2C interface,
         address, and external VCC configuration.
@@ -201,11 +166,14 @@ class SSD1306I2C(SSD1306):
         self.i2c = i2c
         self.addr = addr
         self.temp = bytearray(2)
+        # Add an extra byte to the data buffer to hold an I2C data/command byte
+        # to use hardware-compatible I2C transactions.  A memoryview of the
+        # buffer is used to mask this byte from the framebuffer operations
+        # (without a major memory hit as memoryview doesn't copy to a separate
+        # buffer).
         self.buffer = bytearray(((height // 8) * width) + 1)
         self.buffer[0] = 0x40  # Set first byte of data buffer to Co=0, D/C=1
-        self.framebuf = framebuf.FrameBuffer(
-            self.buffer, width, height, framebuf.MONO_HLSB
-        )
+        self.framebuf = framebuf.FrameBuffer1(memoryview(self.buffer)[1:], width, height)
         super().__init__(width, height, external_vcc)
 
     def write_cmd(self, cmd):
@@ -213,7 +181,7 @@ class SSD1306I2C(SSD1306):
         Write a command to the display over I2C.
         :param cmd: int, command value
         """
-        self.temp[0] = 0x80  # Co=1, D/C#=0
+        self.temp[0] = 0x80 # Co=1, D/C#=0
         self.temp[1] = cmd
         self.i2c.writeto(self.addr, self.temp)
 
@@ -225,12 +193,17 @@ class SSD1306I2C(SSD1306):
         # hardware I2C interfaces.
         self.i2c.writeto(self.addr, self.buffer)
 
+    def poweron(self):
+        """
+        pass
+        """
+        pass
 
-class SSD1306SPI(SSD1306):
+
+class SSD1306_SPI(SSD1306):
     """
     SSD1306 implementation of spi
     """
-
     def __init__(self, width, height, spi, dc, res, cs, external_vcc=False):
         """
         Initialize SSD1306 display over SPI with specified width, height, SPI interface, data/command pin, reset pin,
@@ -252,9 +225,7 @@ class SSD1306SPI(SSD1306):
         self.res = res
         self.cs = cs
         self.buffer = bytearray((height // 8) * width)
-        self.framebuf = framebuf.FrameBuffer(
-            self.buffer, width, height, framebuf.MONO_HLSB
-        )
+        self.framebuf = framebuf.FrameBuffer1(self.buffer, width, height)
         super().__init__(width, height, external_vcc)
 
     def write_cmd(self, cmd):
@@ -280,12 +251,12 @@ class SSD1306SPI(SSD1306):
         self.spi.write(self.buffer)
         self.cs.high()
 
-    def power_on(self):
+    def poweron(self):
         """
         Turn on the display over SPI.
         """
         self.res.high()
-        time.sleep_ms(1)  # pylint: disable=no-member
+        time.sleep_ms(1)
         self.res.low()
-        time.sleep_ms(10)  # pylint: disable=no-member
+        time.sleep_ms(10)
         self.res.high()
