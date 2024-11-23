@@ -2,7 +2,7 @@ import time
 import framebuf
 from micropython import const
 
-# pylint: disable=all
+# pylint: disable=no-member,too-many-positional-arguments, unnecessary-pass
 
 # register definitions
 SET_CONTRAST = const(0x81)
@@ -160,7 +160,7 @@ class SSD1306:
         self.framebuf.text(string, x, y, col)
 
 
-class SSD1306_I2C(SSD1306):
+class SSD1306I2C(SSD1306):
     """
     A class for the ssd1306 I2C driver
     """
@@ -214,7 +214,7 @@ class SSD1306_I2C(SSD1306):
         pass
 
 
-class SSD1306_SPI(SSD1306):
+class SSD1306SPI(SSD1306):
     """
     SSD1306 implementation of spi
     """
