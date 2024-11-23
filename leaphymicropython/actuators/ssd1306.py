@@ -2,7 +2,7 @@ import time
 import framebuf
 from micropython import const
 
-# pylint: disable=no-member,too-many-positional-arguments, unnecessary-pass
+# pylint: disable=no-member,too-many-function-args,unnecessary-pass
 
 # register definitions
 SET_CONTRAST = const(0x81)
