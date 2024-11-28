@@ -20,7 +20,7 @@ def check_package_json() -> bool:
                 print(f"Package Source {url[1]}: ❌ should start with {GITHUB_PREFIX}")
                 return False
 
-            print(f"Package URL {url[0]}: 👍")
+            print(f"Package URL {url[0]}: 🍰")
     return True
 
 
