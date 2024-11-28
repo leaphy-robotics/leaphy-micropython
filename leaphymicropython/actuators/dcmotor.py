@@ -17,7 +17,7 @@ class DCMotor:
         enable_a: int = 3,
         enable_b: int = 11,
         motor_balance: float = 1.0,
-        debug: bool = False
+        debug: bool = False,
     ):
         """
         Initializes the DC motor with specified GPIO pins and optional configurations.
