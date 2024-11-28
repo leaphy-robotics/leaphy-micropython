@@ -1,6 +1,7 @@
+import time
+
 from leaphymicropython.utils.boards_config import pin_to_gpio
 from leaphymicropython.utils.pins import set_pwm, set_pin
-import time
 
 
 class DCMotor:
