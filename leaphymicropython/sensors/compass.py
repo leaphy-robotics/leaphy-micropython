@@ -1,7 +1,8 @@
-from leaphymicropython.utils.i2c_helper import CBits, RegisterStruct
 import time
 
 from micropython import const
+
+from leaphymicropython.utils.i2c_helper import CBits, RegisterStruct
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/jposada202020/MicroPython_QMC5883L.git"
