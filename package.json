@@ -11,6 +11,7 @@
         ["leaphymicropython/sensors/linesensor.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/linesensor.py"],
         ["leaphymicropython/sensors/dht22.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/dht22.py"],
         ["leaphymicropython/sensors/compass.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/compass.py"],
+        ["leaphymicropython/sensors/lsm6dsox.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/lsm6dsox.py"],
         ["leaphymicropython/actuators/buzzer.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/buzzer.py"],
         ["leaphymicropython/actuators/dcmotor.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/dcmotor.py"],
         ["leaphymicropython/actuators/rgbled.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/rgbled.py"],
