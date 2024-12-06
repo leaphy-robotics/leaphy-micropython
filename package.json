@@ -18,5 +18,5 @@
         ["leaphymicropython/actuators/ssd1306.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/ssd1306.py"]
     ],
     "deps": [],
-    "version": "1.5.1"
+    "version": "1.6.0"
 }
