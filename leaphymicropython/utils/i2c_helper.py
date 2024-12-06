@@ -8,12 +8,12 @@ class CBits:
     """
 
     def __init__(
-            self,
-            num_bits: int,
-            register_address: int,
-            start_bit: int,
-            register_width=1,
-            lsb_first=True,
+        self,
+        num_bits: int,
+        register_address: int,
+        start_bit: int,
+        register_width=1,
+        lsb_first=True,
     ) -> None:
         self.bit_mask = ((1 << num_bits) - 1) << start_bit
         self.register = register_address
@@ -22,9 +22,9 @@ class CBits:
         self.lsb_first = lsb_first
 
     def __get__(
-            self,
-            obj,
-            objtype=None,
+        self,
+        obj,
+        objtype=None,
     ) -> int:
         mem_value = obj.i2c.readfrom_mem(obj.address, self.register, self.lenght)
 
@@ -68,9 +68,9 @@ class RegisterStruct:
         self.lenght = struct.calcsize(form)
 
     def __get__(
-            self,
-            obj,
-            objtype=None,
+        self,
+        obj,
+        objtype=None,
     ):
         if self.lenght <= 2:
             value = struct.unpack(

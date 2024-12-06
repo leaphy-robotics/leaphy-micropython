@@ -39,8 +39,6 @@ mode_values = (MODE_STANDBY, MODE_CONTINUOUS)
 RESET_VALUE = const(0b01)
 
 
-
-
 class QMC5883L:
     # pylint: disable=too-many-instance-attributes
     """
