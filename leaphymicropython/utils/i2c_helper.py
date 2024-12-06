@@ -1,4 +1,3 @@
-# pylint: disable=too-many-positional-arguments
 import struct
 
 
