@@ -1,6 +1,7 @@
 {
     "urls": [
         ["leaphymicropython/utils/boards_config.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/boards_config.py"],
+        ["leaphymicropython/utils/i2c_helper.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/i2c_before.py"],
         ["leaphymicropython/utils/pins.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/pins.py"],
         ["leaphymicropython/utils/timeschedule.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/timeschedule.py"],
         ["leaphymicropython/utils/wifi.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/wifi.py"],
@@ -10,6 +11,7 @@
         ["leaphymicropython/sensors/linesensor.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/linesensor.py"],
         ["leaphymicropython/sensors/dht22.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/dht22.py"],
         ["leaphymicropython/sensors/compass.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/compass.py"],
+        ["leaphymicropython/sensors/lsm6dsox.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/lsm6dsox.py"],
         ["leaphymicropython/actuators/buzzer.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/buzzer.py"],
         ["leaphymicropython/actuators/dcmotor.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/dcmotor.py"],
         ["leaphymicropython/actuators/rgbled.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/rgbled.py"],
@@ -17,5 +19,5 @@
         ["leaphymicropython/actuators/ssd1306.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/ssd1306.py"]
     ],
     "deps": [],
-    "version": "1.5.1"
+    "version": "1.6.0"
 }
