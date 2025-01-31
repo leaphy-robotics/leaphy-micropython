@@ -1,5 +1,12 @@
 import struct
 
+def select_channel(i2c, multiplexer_address, channel_number):
+    if 0 <= channel_number <= 7:
+        i2c.writeto(multiplexer_address, bytes([1 << channel_number]))
+    elif channel_number == 255:
+        i2c.writeto(multiplexer_address, bytes([channel_number]))
+    else:
+        print("Invalid channel number. Please select a channel between 0 and 7 or 255.")
 
 class CBits:
     """
