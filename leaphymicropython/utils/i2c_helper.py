@@ -1,6 +1,31 @@
 import struct
 
 
+def select_channel(i2c, multiplexer_address, channel_number):
+    """
+    Selects a channel on an I2C multiplexer.
+
+    This function writes to the specified I2C multiplexer to select a given channel.
+    It supports channels 0-7 and a special value (255)
+    for disabling all channels (or a similar function depending on the multiplexer).
+
+    Args:
+        i2c: The I2C bus object.
+        multiplexer_address: The I2C address of the multiplexer.
+        channel_number: The channel number to select (0-7) or 255 for a special function.
+
+    Raises:
+        ValueError: If the channel_number is outside the valid range.
+
+    """
+    if 0 <= channel_number <= 7:
+        i2c.writeto(multiplexer_address, bytes([1 << channel_number]))
+    elif channel_number == 255:
+        i2c.writeto(multiplexer_address, bytes([channel_number]))
+    else:
+        print("Invalid channel number. Please select a channel between 0 and 7 or 255.")
+
+
 class CBits:
     """
     Changes bits from a byte register
