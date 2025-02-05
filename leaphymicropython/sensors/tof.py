@@ -1,7 +1,7 @@
 """This module provides time-of-flight related calculations."""  # Single-line docstring
 
 from machine import I2C, Pin
-from vl53l0x import VL53L0X
+from leaphymicropython.sensors.vl53l0x import VL53L0X
 from leaphymicropython.utils.i2c_helper import select_channel
 
 
