@@ -1,4 +1,5 @@
 """A module for the new leaphy line sensor"""
+
 from leaphymicropython.utils.pins import read_pin
 from leaphymicropython.utils.pins import read_analog
 

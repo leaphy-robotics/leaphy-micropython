@@ -1,4 +1,5 @@
 """This module provides time-of-flight related calculations."""  # Single-line docstring
+
 from machine import I2C, Pin
 from leaphymicropython.utils.i2c_helper import select_channel
 from vl53l0x import VL53L0X
@@ -9,11 +10,12 @@ class TimeOfFlight:
     Initializes the TimeOfFlight object.
 
     Args:
-        channel (int, optional): The I2C multiplexer channel to select. 
+        channel (int, optional): The I2C multiplexer channel to select.
         Defaults to 255, indicating no multiplexer is used.
         sda_gpio_pin (int, optional): The GPIO pin connected to the SDA line. Defaults to 12.
         scl_gpio_pin (int, optional): The GPIO pin connected to the SCL line. Defaults to 13.
-     """
+    """
+
     MULTIPLEXER_ADDRESS = 0x70
 
     def __init__(self, channel=255, sda_gpio_pin=12, scl_gpio_pin=13):
@@ -21,7 +23,7 @@ class TimeOfFlight:
         Initializes the TimeOfFlight object.
 
         Args:
-            channel (int, optional): The I2C multiplexer channel to select. 
+            channel (int, optional): The I2C multiplexer channel to select.
             Defaults to 255, indicating no multiplexer is used.
             sda_gpio_pin (int, optional): The GPIO pin connected to the SDA line. Defaults to 12.
             scl_gpio_pin (int, optional): The GPIO pin connected to the SCL line. Defaults to 13.
@@ -34,7 +36,7 @@ class TimeOfFlight:
         """
         Retrieves the distance measurement from the VL53L0X sensor.
 
-        If a multiplexer channel is specified (channel != 255), 
+        If a multiplexer channel is specified (channel != 255),
         it selects the appropriate channel before reading from the sensor.
 
         Returns:
