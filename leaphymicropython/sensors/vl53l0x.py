@@ -1,3 +1,4 @@
+# pylint: disable=all
 """
 This code originates from: https://github.com/kevinmcaleer/vl53l0x
 """
