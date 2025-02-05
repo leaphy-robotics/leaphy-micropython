@@ -1,8 +1,8 @@
 """This module provides time-of-flight related calculations."""  # Single-line docstring
 
 from machine import I2C, Pin
-from leaphymicropython.utils.i2c_helper import select_channel
 from vl53l0x import VL53L0X
+from leaphymicropython.utils.i2c_helper import select_channel
 
 
 class TimeOfFlight:
@@ -30,7 +30,13 @@ class TimeOfFlight:
         """
         self.channel = channel
         self.i2c = I2C(id=0, scl=Pin(scl_gpio_pin), sda=Pin(sda_gpio_pin))
-        self.tof = VL53L0X(self.i2c)
+        self.tof = self.initialize_tof()
+
+    def initialize_tof(self):
+        """
+        initialize external library
+        """
+        return VL53L0X(self.i2c)
 
     def get_distance(self):
         """
