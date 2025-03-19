@@ -32,6 +32,7 @@ class TimeOfFlight:
         self.i2c = I2C(id=0, scl=Pin(scl_gpio_pin), sda=Pin(sda_gpio_pin))
         select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
         self.tof = self.initialize_tof()
+        self.reinitialize = False
 
     def initialize_tof(self):
         """
