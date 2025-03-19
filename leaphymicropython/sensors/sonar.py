@@ -3,7 +3,7 @@ from machine import Pin
 from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
-def read_distance(trig_pin: int, echo_pin: int) -> float:
+def read_distance(trig_pin: int, echo_pin: int, ms_between_readings=1) -> float:
     """Reads distance from object
     :param trig_pin: Trigger pin
     :param echo_pin: Echo pin
@@ -25,4 +25,5 @@ def read_distance(trig_pin: int, echo_pin: int) -> float:
     while echo.value() == 1:
         signal_on = utime.ticks_us()
     time_passed = signal_on - signal_off
+    utime.sleep_ms(ms_between_readings)
     return (time_passed * 0.0343) / 2
