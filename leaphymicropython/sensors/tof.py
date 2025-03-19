@@ -50,6 +50,7 @@ class TimeOfFlight:
         Returns:
             int: The measured distance in millimeters.
         """
+        # pylint: disable=too-many-locals, too-many-branches, too-complex
         select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
         if self.reinitialize:
             try:
@@ -59,7 +60,7 @@ class TimeOfFlight:
                 if e.errno == 5:
                     value = None
 
-        if self.reinitialize == False:
+        if self.reinitialize is False:
             try:
                 value = self.tof.ping()
                 self.reinitialize = False
