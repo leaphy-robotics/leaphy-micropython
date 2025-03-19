@@ -32,6 +32,7 @@ class TimeOfFlight:
         self.i2c = I2C(id=0, scl=Pin(scl_gpio_pin), sda=Pin(sda_gpio_pin))
         select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
         self.tof = self.initialize_tof()
+        self.reinitialize = False
 
     def initialize_tof(self):
         """
@@ -50,4 +51,21 @@ class TimeOfFlight:
             int: The measured distance in millimeters.
         """
         select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
-        return self.tof.ping()
+        if self.reinitialize:
+            try:
+                self.__init__()
+                self.reinitialize = False
+            except Exception as e:
+                if e.errno == 5:
+                    value = None
+
+        if self.reinitialize == False:
+            try:
+                value = self.tof.ping()
+                self.reinitialize = False
+            except Exception as e:
+                if e.errno == 5:
+                    self.reinitialize = True
+                    value = None
+
+        return value
