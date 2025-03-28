@@ -3,9 +3,9 @@
 from machine import I2C, Pin  # pylint: disable=E0401
 from leaphymicropython.sensors.vl53l0x import VL53L0X  # pylint: disable=E0401
 from leaphymicropython.utils.i2c_helper import select_channel  # pylint: disable=E0401
-from leaphymicropython.utils.i2c_address_finder import (
+from leaphymicropython.utils.i2c_address_finder import (  # pylint: disable=E0401
     is_device_address_visible,
-)  # pylint: disable=E0401
+)
 
 
 class TimeOfFlight:  # pylint: disable=R0902
@@ -70,9 +70,9 @@ class TimeOfFlight:  # pylint: disable=R0902
         """
         initialize external library
         """
-        self.i2c = I2C(
+        self.i2c = I2C(  # # pylint: disable=W0201
             id=self.bus_id, scl=Pin(self.scl_gpio_pin), sda=Pin(self.sda_gpio_pin)
-        )  # pylint: disable=W0201
+        )
         if self.channel >= 0 and self.channel <= 7:
             select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
         sensor_visible = is_device_address_visible(
