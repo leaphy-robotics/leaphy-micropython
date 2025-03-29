@@ -1,14 +1,16 @@
 """This module provides time-of-flight related calculations."""  # Single-line docstring
 
-from machine import I2C, Pin  # pylint: disable=E0401
-from leaphymicropython.sensors.vl53l0x import VL53L0X  # pylint: disable=E0401
-from leaphymicropython.utils.i2c_helper import select_channel  # pylint: disable=E0401
-from leaphymicropython.utils.i2c_address_finder import (  # pylint: disable=E0401
+from machine import I2C, Pin  # pylint: disable=import-error
+from leaphymicropython.sensors.vl53l0x import VL53L0X  # pylint: disable=import-error
+from leaphymicropython.utils.i2c_helper import (  # pylint: disable=import-error
+    select_channel,
+)
+from leaphymicropython.utils.i2c_address_finder import (  # pylint: disable=import-error
     is_device_address_visible,
 )
 
 
-class TimeOfFlight:  # pylint: disable=R0902
+class TimeOfFlight:  # pylint: disable=too-many-instance-attributes
     """
     Initializes the TimeOfFlight object.
 
@@ -39,6 +41,7 @@ class TimeOfFlight:  # pylint: disable=R0902
     """
 
     MULTIPLEXER_ADDRESS = 0x70
+    TOF_ADDRESS = 0x29
 
     def __init__(
         self,
@@ -47,13 +50,13 @@ class TimeOfFlight:  # pylint: disable=R0902
         scl_gpio_pin=13,
         bus_id=0,
         show_warnings=True,
-    ):  # pylint: disable=R0913
+    ):  # pylint: disable=too-many-arguments
         """
         Initializes the TimeOfFlight object.
 
         Args:
             channel (int, optional): The I2C multiplexer channel to select.
-            Defaults to 255, indicating no multiplexer is used.
+            Options are: 0-7 and 255
             sda_gpio_pin (int, optional): The GPIO pin connected to the SDA line. Defaults to 12.
             scl_gpio_pin (int, optional): The GPIO pin connected to the SCL line. Defaults to 13.
             bus_id (int, optional): identifies a particular I2C peripheral, for example bus 0 or 1.
@@ -63,25 +66,29 @@ class TimeOfFlight:  # pylint: disable=R0902
         self.scl_gpio_pin = scl_gpio_pin
         self.bus_id = bus_id
         self.reinitialize = True
-        self.tof_address = 0x29
         self.show_warnings = show_warnings
+        self.i2c = None
+        self.tof = None
 
     def initialize_tof(self):
         """
         initialize external library
         """
-        self.i2c = I2C(  # # pylint: disable=W0201
+        self.i2c = I2C(
             id=self.bus_id, scl=Pin(self.scl_gpio_pin), sda=Pin(self.sda_gpio_pin)
         )
-        if self.channel >= 0 and self.channel <= 7:
+        mugs_used = is_device_address_visible(
+            i2c=self.i2c, target_address=self.MULTIPLEXER_ADDRESS
+        )
+        if mugs_used:
             select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
         sensor_visible = is_device_address_visible(
-            i2c=self.i2c, target_address=self.tof_address
+            i2c=self.i2c, target_address=self.TOF_ADDRESS
         )
         if not sensor_visible:
             if self.show_warnings:
                 print(
-                    f"can not find tof sensor (address should be {hex(self.tof_address)})"
+                    f"can not find tof sensor (address should be {hex(self.TOF_ADDRESS)})"
                 )
         return VL53L0X(self.i2c)
 
@@ -97,21 +104,23 @@ class TimeOfFlight:  # pylint: disable=R0902
         """
         if self.reinitialize:
             try:
-                self.tof = self.initialize_tof()  # pylint: disable=W0201
+                self.tof = self.initialize_tof()
                 self.reinitialize = False
-            except Exception as e:  # pylint: disable=W0718,C0103
-                if e.errno == 5:  # pylint: disable=E1101
+            except OSError as ex:
+                if ex.errno == 5:
                     value = None
                 else:
-                    raise e
+                    raise ex
 
         if self.reinitialize is False:
             try:
                 value = self.tof.ping()
                 self.reinitialize = False
-            except Exception as e:  # pylint: disable=W0718,C0103
-                if e.errno == 5:  # pylint: disable=E1101
+            except OSError as ex:
+                if ex.errno == 5:
                     self.reinitialize = True
                     value = None
+                else:
+                    raise ex
 
         return value
