@@ -1,4 +1,25 @@
-from machine import Pin, SoftI2C
+"""This module provides i2c address finding functions"""  # Single-line docstring
+
+from machine import Pin, SoftI2C  # pylint: disable=E0401
+
+
+def is_device_address_visible(i2c, target_address):
+    """
+    Check if a specific I2C address is visible on the bus.
+
+    Performs an I2C scan and checks if the target address is present
+    in the list of detected device addresses.
+
+    Args:
+        i2c (machine.I2C): An initialized I2C object from the machine module.
+        target_address (int): The 7-bit I2C address to search for.
+
+    Returns:
+        bool: True if the target address is found on the bus, False otherwise.
+    """
+    devices = i2c.scan()
+    is_visible = target_address in devices
+    return is_visible
 
 
 def find_i2c_address(scl_pin: int, sda_pin: int) -> list[hex]:
