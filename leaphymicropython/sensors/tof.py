@@ -69,6 +69,7 @@ class TimeOfFlight:  # pylint: disable=too-many-instance-attributes
         self.show_warnings = show_warnings
         self.i2c = None
         self.tof = None
+        self.mugs_used = None
 
     def initialize_tof(self):
         """
@@ -77,10 +78,10 @@ class TimeOfFlight:  # pylint: disable=too-many-instance-attributes
         self.i2c = I2C(
             id=self.bus_id, scl=Pin(self.scl_gpio_pin), sda=Pin(self.sda_gpio_pin)
         )
-        mugs_used = is_device_address_visible(
+        self.mugs_used = is_device_address_visible(
             i2c=self.i2c, target_address=self.MULTIPLEXER_ADDRESS
         )
-        if mugs_used:
+        if self.mugs_used:
             select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
         sensor_visible = is_device_address_visible(
             i2c=self.i2c, target_address=self.TOF_ADDRESS
@@ -114,6 +115,8 @@ class TimeOfFlight:  # pylint: disable=too-many-instance-attributes
 
         if self.reinitialize is False:
             try:
+                if self.mugs_used:
+                    select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
                 value = self.tof.ping()
                 self.reinitialize = False
             except OSError as ex:
