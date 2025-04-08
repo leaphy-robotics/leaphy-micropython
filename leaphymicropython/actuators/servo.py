@@ -9,7 +9,7 @@ def set_servo_angle(pin: int, angle: int) -> None:
     :param pin: The pin number to which the servo motor is connected
     :param angle: The angle to set the servo motor to
     """
-    if not (0 <= angle <= 180):
+    if not 0 <= angle <= 180:
         raise ValueError("The angle must be between 0 and 180")
 
     pin = pin_to_gpio(pin)
