@@ -1,4 +1,46 @@
+"""This module provides helper functions for i2c."""  # Single-line docstring
+
 import struct
+
+
+def i2c_is_it_used_and_alive(func):
+    """check if i2c connection is used and if so, if it is alive before using it"""
+
+    def wrapper(*args, **kwargs):
+        instance = args[0]
+        # check if i2c is used
+        i2c_used = hasattr(instance, "i2c")
+        if not i2c_used:
+            result = func(*args, **kwargs)
+        else:
+            # if i2c is used, check if connection is alive
+            if instance.reinitialize:
+                try:
+                    instance.initialize()  # each class has to have this method
+                    instance.reinitialize = False
+                except OSError as ex:
+                    if ex.errno == 5:
+                        result = None
+                    else:
+                        raise ex
+
+            if instance.reinitialize is False:
+                try:
+                    if instance.mugs_used:
+                        select_channel(
+                            instance.i2c, instance.MULTIPLEXER_ADDRESS, instance.channel
+                        )
+                    result = func(*args, **kwargs)
+                    instance.reinitialize = False
+                except OSError as ex:
+                    if ex.errno == 5:
+                        instance.reinitialize = True
+                        result = None
+                    else:
+                        raise ex
+        return result
+
+    return wrapper
 
 
 def select_channel(i2c, multiplexer_address, channel_number):
@@ -31,7 +73,7 @@ class CBits:
     Changes bits from a byte register
     """
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
         self,
         num_bits: int,
         register_address: int,
