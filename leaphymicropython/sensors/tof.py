@@ -1,19 +1,11 @@
 """This module provides time-of-flight related calculations."""  # Single-line docstring
 
-from machine import I2C, Pin  # pylint: disable=import-error
-from leaphymicropython.sensors.vl53l0x import VL53L0X  # pylint: disable=import-error
-from leaphymicropython.utils.i2c_helper import (  # pylint: disable=import-error
-    select_channel,
-)
-from leaphymicropython.utils.i2c_address_finder import (  # pylint: disable=import-error
-    is_device_address_visible,
-)
-from leaphymicropython.utils.i2c_helper import (  # pylint: disable=import-error
-    i2c_is_it_used_and_alive,
-)
+from leaphymicropython.sensors.vl53l0x import VL53L0X
+from leaphymicropython.utils.i2c_helper import I2CSensorOrActuator
+from leaphymicropython.utils.i2c_helper import handle_i2c_errors
 
 
-class TimeOfFlight:  # pylint: disable=too-many-instance-attributes
+class TimeOfFlight(I2CSensorOrActuator):  # pylint: disable=too-many-instance-attributes
     """
     Initializes the TimeOfFlight object.
 
@@ -46,7 +38,7 @@ class TimeOfFlight:  # pylint: disable=too-many-instance-attributes
     # the following attributes are used by
     # decorator i2c_is_it_used_and_alive
     MULTIPLEXER_ADDRESS = 0x70
-    TOF_ADDRESS = 0x29
+    ADDRESS = 0x29
 
     def __init__(
         self,
@@ -67,6 +59,7 @@ class TimeOfFlight:  # pylint: disable=too-many-instance-attributes
             bus_id (int, optional): identifies a particular I2C peripheral, for example bus 0 or 1.
             show_warnings (bool, optional): if True, show warning about device address not found
         """
+        super().__init__()
         # the following attributes are used by
         # decorator i2c_is_it_used_and_alive
         self.reinitialize = True
@@ -79,30 +72,17 @@ class TimeOfFlight:  # pylint: disable=too-many-instance-attributes
         self.bus_id = bus_id
         self.show_warnings = show_warnings
         self.tof = None
+        self.initialize_i2c()
+        self.is_mugs_used()
+        self.find_device(show_warnings=self.show_warnings)
 
     def initialize(self):
         """
         initialize external library
         """
-        self.i2c = I2C(
-            id=self.bus_id, scl=Pin(self.scl_gpio_pin), sda=Pin(self.sda_gpio_pin)
-        )
-        self.mugs_used = is_device_address_visible(
-            i2c=self.i2c, target_address=self.MULTIPLEXER_ADDRESS
-        )
-        if self.mugs_used:
-            select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
-        sensor_visible = is_device_address_visible(
-            i2c=self.i2c, target_address=self.TOF_ADDRESS
-        )
-        if not sensor_visible:
-            if self.show_warnings:
-                print(
-                    f"can not find tof sensor (address should be {hex(self.TOF_ADDRESS)})"
-                )
         self.tof = VL53L0X(self.i2c)
 
-    @i2c_is_it_used_and_alive
+    @handle_i2c_errors
     def get_distance(self):
         """
         Retrieves the distance measurement from the VL53L0X sensor.
