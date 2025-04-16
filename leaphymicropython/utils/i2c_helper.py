@@ -20,6 +20,7 @@ def handle_i2c_errors(func):
     Returns:
         The wrapped function.
     """
+
     def wrapper(*args, **kwargs):
         instance = args[0]
         # check if the class instance is a subclass of I2CSensorOrActuator
@@ -81,7 +82,7 @@ def select_channel(i2c, multiplexer_address, channel_number):
         print("Invalid channel number. Please select a channel between 0 and 7 or 255.")
 
 
-class I2CSensorOrActuator():
+class I2CSensorOrActuator:
     """
     Base class for I2C sensors and actuators.
 
@@ -89,6 +90,7 @@ class I2CSensorOrActuator():
     I2C devices. It includes methods for initializing the I2C bus, finding the
     device on the bus, and selecting a channel on an I2C multiplexer if one is used.
     """
+
     MULTIPLEXER_ADDRESS = None
     ADDRESS = None
 
