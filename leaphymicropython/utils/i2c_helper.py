@@ -24,7 +24,7 @@ def handle_i2c_errors(func):
     def wrapper(*args, **kwargs):
         instance = args[0]
         # check if the class instance is a subclass of I2CSensorOrActuator
-        if not isinstance(instance, IC2Device):
+        if not isinstance(instance, I2CDevice):
             return func(*args, **kwargs)
         # if i2c is used, check if connection is alive
         result = None
