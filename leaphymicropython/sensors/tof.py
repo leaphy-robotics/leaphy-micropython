@@ -1,11 +1,11 @@
 """This module provides time-of-flight related calculations."""  # Single-line docstring
 
 from leaphymicropython.sensors.vl53l0x import VL53L0X
-from leaphymicropython.utils.i2c_helper import IC2Device
+from leaphymicropython.utils.i2c_helper import I2CDevice
 from leaphymicropython.utils.i2c_helper import handle_i2c_errors
 
 
-class TimeOfFlight(IC2Device):  # pylint: disable=too-many-instance-attributes
+class TimeOfFlight(I2CDevice):  # pylint: disable=too-many-instance-attributes
     """
     Initializes the TimeOfFlight object.
 

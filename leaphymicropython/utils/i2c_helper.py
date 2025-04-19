@@ -81,7 +81,7 @@ def select_channel(i2c, multiplexer_address, channel_number):
         print("Invalid channel number. Please select a channel between 0 and 7 or 255.")
 
 
-class IC2Device:
+class I2CDevice:
     """
     Base class for I2C sensors and actuators.
 
