@@ -24,34 +24,33 @@ def handle_i2c_errors(func):
     def wrapper(*args, **kwargs):
         instance = args[0]
         # check if the class instance is a subclass of I2CSensorOrActuator
-        if not isinstance(instance, I2CSensorOrActuator):
-            result = func(*args, **kwargs)
-        else:
-            # if i2c is used, check if connection is alive
-            if instance.reinitialize:
-                try:
-                    instance.initialize_i2c()  # each class has to have this method
-                    instance.find_device()
-                    instance.initialize()
-                    instance.reinitialize = False
-                except OSError as ex:
-                    if ex.errno == 5:
-                        result = None
-                    else:
-                        raise ex
+        if not isinstance(instance, IC2Device):
+            return func(*args, **kwargs)
+        # if i2c is used, check if connection is alive
+        result = None
+        if instance.reinitialize:
+            try:
+                instance.initialize_i2c()  # each class has to have this method
+                instance.find_device()
+                instance.initialize()
+                instance.reinitialize = False
+            except OSError as ex:
+                if ex.errno == 5:
+                    result = None
+                else:
+                    raise ex
 
-            if instance.reinitialize is False:
-                try:
-                    instance.initialize_i2c()  # each class has to have this method
-                    instance.select_channel()
-                    result = func(*args, **kwargs)
-                    instance.reinitialize = False
-                except OSError as ex:
-                    if ex.errno == 5:
-                        instance.reinitialize = True
-                        result = None
-                    else:
-                        raise ex
+        if instance.reinitialize is False:
+            try:
+                instance.select_channel()
+                result = func(*args, **kwargs)
+                instance.reinitialize = False
+            except OSError as ex:
+                if ex.errno == 5:
+                    instance.reinitialize = True
+                    result = None
+                else:
+                    raise ex
         return result
 
     return wrapper
@@ -82,7 +81,7 @@ def select_channel(i2c, multiplexer_address, channel_number):
         print("Invalid channel number. Please select a channel between 0 and 7 or 255.")
 
 
-class I2CSensorOrActuator:
+class IC2Device:
     """
     Base class for I2C sensors and actuators.
 
@@ -96,7 +95,7 @@ class I2CSensorOrActuator:
 
     def __init__(self):
         self.reinitialize = None
-        self.mugs_used = None
+        self.with_mux = None
         self.i2c = None
         self.channel = None
         self.bus_id = None
@@ -126,8 +125,8 @@ class I2CSensorOrActuator:
             show_warnings (bool, optional): If True, show a warning if the device is not found.
             Defaults to True.
         """
-        self.is_mugs_used()
-        if self.mugs_used:
+        self.with_mux = self.is_mux_used()
+        if self.with_mux:
             select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
         device_visible = is_device_address_visible(
             i2c=self.i2c, target_address=self.ADDRESS
@@ -136,17 +135,13 @@ class I2CSensorOrActuator:
             if show_warnings:
                 print(f"can not find device (address should be {hex(self.ADDRESS)})")
 
-    def is_mugs_used(self):
+    def is_mux_used(self):
         """
         Checks if a multiplexer is used.
 
         This method checks if a multiplexer is used by checking if its address is visible on the I2C bus.
         """
-        if self.MULTIPLEXER_ADDRESS is None:
-            self.mugs_used = False
-            return
-
-        self.mugs_used = is_device_address_visible(
+        return is_device_address_visible(
             i2c=self.i2c, target_address=self.MULTIPLEXER_ADDRESS
         )
 
@@ -157,7 +152,7 @@ class I2CSensorOrActuator:
         If a multiplexer is used, this method selects the specified channel.
         """
 
-        if self.mugs_used:
+        if self.with_mux:
             select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
 
 

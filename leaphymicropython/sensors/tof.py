@@ -1,11 +1,11 @@
 """This module provides time-of-flight related calculations."""  # Single-line docstring
 
 from leaphymicropython.sensors.vl53l0x import VL53L0X
-from leaphymicropython.utils.i2c_helper import I2CSensorOrActuator
+from leaphymicropython.utils.i2c_helper import IC2Device
 from leaphymicropython.utils.i2c_helper import handle_i2c_errors
 
 
-class TimeOfFlight(I2CSensorOrActuator):  # pylint: disable=too-many-instance-attributes
+class TimeOfFlight(IC2Device):  # pylint: disable=too-many-instance-attributes
     """
     Initializes the TimeOfFlight object.
 
@@ -63,7 +63,7 @@ class TimeOfFlight(I2CSensorOrActuator):  # pylint: disable=too-many-instance-at
         # the following attributes are used by
         # decorator i2c_is_it_used_and_alive
         self.reinitialize = True
-        self.mugs_used = None
+        self.with_mux = None
         self.i2c = None
         self.channel = channel
         # end of attributes used by decorator
@@ -73,7 +73,7 @@ class TimeOfFlight(I2CSensorOrActuator):  # pylint: disable=too-many-instance-at
         self.show_warnings = show_warnings
         self.tof = None
         self.initialize_i2c()
-        self.is_mugs_used()
+        self.with_mux = self.is_mux_used()
         self.find_device(show_warnings=self.show_warnings)
 
     def initialize(self):
