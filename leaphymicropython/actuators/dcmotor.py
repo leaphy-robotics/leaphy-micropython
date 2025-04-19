@@ -1,117 +1,96 @@
-from leaphymicropython.utils.boards_config import pin_to_gpio
-from leaphymicropython.utils.pins import set_pwm, set_pin
+"""
+Module for controlling DC motors.
+"""
+
+from time import sleep
+from machine import Pin, PWM  # pylint: disable=import-error
+
+
+class DCMotors:  # pylint: disable=too-few-public-methods
+    """
+    A class to control multiple DC motors
+    """
+
+    def __init__(
+        self,
+        dir_pin_motor_a="D2",
+        dir_pin_motor_b="D4",
+        pwn_pin_motor_a="D3",
+        pwn_pin_motor_b="D11",
+    ):
+        self.motor_a = DCMotor(direction_pin=dir_pin_motor_a, pwn_pin=pwn_pin_motor_a)
+        self.motor_b = DCMotor(direction_pin=dir_pin_motor_b, pwn_pin=pwn_pin_motor_b)
 
 
 class DCMotor:
     """
-    This class controls a DC motor shield with 2 PWM and 2 enable pins
+    A class to control a DC motor
     """
 
-    def __init__(
-        self, motor_a: int = 2, motor_b: int = 4, enable_a: int = 3, enable_b: int = 11
-    ):
-        """
-        Constructs all the necessary attributes for the DC Motor object.
+    MAX_U16 = 65535
 
-        :param motor_a: GPIO pin number for motor A. Default is 2.
-        :param motor_b: GPIO pin number for motor B. Default is 4.
-        :param enable_a: GPIO pin number to enable motor A. Default is 3.
-        :param enable_b: GPIO pin number to enable motor B. Default is 11.
+    def __init__(self, direction_pin, pwn_pin, freq=20000):
         """
-        self.value_speed_cw = None
-        self.value_speed_ccw = None
-        self.motor_a = pin_to_gpio(motor_a)
-        self.motor_b = pin_to_gpio(motor_b)
-        self.enable_a = pin_to_gpio(enable_a)
-        self.enable_b = pin_to_gpio(enable_b)
-
-    def convert_cw(self, speed: int) -> float:
+        Creates a DC motor
+        :param direction_pin: the pin used to indicate the direction of the motor
+        :param pwn_pin: the pin used to determine the pwm signal of the motor
+        :param freq: the frequency of the pwm signal, defaults to 2.000
         """
-        Converts speed to a value suitable for clockwise rotation.
-
-        :param speed: The speed value to convert.
-        :return: The converted speed value for clockwise rotation.
-        """
-        self.value_speed_cw = (127.5 / 255) * speed
-        return self.value_speed_cw
-
-    def convert_ccw(self, speed: int) -> float:
-        """
-        Converts speed to a value suitable for counterclockwise rotation.
-
-        :param speed: The speed value to convert.
-        :return: The converted speed value for counterclockwise rotation.
-        """
-        self.value_speed_ccw = (127.5 / 255) * speed + 127.5
-        return self.value_speed_ccw
+        self.direction = Pin(direction_pin, Pin.OUT)
+        self.pwm = PWM(pwn_pin)
+        self.pwm.freq(freq)
 
     def forward(self, speed: int):
         """
-        Moves the motor forward at the specified speed.
-
-        :param speed: The speed value for forward motion.
+        Sets the DC motor to forward
+        :param speed: int, the speed of the motor
         """
-        self.convert_ccw(speed)
-        set_pwm(self.motor_a, self.value_speed_cw, 20000)
-        set_pwm(self.motor_b, self.value_speed_cw, 20000)
-        set_pin(self.enable_a, True)
-        set_pin(self.enable_b, True)
+        self.direction.value(1)
+        self.validate_speed(speed)
+        speed_u16 = self.convert_speed_to_duty_u16(speed)
+        self.pwm.duty_u16(speed_u16)
 
     def backward(self, speed: int):
         """
-        Moves the motor backward at the specified speed.
-
-        :param speed: The speed value for backward motion.
+        Sets the DC motor to backward
+        :param speed: int, the speed of the motor
         """
-        self.convert_ccw(speed)
-        set_pwm(self.motor_a, self.value_speed_ccw, 20000)
-        set_pwm(self.motor_b, self.value_speed_ccw, 20000)
-        set_pin(self.enable_a, True)
-        set_pin(self.enable_b, True)
-
-    def left(self, speed: int, direction: int):
-        """
-        Turns the motor left at the specified speed and direction.
-
-        :param speed: The speed value for turning.
-        :param direction: The direction for turning (1 for CW, 0 for CCW).
-        """
-        if direction == 1:
-            self.convert_cw(speed)
-            set_pwm(self.motor_a, self.value_speed_cw, 20000)
-            set_pwm(self.motor_b, self.value_speed_cw / 8, 20000)
-            set_pin(self.enable_a, True)
-            set_pin(self.enable_b, True)
-        elif direction == 0:
-            self.convert_ccw(speed)
-            set_pwm(self.motor_a, self.value_speed_cw, 20000)
-            set_pwm(self.motor_b, self.value_speed_cw / 8, 20000)
-            set_pin(self.enable_a, True)
-            set_pin(self.enable_b, True)
-
-    def right(self, speed: int, direction: int):
-        """
-        Turns the motor right at the specified speed and direction.
-
-        :param speed: The speed value for turning.
-        :param direction: The direction for turning (1 for CW, 0 for CCW).
-        """
-        if direction == 1:
-            self.convert_cw(speed)
-            set_pwm(self.motor_a, self.value_speed_cw / 8, 20000)
-            set_pwm(self.motor_b, self.value_speed_cw, 20000)
-            set_pin(self.enable_a, True)
-            set_pin(self.enable_b, True)
-        elif direction == 0:
-            self.convert_ccw(speed)
-            set_pwm(self.motor_a, self.value_speed_cw / 8, 20000)
-            set_pwm(self.motor_b, self.value_speed_cw, 20000)
-            set_pin(self.enable_a, True)
-            set_pin(self.enable_b, True)
+        self.direction.value(0)
+        self.validate_speed(speed)
+        speed_u16 = self.convert_speed_to_duty_u16(speed)
+        self.pwm.duty_u16(speed_u16)
 
     def stop(self):
         """
-        Stops the motor
+        Stops the DC motor
         """
-        set_pin(self.enable_a, False)
-        set_pin(self.enable_b, False)
+        self.pwm.duty_u16(0)
+
+    def test(self):
+        """
+        Tests the DC motor
+        """
+        self.forward(100)
+        sleep(1)
+        self.backward(100)
+        sleep(1)
+        self.stop()
+        sleep(1)
+
+    def validate_speed(self, speed):
+        """
+        Validates the speed of the motor
+        :param speed: int, the speed of the motor
+        """
+        assert 0 <= speed <= 100, "Speed must be between 0 and 100"
+
+    def convert_speed_to_duty_u16(self, speed: int):
+        """
+        Converts the speed to a u16 cycle
+        :param speed: int, the speed of the motor
+
+        :return: int, the u16 cycle of the speed
+        """
+        u16 = speed * (self.MAX_U16 / 100)
+        u16 = int(u16)
+        return u16
