@@ -1,7 +1,62 @@
+"""This module provides helper functions for i2c."""
+
 import struct
+from machine import Pin, I2C
+from leaphymicropython.utils.i2c_address_finder import is_device_address_visible
 
 
-def select_channel(i2c, multiplexer_address, channel_number):
+def handle_i2c_errors(func):
+    """
+    Decorator to handle I2C errors.
+
+    This decorator wraps a function that interacts with I2C devices.
+    It checks if the I2C connection is alive and attempts to reinitialize
+    the connection if necessary. It also handles specific OSError exceptions
+    that may occur during I2C communication.
+
+    Args:
+        func: The function to be wrapped.
+
+    Returns:
+        The wrapped function.
+    """
+
+    def wrapper(*args, **kwargs):
+        instance = args[0]
+        # check if the class instance is a subclass of I2CDevice
+        if not isinstance(instance, I2CDevice):
+            return func(*args, **kwargs)
+        # if i2c is used, check if connection is alive
+        result = None
+        if instance.reinitialize:
+            try:
+                instance.initialize_i2c()
+                instance.find_device(show_warnings=instance.show_warnings)
+                instance.initialize_device()
+                instance.reinitialize = False
+            except OSError as ex:
+                if ex.errno == 5:
+                    result = None
+                else:
+                    raise ex
+
+        if not instance.reinitialize:
+            try:
+                instance.select_channel()
+                result = func(*args, **kwargs)
+                instance.reinitialize = False
+            except OSError as ex:
+                if ex.errno == 5:
+                    instance.reinitialize = True
+                    result = None
+                else:
+                    raise ex
+        return result
+
+    return wrapper
+
+
+def select_channel(i2c, multiplexer_address, channel_number) -> None:
     """
     Selects a channel on an I2C multiplexer.
 
@@ -26,12 +81,101 @@ def select_channel(i2c, multiplexer_address, channel_number):
         print("Invalid channel number. Please select a channel between 0 and 7 or 255.")
 
 
+class I2CDevice:  # pylint: disable=too-many-instance-attributes
+    """
+    Base class for I2C sensors and actuators.
+
+    This class provides a common interface and functionality for interacting with
+    I2C devices. It includes methods for initializing the I2C bus, finding the
+    device on the bus, and selecting a channel on an I2C multiplexer if one is used.
+    """
+
+    MULTIPLEXER_ADDRESS = 0x70
+    ADDRESS = None
+
+    def __init__(
+        self,
+        channel: int = 255,
+        sda_gpio_pin: int = 12,
+        scl_gpio_pin: int = 13,
+        bus_id: int = 0,
+        show_warnings: bool = True,
+    ):
+        self.reinitialize: bool = True
+        self.i2c = None
+        self.channel: int = channel
+        self.bus_id: int = bus_id
+        self.scl_gpio_pin: int = scl_gpio_pin
+        self.sda_gpio_pin: int = sda_gpio_pin
+        self.show_warnings: bool = show_warnings
+        self._mux_used = None
+        self.initialize_i2c()
+
+    def initialize_i2c(self) -> None:
+        """
+        Initializes the I2C bus.
+
+        This method sets up the I2C bus with the specified ID, SCL pin, and SDA pin.
+        It is called during the initialization of the I2C device.
+        """
+        self.i2c = I2C(
+            id=self.bus_id, scl=Pin(self.scl_gpio_pin), sda=Pin(self.sda_gpio_pin)
+        )
+        self._mux_used = None
+
+    def initialize_device(self) -> None:
+        """
+        Abstract method. Initializes the I2C device attached to the bus.
+        """
+
+    def find_device(self, show_warnings=True) -> None:
+        """Finds the I2C device on the bus.
+
+        This method checks if the device is visible on the I2C bus.
+        If a multiplexer is used, it selects the appropriate channel before
+        checking for the device. If the device is not found, it prints a warning
+        message if show_warnings is True.
+
+        Args:
+            show_warnings (bool, optional): If True, show a warning if the device is not found.
+            Defaults to True.
+        """
+        if self.is_mux_used():
+            select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
+        device_visible = is_device_address_visible(
+            i2c=self.i2c, target_address=self.ADDRESS
+        )
+        if not device_visible and show_warnings:
+            print(f"can not find device (address should be {hex(self.ADDRESS)})")
+
+    def is_mux_used(self) -> bool:
+        """
+        Checks if a multiplexer is used.
+
+        This method checks (once!) if a multiplexer is used by checking if its address is visible on the I2C bus.
+        """
+        if self._mux_used is None:
+            self._mux_used = is_device_address_visible(
+                i2c=self.i2c, target_address=self.MULTIPLEXER_ADDRESS
+            )
+        return self._mux_used
+
+    def select_channel(self) -> None:
+        """
+        Selects the appropriate channel on the I2C multiplexer.
+
+        If a multiplexer is used, this method selects the specified channel.
+        """
+        if self.is_mux_used():
+            select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
+
+
 class CBits:
     """
     Changes bits from a byte register
     """
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
         self,
         num_bits: int,
         register_address: int,
