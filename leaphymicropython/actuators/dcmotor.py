@@ -45,8 +45,8 @@ class DCMotor:
         Sets the DC motor to forward
         :param speed: int, the speed of the motor
         """
-        self.direction.value(1)
         self.validate_speed(speed)
+        self.direction.value(1)
         speed_u16 = self.convert_speed_to_duty_u16(speed)
         self.pwm.duty_u16(speed_u16)
 
@@ -55,8 +55,8 @@ class DCMotor:
         Sets the DC motor to backward
         :param speed: int, the speed of the motor
         """
-        self.direction.value(0)
         self.validate_speed(speed)
+        self.direction.value(0)
         speed_u16 = self.convert_speed_to_duty_u16(speed)
         self.pwm.duty_u16(speed_u16)
 
@@ -82,7 +82,8 @@ class DCMotor:
         Validates the speed of the motor
         :param speed: int, the speed of the motor
         """
-        assert 0 <= speed <= 100, "Speed must be between 0 and 100"
+        if not 0 <= speed <= 100:
+            raise ValueError(f"Speed must be between 0 and 100, your speed is {speed}")
 
     def convert_speed_to_duty_u16(self, speed: int):
         """
