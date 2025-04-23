@@ -1,6 +1,16 @@
+"""
+This module provides classes for controlling SSD1306 OLED displays 
+using either I2C or SPI communication protocols. It includes 
+functionality for initializing the display, setting contrast, 
+inverting the display, displaying text and graphics, and managing 
+the display's power state.
+"""
+
 import time
 import framebuf
 from micropython import const
+from leaphymicropython.utils.i2c_helper import I2CDevice
+from leaphymicropython.utils.i2c_helper import handle_i2c_errors
 
 # pylint: disable=no-member,too-many-function-args,unnecessary-pass
 
@@ -44,9 +54,8 @@ class SSD1306:
         # This is necessary because the underlying data buffer is different
         # between I2C and SPI implementations (I2C needs an extra byte).
         self.poweron()
-        self.init_display()
 
-    def init_display(self):
+    def initialize_device(self):
         """
         Initialize the display and the addresses.
         """
@@ -83,15 +92,15 @@ class SSD1306:
             SET_DISP | 0x01,
         ):  # on
             self.write_cmd(cmd)
-        self.fill(0)
-        self.show()
 
+    @handle_i2c_errors
     def poweroff(self):
         """
         Turn off the display.
         """
         self.write_cmd(SET_DISP | 0x00)
 
+    @handle_i2c_errors
     def contrast(self, contrast):
         """
         Adjust contrast of the display.
@@ -100,6 +109,7 @@ class SSD1306:
         self.write_cmd(SET_CONTRAST)
         self.write_cmd(contrast)
 
+    @handle_i2c_errors
     def invert(self, invert):
         """
         Invert the display (or not).
@@ -107,24 +117,26 @@ class SSD1306:
         """
         self.write_cmd(SET_NORM_INV | (invert & 1))
 
+    @handle_i2c_errors
     def show(self):
         """
         Show the contents of the frame buffer on the display.
         """
-        x0 = 0
-        x1 = self.width - 1
+        start_col = 0
+        end_col = self.width - 1
         if self.width == 64:
             # displays with width of 64 pixels are shifted by 32
-            x0 += 32
-            x1 += 32
+            start_col += 32
+            end_col += 32
         self.write_cmd(SET_COL_ADDR)
-        self.write_cmd(x0)
-        self.write_cmd(x1)
+        self.write_cmd(start_col)
+        self.write_cmd(end_col)
         self.write_cmd(SET_PAGE_ADDR)
         self.write_cmd(0)
         self.write_cmd(self.pages - 1)
         self.write_framebuf()
 
+    @handle_i2c_errors
     def fill(self, col):
         """
         Fill the entire display with the specified color.
@@ -132,24 +144,27 @@ class SSD1306:
         """
         self.framebuf.fill(col)
 
-    def pixel(self, x, y, col):
+    @handle_i2c_errors
+    def pixel(self, x_coor, y_coor, col):
         """
         Set a pixel at the specified position to the specified color.
         :param x: int, x-coordinate of the pixel
         :param y: int, y-coordinate of the pixel
         :param col: int, color value (0 or 1)
         """
-        self.framebuf.pixel(x, y, col)
+        self.framebuf.pixel(x_coor, y_coor, col)
 
-    def scroll(self, dx, dy):
+    @handle_i2c_errors
+    def scroll(self, hor_delta, ver_delta):
         """
         Scroll the contents of the display by the specified deltas.
         :param dx: int, horizontal delta
         :param dy: int, vertical delta
         """
-        self.framebuf.scroll(dx, dy)
+        self.framebuf.scroll(hor_delta, ver_delta)
 
-    def text(self, string, x, y, col=1):
+    @handle_i2c_errors
+    def text(self, string, x_coor, y_coor, col=1):
         """
         Display text on the screen starting from the specified position with the specified color.
         :param string: str, text to display
@@ -157,26 +172,49 @@ class SSD1306:
         :param y: int, y-coordinate of the starting position
         :param col: int, color value (0 or 1)
         """
-        self.framebuf.text(string, x, y, col)
+        self.framebuf.text(string, x_coor, y_coor, col)
 
 
-class SSD1306I2C(SSD1306):
+class SSD1306I2C(SSD1306, I2CDevice):
     """
     A class for the ssd1306 I2C driver
     """
 
-    def __init__(self, width, height, i2c, addr=0x3C, external_vcc=False):
+    # the following attribute is used by decorator handle_i2c_errors
+    ADDRESS = 0x3C
+
+    def __init__(
+        self,
+        width,
+        height,
+        external_vcc=False,
+        channel=255,
+        sda_gpio_pin=12,
+        scl_gpio_pin=13,
+        bus_id=0,
+        show_warnings=True,
+    ):
         """
-        Initialize SSD1306 display over I2C with specified width, height, I2C interface,
-        address, and external VCC configuration.
-        :param width: int, width of the display
-        :param height: int, height of the display
-        :param i2c: object, I2C interface
-        :param addr: int, I2C address of the display
-        :param external_vcc: bool, external VCC configuration
+        Initializes the SSD1306 I2C display.
+
+        Args:
+            width (int): The width of the display in pixels.
+            height (int): The height of the display in pixels.
+            external_vcc (bool, optional): Whether an external VCC is used. Defaults to False.
+            channel (int, optional): The I2C multiplexer channel to select.
+            Defaults to 255, indicating no multiplexer.
+            sda_gpio_pin (int, optional): The GPIO pin connected to the SDA line. Defaults to 12.
+            scl_gpio_pin (int, optional): The GPIO pin connected to the SCL line. Defaults to 13.
+            bus_id (int, optional): Identifies a particular I2C peripheral,
+            for example bus 0 or 1. Defaults to 0.
+            show_warnings (bool, optional): If True, show warnings about device address not found.
+            Defaults to True.
         """
-        self.i2c = i2c
-        self.addr = addr
+        I2CDevice.__init__(
+            self, channel, sda_gpio_pin, scl_gpio_pin, bus_id, show_warnings
+        )
+        self.find_device(show_warnings=self.show_warnings)
+
         self.temp = bytearray(2)
         # Add an extra byte to the data buffer to hold an I2C data/command byte
         # to use hardware-compatible I2C transactions.  A memoryview of the
@@ -188,7 +226,13 @@ class SSD1306I2C(SSD1306):
         self.framebuf = framebuf.FrameBuffer1(
             memoryview(self.buffer)[1:], width, height
         )
-        super().__init__(width, height, external_vcc)
+        SSD1306.__init__(self, width, height, external_vcc)
+
+    def initialize_device(self):
+        """
+        initialize device
+        """
+        SSD1306.initialize_device(self)
 
     def write_cmd(self, cmd):
         """
@@ -197,7 +241,7 @@ class SSD1306I2C(SSD1306):
         """
         self.temp[0] = 0x80  # Co=1, D/C#=0
         self.temp[1] = cmd
-        self.i2c.writeto(self.addr, self.temp)
+        self.i2c.writeto(self.ADDRESS, self.temp)
 
     def write_framebuf(self):
         """
@@ -205,7 +249,7 @@ class SSD1306I2C(SSD1306):
         """
         # Blast out the frame buffer using a single I2C transaction to support
         # hardware I2C interfaces.
-        self.i2c.writeto(self.addr, self.buffer)
+        self.i2c.writeto(self.ADDRESS, self.buffer)
 
     def poweron(self):
         """
@@ -221,7 +265,8 @@ class SSD1306SPI(SSD1306):
 
     def __init__(self, width, height, spi, dc, res, cs, external_vcc=False):
         """
-        Initialize SSD1306 display over SPI with specified width, height, SPI interface, data/command pin, reset pin,
+        Initialize SSD1306 display over SPI with specified
+        width, height, SPI interface, data/command pin, reset pin,
         chip select pin, and external VCC configuration.
         :param width: int, width of the display
         :param height: int, height of the display
@@ -236,9 +281,9 @@ class SSD1306SPI(SSD1306):
         res.init(res.OUT, value=0)
         cs.init(cs.OUT, value=1)
         self.spi = spi
-        self.dc = dc
+        self.data_pin = dc
         self.res = res
-        self.cs = cs
+        self.chip_select_pin = cs
         self.buffer = bytearray((height // 8) * width)
         self.framebuf = framebuf.FrameBuffer1(self.buffer, width, height)
         super().__init__(width, height, external_vcc)
@@ -250,8 +295,8 @@ class SSD1306SPI(SSD1306):
         """
         self.spi.init(baudrate=self.rate, polarity=0, phase=0)
         self.cs.high()
-        self.dc.low()
-        self.cs.low()
+        self.data_pin.low()
+        self.chip_select_pin.low()
         self.spi.write(bytearray([cmd]))
         self.cs.high()
 
@@ -261,10 +306,10 @@ class SSD1306SPI(SSD1306):
         """
         self.spi.init(baudrate=self.rate, polarity=0, phase=0)
         self.cs.high()
-        self.dc.high()
-        self.cs.low()
+        self.data_pin.high()
+        self.chip_select_pin.low()
         self.spi.write(self.buffer)
-        self.cs.high()
+        self.chip_select_pin.high()
 
     def poweron(self):
         """
