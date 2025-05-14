@@ -2,11 +2,11 @@ from machine import Pin, PWM, ADC
 from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
-def init_analog_pin(pin_name):
+def get_analog_pin(pin_name: str) -> ADC:
     """
     Initializes an analog pin using ADC
     :param pin_name: the pin to check
-    :return: True if the pin is analog, ValueError otherwise
+    :return: ADC object if the pin is analog, ValueError otherwise
     """
     try:
         pin = ADC(pin_name)
