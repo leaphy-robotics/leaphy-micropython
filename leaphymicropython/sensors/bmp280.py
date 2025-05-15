@@ -1,6 +1,7 @@
 from micropython import const
 from ustruct import unpack as unp
 
+# pylint: disable=all
 # Inspiration from David Stenwall Wahlund
 
 BMP280_POWER_SLEEP = const(0)
