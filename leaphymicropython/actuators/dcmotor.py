@@ -31,13 +31,17 @@ class DCMotors:  # pylint: disable=too-few-public-methods
 
         :param direction: left, right, forward or backward
         :param speed: The base speed of the motors.
-        :param steering_intensity: A value between 0 (straight) and 1 (fully turning), ignored when using forward or backward direction
+        :param steering_intensity:
+            A value between 0 (straight) and 1 (fully turning)
+            It is ignored when using forward or backward direction
         """
         self.motor_b.validate_speed(speed)
         if steering_intensity < 0 or steering_intensity > 1:
             raise ValueError("Steering intensity must be between 0 and 1")
         if direction not in ["left", "right", "forward", "backward"]:
-            raise ValueError("Steering direction should be left, right, forward or backward")
+            raise ValueError(
+                "Steering direction should be left, right, forward or backward"
+            )
 
         speed_left = speed
         speed_right = speed
@@ -57,7 +61,7 @@ class DCMotors:  # pylint: disable=too-few-public-methods
             self.motor_a.forward(speed_left)
         else:
             self.motor_a.backward(-speed_left)
-        
+
         if speed_right >= 0:
             self.motor_b.forward(speed_right)
         else:
