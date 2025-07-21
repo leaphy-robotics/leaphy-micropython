@@ -29,37 +29,39 @@ class DCMotors:  # pylint: disable=too-few-public-methods
         - motor_a is the left motor
         - motor_b is the right motor
 
-        :param direction: left or right
+        :param direction: left, right, forward or backward
         :param speed: The base speed of the motors.
-        :param steering_intensity: A value between 0 (straight) and 1 (fully right)
+        :param steering_intensity: A value between 0 (straight) and 1 (fully turning), ignored when using forward or backward direction
         """
         self.motor_b.validate_speed(speed)
         if steering_intensity < 0 or steering_intensity > 1:
             raise ValueError("Steering intensity must be between 0 and 1")
-        if direction not in ["left", "right"]:
-            raise ValueError("Steering direction should be left or right")
+        if direction not in ["left", "right", "forward", "backward"]:
+            raise ValueError("Steering direction should be left, right, forward or backward")
 
-        method_name_left = "forward"
         speed_left = speed
-        method_name_right = "forward"
         speed_right = speed
 
         if direction == "left":
             speed_left = int(speed * (1 - 2 * steering_intensity))
-            if speed_left < 0:
-                method_name_left = "backward"
-                speed_left = abs(speed_left)
-        if direction == "right":
+        elif direction == "right":
             speed_right = int(speed * (1 - 2 * steering_intensity))
-            if speed_right < 0:
-                method_name_right = "backward"
-                speed_right = abs(speed_right)
+        elif direction == "forward":
+            # Default values are good
+            pass
+        elif direction == "backward":
+            speed_left = -speed
+            speed_right = -speed
 
-        method_left = getattr(self.motor_a, method_name_left)
-        method_right = getattr(self.motor_b, method_name_right)
-
-        method_left(speed_left)
-        method_right(speed_right)
+        if speed_left >= 0:
+            self.motor_a.forward(speed_left)
+        else:
+            self.motor_a.backward(-speed_left)
+        
+        if speed_right >= 0:
+            self.motor_b.forward(speed_right)
+        else:
+            self.motor_b.backward(-speed_right)
 
     def stop(self):
         """
