@@ -84,11 +84,11 @@ from leaphymicropython.actuators.buzzer import set_buzzer
 Call the set_buzzer function with the appropriate parameters:
 
 ```py
-set_buzzer("D1", pwm_value, frequency)
+set_buzzer(pin_name, pwm_value, frequency)
 ```
 ## Pin (str):
 
-The pin name (e.g., "D1") to which the buzzer is connected.
+The pin name to which the buzzer is connected.
 
 ## Pwm_value: 
 
@@ -259,7 +259,7 @@ while True:
     sleep(1)
 ```
 ## read_line_sensor(pin: str)
-Reads the value from the line sensor connected to the specified pin name (e.g., "D1").
+Reads the value from the line sensor connected to the specified pin name.
 
 # How to Make the RGB LED Blink
 Follow these steps to make the RGB LED blink using the leaphymicropython library:
@@ -292,7 +292,7 @@ while True:
     sleep(1)
 ```
 ## RGBLed(red_pin: str, green_pin: str, blue_pin: str)
-Initializes the RGB LED object by specifying the pin names (e.g., "D1", "D2", "D4") connected to the red, green, and blue components.
+Initializes the RGB LED object by specifying the pin names connected to the red, green, and blue components.
 
 ### Parameters:
     Red_pin: The pin connected to the red LED channel.
@@ -328,7 +328,7 @@ set_servo_angle("D1", 90)
 This function rotates the servo motor to a specified angle.
 
 ### Parameters:
-    pin: The pin name (e.g., "D1") to which the servo is connected.
+    pin: The pin name to which the servo is connected.
     angle: The angle to which the servo should rotate (0-180 degrees).
 
 # How to Read Distance Using a Sonar Sensor
