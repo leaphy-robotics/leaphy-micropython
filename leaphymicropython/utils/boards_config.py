@@ -27,5 +27,3 @@ def get_board_type():
     if str(decoded_id).startswith("E66054"):
         board = "PICO"
     return board
-
-
