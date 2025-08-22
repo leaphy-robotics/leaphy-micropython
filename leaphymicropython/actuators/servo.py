@@ -1,7 +1,6 @@
 from machine import Pin, PWM
 
 
-
 def set_servo_angle(pin: str, angle: int) -> None:
     """
     Puts the servo on an angle
