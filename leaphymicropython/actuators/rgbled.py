@@ -17,23 +17,23 @@ class RGBLed:
         "Brown": (139, 69, 19),
     }
 
-    def __init__(self, red_pin: int, green_pin: int, blue_pin: int):
+    def __init__(self, red_pin: str, green_pin: str, blue_pin: str):
         """
         Creates an RGB LED
-        :param red_pin: int, the pin of the red LED
-        :param green_pin: int, the pin of the green LED
-        :param blue_pin: int, the pin of the blue LED
+        :param red_pin: str, the pin of the red LED
+        :param green_pin: str, the pin of the green LED
+        :param blue_pin: str, the pin of the blue LED
         """
         self.red = red_pin
         self.green = green_pin
         self.blue = blue_pin
 
-    def set_pins(self, red_pin: int, green_pin: int, blue_pin: int):
+    def set_pins(self, red_pin: str, green_pin: str, blue_pin: str):
         """
         Sets the pins of the RGB LED
-        :param red_pin: int, the pin of the red LED
-        :param green_pin: int, the pin of the green LED
-        :param blue_pin: int, the pin of the blue LED
+        :param red_pin: str, the pin of the red LED
+        :param green_pin: str, the pin of the green LED
+        :param blue_pin: str, the pin of the blue LED
         """
         self.red = red_pin
         self.green = green_pin

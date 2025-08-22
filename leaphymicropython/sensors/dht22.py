@@ -1,6 +1,5 @@
 import dht
 import machine
-from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
 class DHT22:
@@ -8,8 +7,7 @@ class DHT22:
     A class to control the dht22
     """
 
-    def __init__(self, pin: int):
-        pin = pin_to_gpio(pin)
+    def __init__(self, pin: str):
         self.sensor = dht.DHT22(machine.Pin(pin))
 
     def read_temperature(self) -> float:

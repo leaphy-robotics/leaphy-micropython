@@ -84,11 +84,11 @@ from leaphymicropython.actuators.buzzer import set_buzzer
 Call the set_buzzer function with the appropriate parameters:
 
 ```py
-set_buzzer(pin_number, pwm_value, frequency)
+set_buzzer("D1", pwm_value, frequency)
 ```
-## Pin_number: 
+## Pin (str):
 
-The pin number to which the buzzer is connected.
+The pin name (e.g., "D1") to which the buzzer is connected.
 
 ## Pwm_value: 
 
@@ -221,7 +221,7 @@ from leaphymicropython.sensors.dht22 import DHT22
 
 Create a DHT22 sensor object on the correct pin:
 ```py
-sensor = DHT22(1)
+sensor = DHT22("D1")
 ```
 ## Read and print temperature and humidity:
 Use a loop to continuously read and print the temperature and humidity values:
@@ -255,11 +255,11 @@ Use a loop to continuously read and print the value from the line sensor:
 
 ```py
 while True:
-    print(read_line_sensor(1))
+    print(read_line_sensor("D1"))
     sleep(1)
 ```
-## read_line_sensor(pin_number)
-Reads the value from the line sensor connected to the specified pin.
+## read_line_sensor(pin: str)
+Reads the value from the line sensor connected to the specified pin name (e.g., "D1").
 
 # How to Make the RGB LED Blink
 Follow these steps to make the RGB LED blink using the leaphymicropython library:
@@ -278,7 +278,7 @@ from leaphymicropython.actuators.rgbled import RGBLed
 Create an RGBLed object by specifying the pins connected to the red, green, and blue channels:
 
 ```py
-led = RGBLed(1, 2, 4)
+led = RGBLed("D1", "D2", "D4")
 ```
 ## Set the LED Color and Blink:
 
@@ -291,14 +291,14 @@ while True:
     led.set_color(0, 0, 0)    # Turn off the LED
     sleep(1)
 ```
-## RGBLed(red_pin, green_pin, blue_pin)
-Initializes the RGB LED object by specifying the GPIO pins connected to the red, green, and blue components.
+## RGBLed(red_pin: str, green_pin: str, blue_pin: str)
+Initializes the RGB LED object by specifying the pin names (e.g., "D1", "D2", "D4") connected to the red, green, and blue components.
 
 ### Parameters:
+    Red_pin: The pin connected to the red LED channel.
+    Green_pin: The pin connected to the green LED channel.
+    blue_pin: The pin connected to the blue LED channel.
 
-    Red_pin: The GPIO pin number connected to the red LED channel.
-    Green_pin: The GPIO pin number connected to the green LED channel.
-    blue_pin: The GPIO pin number connected to the blue LED channel.
 ## set_color(red, green, blue)
 Sets the color of the RGB LED by specifying the intensity of the red, green, and blue channels. Each parameter should be a value between 0 and 255.
 
@@ -322,13 +322,13 @@ from leaphymicropython.actuators.servo import set_servo_angle
 Use the set_servo_angle function to rotate the servo to the desired angle:
 
 ```py
-set_servo_angle(1, 90)
+set_servo_angle("D1", 90)
 ```
-## set_servo_angle(pin_number, angle)
+## set_servo_angle(pin: str, angle)
 This function rotates the servo motor to a specified angle.
 
 ### Parameters:
-    pin_number: The GPIO pin number to which the servo is connected.
+    pin: The pin name (e.g., "D1") to which the servo is connected.
     angle: The angle to which the servo should rotate (0-180 degrees).
 
 # How to Read Distance Using a Sonar Sensor
@@ -348,11 +348,12 @@ Use a loop to continuously read and print the distance in centimeters:
 
 ```py
 while True:
-    print(read_distance(1))
+    print(read_distance("D1", "D2"))
     sleep(1)
 ```
-## read_distance(pin_number)
-This function reads the distance from a sonar sensor connected to the specified pin and returns the distance in centimeters.
+## read_distance(trig_pin: str, echo_pin: str)
+This function reads the distance from a sonar sensor connected to the specified pins and returns the distance in centimeters.
 
 ### Parameters:
-    Pin_number: The GPIO pin number to which the sonar sensor's trigger pin is connected.
+    trig_pin: The pin name to which the sonar sensor's trigger pin is connected.
+	 echo_pin: The pin name to which the sonar sensor's echo pin is connected.

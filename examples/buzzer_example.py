@@ -1,4 +1,4 @@
 """lets the buzzer work"""
 from leaphymicropython.actuators.buzzer import set_buzzer
 
-set_buzzer(1, 255, 1000)
+set_buzzer("D1", 255, 1000)
