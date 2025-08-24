@@ -1,17 +1,14 @@
 import utime
 from machine import Pin
-from leaphymicropython.utils.boards_config import pin_to_gpio
 
 
-def read_distance(trig_pin: int, echo_pin: int, ms_between_readings=1) -> float:
+def read_distance(trig_pin: str, echo_pin: str, ms_between_readings=1) -> float:
     """Reads distance from object
     :param trig_pin: Trigger pin
     :param echo_pin: Echo pin
     :return: The distance
     """
-    trigger_pin = pin_to_gpio(trig_pin)
-    echo_pin = pin_to_gpio(echo_pin)
-    trigger = Pin(trigger_pin, Pin.OUT)
+    trigger = Pin(trig_pin, Pin.OUT)
     echo = Pin(echo_pin, Pin.IN)
     trigger.low()
     utime.sleep_us(2)

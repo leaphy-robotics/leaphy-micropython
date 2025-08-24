@@ -1,6 +1,5 @@
 {
     "urls": [
-        ["leaphymicropython/utils/boards_config.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/boards_config.py"],
         ["leaphymicropython/utils/i2c_helper.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/i2c_helper.py"],
         ["leaphymicropython/utils/pins.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/pins.py"],
         ["leaphymicropython/utils/timeschedule.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/utils/timeschedule.py"],
