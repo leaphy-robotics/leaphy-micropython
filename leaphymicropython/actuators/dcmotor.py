@@ -15,11 +15,11 @@ class DCMotors:  # pylint: disable=too-few-public-methods
         self,
         dir_pin_motor_a="D2",
         dir_pin_motor_b="D4",
-        pwn_pin_motor_a="D3",
-        pwn_pin_motor_b="D11",
+        pwm_pin_motor_a="D3",
+        pwm_pin_motor_b="D11",
     ):
-        self.motor_a = DCMotor(direction_pin=dir_pin_motor_a, pwn_pin=pwn_pin_motor_a)
-        self.motor_b = DCMotor(direction_pin=dir_pin_motor_b, pwn_pin=pwn_pin_motor_b)
+        self.motor_a = DCMotor(direction_pin=dir_pin_motor_a, pwm_pin=pwm_pin_motor_a)
+        self.motor_b = DCMotor(direction_pin=dir_pin_motor_b, pwm_pin=pwm_pin_motor_b)
 
     def steer(self, direction: str, speed: int, steering_intensity: float):
         """
@@ -89,15 +89,15 @@ class DCMotor:
 
     MAX_U16 = 65535
 
-    def __init__(self, direction_pin, pwn_pin, freq=20000):
+    def __init__(self, direction_pin, pwm_pin, freq=20000):
         """
         Creates a DC motor
         :param direction_pin: the pin used to indicate the direction of the motor
-        :param pwn_pin: the pin used to determine the pwm signal of the motor
+        :param pwm_pin: the pin used to determine the pwm signal of the motor
         :param freq: the frequency of the pwm signal, defaults to 20.000
         """
         self.direction = Pin(direction_pin, Pin.OUT)
-        self.pwm = PWM(pwn_pin)
+        self.pwm = PWM(pwm_pin)
         self.pwm.freq(freq)
 
     def forward(self, speed: int):
