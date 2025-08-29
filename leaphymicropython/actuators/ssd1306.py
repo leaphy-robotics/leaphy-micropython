@@ -295,8 +295,8 @@ class SSD1306SPI(SSD1306):
         """
         self.spi.init(baudrate=self.rate, polarity=0, phase=0)
         self.cs.high()
-        self.data_pin.low()
-        self.chip_select_pin.low()
+        self.data_pin.off()
+        self.chip_select_pin.off()
         self.spi.write(bytearray([cmd]))
         self.cs.high()
 
@@ -307,7 +307,7 @@ class SSD1306SPI(SSD1306):
         self.spi.init(baudrate=self.rate, polarity=0, phase=0)
         self.cs.high()
         self.data_pin.high()
-        self.chip_select_pin.low()
+        self.chip_select_pin.off()
         self.spi.write(self.buffer)
         self.chip_select_pin.high()
 
@@ -317,6 +317,6 @@ class SSD1306SPI(SSD1306):
         """
         self.res.high()
         time.sleep_ms(1)
-        self.res.low()
+        self.res.off()
         time.sleep_ms(10)
         self.res.high()
