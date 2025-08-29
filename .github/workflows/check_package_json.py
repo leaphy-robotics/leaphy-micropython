@@ -1,9 +1,9 @@
 #!/bin/env python3
 
+import glob
 import json
-from pathlib import Path
-
 import sys
+from pathlib import Path
 
 GITHUB_PREFIX = "github:leaphy-robotics/leaphy-micropython/leaphymicropython"
 
@@ -21,6 +21,16 @@ def check_package_json() -> bool:
                 return False
 
             print(f"Package URL {url[0]}: 🍰")
+
+        packaged_files = [url[0] for url in package["urls"]]
+        for file in glob.glob("leaphymicropython/**", recursive=True):
+            if not file.endswith(".py"):
+                continue
+            if file not in packaged_files:
+                print(f"File is missing in package.json: ❌ {file}")
+                return False
+            print(f"File: {file} 🍰")
+
     return True
 
 
