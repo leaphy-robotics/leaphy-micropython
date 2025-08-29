@@ -15,8 +15,13 @@
         ["leaphymicropython/actuators/dcmotor.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/dcmotor.py"],
         ["leaphymicropython/actuators/rgbled.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/rgbled.py"],
         ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/servo.py"],
-        ["leaphymicropython/actuators/ssd1306.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/ssd1306.py"]
+        ["leaphymicropython/actuators/ssd1306.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/ssd1306.py"],
+        ["leaphymicropython/sensors/adps9960.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/adps9960.py"],
+        ["leaphymicropython/sensors/barometer.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/barometer.py"],
+        ["leaphymicropython/sensors/bmp280.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/bmp280.py"],
+        ["leaphymicropython/sensors/tof.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/tof.py"],
+        ["leaphymicropython/sensors/vl53l0x.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/vl53l0x.py"]
     ],
     "deps": [],
-    "version": "1.6.1"
+    "version": "1.6.2"
 }
