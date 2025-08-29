@@ -10,11 +10,11 @@ def read_distance(trig_pin: str, echo_pin: str, ms_between_readings=1) -> float:
     """
     trigger = Pin(trig_pin, Pin.OUT)
     echo = Pin(echo_pin, Pin.IN)
-    trigger.low()
+    trigger.off()
     utime.sleep_us(2)
-    trigger.high()
+    trigger.on()
     utime.sleep_us(5)
-    trigger.low()
+    trigger.off()
     signal_on: int
     signal_off: int
     while echo.value() == 0:
