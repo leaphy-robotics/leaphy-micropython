@@ -13,8 +13,8 @@ class BarometricPressure(I2CDevice):
     Tests:
     1. channel=255, no multiplexer, baro sensor connected
     2. channel=255, no multiplexer, baro sensor not connected
-    3. channel=0–7, with multiplexer, baro sensor connected
-    4. channel=0–7, with multiplexer, baro sensor not connected
+    3. channel=0-7, with multiplexer, baro sensor connected
+    4. channel=0-7, with multiplexer, baro sensor not connected
 
     If the sensor is disconnected, you should see None.
     If show_warnings is True, a warning will be printed.
@@ -56,7 +56,7 @@ class BarometricPressure(I2CDevice):
         Retrieves the temperature in degrees Celsius.
 
         Returns:
-            float: Temperature in °C, or None if sensor not found.
+            float: Temperature in Celcius, or None if sensor not found.
         """
         return self.bmp.temperature
 
