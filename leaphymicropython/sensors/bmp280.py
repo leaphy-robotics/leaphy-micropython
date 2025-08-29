@@ -250,7 +250,7 @@ class BMP280:
         """
         Get the compensated temperature in degrees Celsius.
 
-        :return: Temperature in °C.
+        :return: Temperature in C.
         """
         self._calc_t_fine()
         if self._t == 0:
