@@ -1,4 +1,5 @@
 """Reads the DHT22 sensor and returns temperature and humidity"""
+
 from leaphymicropython.sensors.dht22 import DHT22
 
 sensor = DHT22("D1")

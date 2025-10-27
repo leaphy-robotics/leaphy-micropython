@@ -1,4 +1,5 @@
 """Lets the rgb-led blink"""
+
 from time import sleep
 from leaphymicropython.actuators.rgbled import RGBLed
 

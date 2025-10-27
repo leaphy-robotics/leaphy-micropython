@@ -143,7 +143,9 @@ class DCMotor:
         :param speed: int, the speed of the motor
         """
         if not 0 <= speed <= 255:
-            raise ValueError(f"Speed must be up to and including 0 and 255, your speed is {speed}")
+            raise ValueError(
+                f"Speed must be up to and including 0 and 255, your speed is {speed}"
+            )
 
     def convert_speed_to_duty_u16(self, speed: int):
         """

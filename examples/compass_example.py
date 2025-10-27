@@ -1,4 +1,5 @@
 """Let you read values from a compass sensor."""
+
 from math import degrees, atan2
 
 from machine import I2C
