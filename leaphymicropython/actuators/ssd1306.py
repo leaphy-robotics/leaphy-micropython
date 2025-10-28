@@ -1,8 +1,8 @@
 """
-This module provides classes for controlling SSD1306 OLED displays 
-using either I2C or SPI communication protocols. It includes 
-functionality for initializing the display, setting contrast, 
-inverting the display, displaying text and graphics, and managing 
+This module provides classes for controlling SSD1306 OLED displays
+using either I2C or SPI communication protocols. It includes
+functionality for initializing the display, setting contrast,
+inverting the display, displaying text and graphics, and managing
 the display's power state.
 """
 

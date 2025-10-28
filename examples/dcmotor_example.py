@@ -1,4 +1,5 @@
-""" This example demonstrates how to use the DCMotor"""
+"""This example demonstrates how to use the DCMotor"""
+
 from time import sleep
 
 from leaphymicropython.actuators.dcmotor import DCMotor

@@ -1,4 +1,5 @@
 """Reads the distance"""
+
 from time import sleep
 from leaphymicropython.sensors.sonar import read_distance
 

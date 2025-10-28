@@ -8,7 +8,9 @@ def set_servo_angle(pin: str, angle: int) -> None:
     :param angle: The angle to set the servo motor to
     """
     if not 0 <= angle <= 180:
-        raise ValueError("The angle must be between 0 and 180")
+        raise ValueError(
+            f"Speed must be up to and including 0 and 180, your angle is {angle}"
+        )
 
     pwm = PWM(Pin(pin))
     pwm.freq(50)
