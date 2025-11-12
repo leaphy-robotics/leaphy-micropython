@@ -34,6 +34,8 @@ def handle_i2c_errors(func):
                 instance.find_device(show_warnings=instance.show_warnings)
                 instance.initialize_device()
                 instance.reinitialize = False
+            except TimeoutError:
+                result = None
             except OSError as ex:
                 if ex.errno == 5:
                     result = None
@@ -109,7 +111,6 @@ class I2CDevice:  # pylint: disable=too-many-instance-attributes
         self.sda_gpio_pin: int = sda_gpio_pin
         self.show_warnings: bool = show_warnings
         self._mux_used = None
-        self.initialize_i2c()
 
     def initialize_i2c(self) -> None:
         """
