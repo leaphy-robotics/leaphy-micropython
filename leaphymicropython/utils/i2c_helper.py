@@ -36,7 +36,7 @@ def handle_i2c_errors(func):
                 instance.reinitialize = False
             except RuntimeError:
                 if instance.show_warnings == True:
-                    print('RuntimeError trying to initialize device')
+                    print("RuntimeError trying to initialize device")
             except OSError as ex:
                 if ex.errno == 5:
                     result = None

@@ -1,4 +1,5 @@
 """This module provides OLED SSH1106 methods"""
+
 from leaphymicropython.actuators.sh1106 import SH1106_I2C
 from leaphymicropython.utils.i2c_helper import I2CDevice
 from leaphymicropython.utils.i2c_helper import handle_i2c_errors
@@ -19,6 +20,7 @@ class OLEDSH1106(I2CDevice):
 
     # the following attribute is used by decorator handle_i2c_errors
     ADDRESS = 0x3C
+
     def __init__(
         self,
         height=64,
@@ -44,25 +46,25 @@ class OLEDSH1106(I2CDevice):
         self.screen = None
         self.height = height
         self.width = width
-        
+
     def initialize_device(self):
         """
         initialize external library
         """
         super().initialize_device()
         self.screen = SH1106_I2C(self.width, self.height, self.i2c, addr=self.ADDRESS)
-        
-    @handle_i2c_errors   
-    def fill(self,color):
+
+    @handle_i2c_errors
+    def fill(self, color):
         self.screen.sleep(False)
         self.screen.fill(color)
-        
-    @handle_i2c_errors       
-    def text(self,text,x=0,y=0,color=1):
+
+    @handle_i2c_errors
+    def text(self, text, x=0, y=0, color=1):
         self.screen.sleep(False)
         self.screen.text(text, x, y, color)
-        
+
     @handle_i2c_errors
     def show(self):
         self.screen.sleep(False)
-        self.screen.show() 
+        self.screen.show()
