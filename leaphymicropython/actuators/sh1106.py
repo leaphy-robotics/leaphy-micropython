@@ -26,7 +26,7 @@
 # THE SOFTWARE.
 #
 # Sample code sections for ESP8266 pin assignments
-# ------------ SPI ------------------
+# ------------ SPI -----------------
 # Pin Map SPI
 #   - 3v - xxxxxx   - Vcc
 #   - G  - xxxxxx   - Gnd
