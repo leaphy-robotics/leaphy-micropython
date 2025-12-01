@@ -6,17 +6,7 @@ from leaphymicropython.utils.i2c_helper import handle_i2c_errors
 
 
 class OLEDSH1106(I2CDevice):
-    """
-    Initializes the OLED screen using the SSH1106 driver.
 
-    Args:
-        channel (int, optional): The I2C multiplexer channel to select.
-        Defaults to 255, indicating no multiplexer is used.
-        sda_gpio_pin (int, optional): The GPIO pin connected to the SDA line. Defaults to 12.
-        scl_gpio_pin (int, optional): The GPIO pin connected to the SCL line. Defaults to 13.
-        bus_id (int, optional): identifies a particular I2C peripheral, for example bus 0 or 1.
-        show_warnings (bool,optional): if True, show warnings
-    """
 
     # the following attribute is used by decorator handle_i2c_errors
     ADDRESS = 0x3C

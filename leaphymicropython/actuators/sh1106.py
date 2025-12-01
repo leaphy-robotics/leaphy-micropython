@@ -23,7 +23,7 @@
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+# THE SOFTWARE
 #
 # Sample code sections for ESP8266 pin assignments
 # ------------ SPI -----------------
@@ -48,7 +48,7 @@
 # display.text('Testing 1', 0, 0, 1)
 # display.show()
 #
-# --------------- I2C ------------------
+# --------------- I2C -------------------
 #
 # Pin Map I2C
 #   - 3v - xxxxxx   - Vcc
@@ -60,6 +60,7 @@
 #   - G  - xxxxxx     D/C
 #
 # Pin's for I2C can be set almost arbitrary
+#
 #
 # from machine import Pin, I2C
 # import sh1106
