@@ -7,7 +7,7 @@ from leaphymicropython.utils.i2c_helper import handle_i2c_errors
 
 class OLEDSH1106(I2CDevice):
 
-    # the following attribute is used by decorator handle_i2c_errors
+    # the following attribute is used by decorator handle_i2c_errors.
     ADDRESS = 0x3C
 
     def __init__(

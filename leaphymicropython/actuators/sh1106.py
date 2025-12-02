@@ -133,7 +133,7 @@ class SH1106(framebuf.FrameBuffer):
         self.fill(0)
         self.show()
         self.poweron()
-        # rotate90 requires a call to flip() for setting up.
+        # rotate90 requires a call to flip() for setting up..
         self.flip(self.flip_en)
 
     def poweroff(self):
