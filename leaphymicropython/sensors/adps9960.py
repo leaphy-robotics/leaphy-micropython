@@ -52,6 +52,7 @@ class Adps_9960(I2CDevice):
     """
     An ADPS 9960 gesture and ambient light sensor.
     """
+
     ADDRESS = _I2C_ADDRESS
 
     def __init__(
@@ -65,7 +66,7 @@ class Adps_9960(I2CDevice):
     ):
         """
         Initialize the ADPS 9960 sensor.
-        
+
         Args:
             gesture_sensitivity: Minimum amount of movement that is recognised as a gesture-movement.
         """
@@ -99,7 +100,7 @@ class Adps_9960(I2CDevice):
     def color_available(self) -> bool:
         """
         Check if the sensor has a color-level reading available.
-        
+
         Returns:
             bool: True if RGB levels are available, False otherwise.
         """
@@ -124,10 +125,10 @@ class Adps_9960(I2CDevice):
         """
         Set the sensor to gesture-reading mode if necessary and, if the data is available,
         fetch the latest gesture-data from the sensor.
-        
+
         Args:
             gesture_threshold: Gesture maximum threshold.
-        
+
         Returns:
             bool: True if a gesture was detected, False otherwise.
         """
@@ -179,7 +180,7 @@ class Adps_9960(I2CDevice):
         into color-detection mode.
         Note that this function will return `GESTURE_NONE` until a call to
         `gesture_available()` has returned True.
-        
+
         Returns:
             int: One of `GESTURE_NONE`, `GESTURE_UP`, `GESTURE_RIGHT`, `GESTURE_DOWN` or `GESTURE_LEFT`.
         """
