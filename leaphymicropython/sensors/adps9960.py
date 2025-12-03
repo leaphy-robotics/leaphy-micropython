@@ -48,7 +48,7 @@ GESTURE_LEFT = const(2)
 GESTURE_RIGHT = const(3)
 
 
-class Adps_9960(I2CDevice):
+class Adps9960(I2CDevice):
     """
     An ADPS 9960 gesture and ambient light sensor.
     """
@@ -113,7 +113,8 @@ class Adps_9960(I2CDevice):
         Read the latest color-levels from the sensor.
 
         Returns:
-            tuple[int,int,int,int]: A tuple of the red, green, blue and "clear" light-levels, expressed as 16-bit unsigned integers.
+            tuple[int,int,int,int]: A tuple of the red, green, blue and "clear"
+            light-levels, expressed as 16-bit unsigned integers.
         """
         raw_data = self._memory_read(_REG_CDATAL, _COLOR_DATA_LEN)
         clear, red, green, blue = ustruct.unpack(">HHHH", raw_data)
