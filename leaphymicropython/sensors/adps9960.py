@@ -1,7 +1,7 @@
 from micropython import const
-from leaphymicropython.utils.i2c_helper import handle_i2c_errors, I2CDevice
 import ustruct
 from utime import sleep_ms
+from leaphymicropython.utils.i2c_helper import handle_i2c_errors, I2CDevice
 
 _I2C_ADDRESS = const(0x39)
 
@@ -48,7 +48,10 @@ GESTURE_LEFT = const(2)
 GESTURE_RIGHT = const(3)
 
 
-class ADPS_9960(I2CDevice):
+class Adps_9960(I2CDevice):
+    """
+    An ADPS 9960 gesture and ambient light sensor.
+    """
     ADDRESS = _I2C_ADDRESS
 
     def __init__(
@@ -60,6 +63,12 @@ class ADPS_9960(I2CDevice):
         bus_id=0,
         show_warnings=True,
     ):
+        """
+        Initialize the ADPS 9960 sensor.
+        
+        Args:
+            gesture_sensitivity: Minimum amount of movement that is recognised as a gesture-movement.
+        """
         super().__init__(channel, sda_gpio_pin, scl_gpio_pin, bus_id, show_warnings)
         self._last_gesture = GESTURE_NONE
         self._gesture_sensitivity = gesture_sensitivity
@@ -71,6 +80,10 @@ class ADPS_9960(I2CDevice):
 
     @handle_i2c_errors
     def begin(self):
+        """
+        Configure the sensor to its default operating settings.
+        Call this before requesting data from the sensor.
+        """
         self._register_write(_REG_ENABLE, _ENABLE_ALL_OFF)
         self._register_write(_REG_WTIME, _WTIME_1_PERIOD)
         self._register_write(_REG_PPULSE, _PPULSE_8US_64PULSE)
@@ -83,12 +96,24 @@ class ADPS_9960(I2CDevice):
         self._register_update(_REG_ENABLE, _ENABLE_MASK_PON, _MASK_NONE)
 
     @handle_i2c_errors
-    def color_available(self):
+    def color_available(self) -> bool:
+        """
+        Check if the sensor has a color-level reading available.
+        
+        Returns:
+            bool: True if RGB levels are available, False otherwise.
+        """
         self._register_update(_REG_ENABLE, _ENABLE_MASK_AEN, _MASK_NONE)
         return (self._register_read(_REG_STATUS) & _STATUS_COLOR_AV) != 0
 
     @handle_i2c_errors
     def read_color(self) -> tuple[int, int, int, int]:
+        """
+        Read the latest color-levels from the sensor.
+
+        Returns:
+            tuple[int,int,int,int]: A tuple of the red, green, blue and "clear" light-levels, expressed as 16-bit unsigned integers.
+        """
         raw_data = self._memory_read(_REG_CDATAL, _COLOR_DATA_LEN)
         clear, red, green, blue = ustruct.unpack(">HHHH", raw_data)
         self._register_update(_REG_ENABLE, _MASK_NONE, _ENABLE_MASK_AEN)
@@ -96,6 +121,16 @@ class ADPS_9960(I2CDevice):
 
     @handle_i2c_errors
     def gesture_available(self, gesture_threshold=30):
+        """
+        Set the sensor to gesture-reading mode if necessary and, if the data is available,
+        fetch the latest gesture-data from the sensor.
+        
+        Args:
+            gesture_threshold: Gesture maximum threshold.
+        
+        Returns:
+            bool: True if a gesture was detected, False otherwise.
+        """
         self._register_update(_REG_ENABLE, _ENABLE_MASK_GEN, _MASK_NONE)
         if (self._register_read(_REG_GSTATUS) & _GSTATUS_MASK_GVALID) == 0:
             # No gesture data in the queue.
@@ -139,6 +174,15 @@ class ADPS_9960(I2CDevice):
 
     @handle_i2c_errors
     def read_gesture(self) -> int:
+        """
+        Fetches the latest gesture-direction detected, then puts the sensor
+        into color-detection mode.
+        Note that this function will return `GESTURE_NONE` until a call to
+        `gesture_available()` has returned True.
+        
+        Returns:
+            int: One of `GESTURE_NONE`, `GESTURE_UP`, `GESTURE_RIGHT`, `GESTURE_DOWN` or `GESTURE_LEFT`.
+        """
         return_value = self._last_gesture
         self._last_gesture = GESTURE_NONE
         self._register_update(_REG_ENABLE, _MASK_NONE, _ENABLE_MASK_GEN)
