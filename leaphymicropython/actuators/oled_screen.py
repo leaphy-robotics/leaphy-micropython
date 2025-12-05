@@ -47,7 +47,7 @@ class OLEDSH1106(I2CDevice):
         scl_gpio_pin=13,
         bus_id=0,
         show_warnings=True,
-    ):  # pylint: disable=too-many-positional-arguments
+    ):  # pylint: disable=too-many-arguments
         """
         Initializes the OLED screen using the SSH1106 driver.
         """
