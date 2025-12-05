@@ -1,4 +1,4 @@
-#
+# pylint: skip-file
 # MicroPython SH1106 OLED driver, I2C and SPI interfaces
 #
 # The MIT License (MIT)
