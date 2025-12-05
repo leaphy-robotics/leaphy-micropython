@@ -38,6 +38,7 @@ class OLEDSH1106(I2CDevice):
     # the following attribute is used by decorator handle_i2c_errors
     ADDRESS = 0x3C
 
+    # pylint: disable=too-many-positional-arguments
     def __init__(
         self,
         height=64,
@@ -47,7 +48,7 @@ class OLEDSH1106(I2CDevice):
         scl_gpio_pin=13,
         bus_id=0,
         show_warnings=True,
-    ):  # pylint: disable=too-many-arguments
+    ):
         """
         Initializes the OLED screen using the SSH1106 driver.
         """
@@ -67,6 +68,13 @@ class OLEDSH1106(I2CDevice):
         super().initialize_device()
         self.screen = SH1106_I2C(self.width, self.height, self.i2c, addr=self.ADDRESS)
 
+    def _color_to_digit(self, color):
+        if color == "black":
+            return 0
+        if color == "white":
+            return 1
+        raise ValueError(f"you gave the input {color}. Use the value black or white")
+
     @handle_i2c_errors
     def fill(self, color):
         """
@@ -75,11 +83,12 @@ class OLEDSH1106(I2CDevice):
         Args:
             color (int): Pixel color (usually 0 for black or 1 for white).
         """
+        color_digit = self._color_to_digit(color)
         self.screen.sleep(False)
-        self.screen.fill(color)
+        self.screen.fill(color_digit)
 
     @handle_i2c_errors
-    def text(self, text, x=0, y=0, color=1):
+    def text(self, text, x=0, y=0, color="black"):
         """
         Draws a text string onto the OLED display.
 
@@ -89,8 +98,10 @@ class OLEDSH1106(I2CDevice):
             y (int, optional): Y-coordinate of the text. Defaults to 0.
             color (int, optional): Text color (0 = black, 1 = white). Defaults to 1.
         """
+        print("hello")
+        color_digit = self._color_to_digit(color)
         self.screen.sleep(False)
-        self.screen.text(text, x, y, color)
+        self.screen.text(text, x, y, color_digit)
 
     @handle_i2c_errors
     def show(self):
