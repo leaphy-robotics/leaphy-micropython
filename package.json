@@ -16,7 +16,7 @@
         ["leaphymicropython/actuators/rgbled.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/rgbled.py"],
         ["leaphymicropython/actuators/servo.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/servo.py"],
         ["leaphymicropython/actuators/ssd1306.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/ssd1306.py"],
-        ["leaphymicropython/actuators/sh1106", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/sh1106.py"],
+        ["leaphymicropython/actuators/sh1106.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/sh1106.py"],
         ["leaphymicropython/actuators/oled_screen.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/actuators/oled_screen.py"],
         ["leaphymicropython/sensors/adps9960.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/adps9960.py"],
         ["leaphymicropython/sensors/barometer.py", "github:leaphy-robotics/leaphy-micropython/leaphymicropython/sensors/barometer.py"],
