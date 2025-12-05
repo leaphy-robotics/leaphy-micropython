@@ -34,6 +34,7 @@ class OLEDSH1106(I2CDevice):
         bus_id (int, optional): identifies a particular I2C peripheral, for example bus 0 or 1.
         show_warnings (bool,optional): if True, show warnings
     """
+
     # the following attribute is used by decorator handle_i2c_errors
     ADDRESS = 0x3C
 
@@ -46,7 +47,7 @@ class OLEDSH1106(I2CDevice):
         scl_gpio_pin=13,
         bus_id=0,
         show_warnings=True,
-    ): # pylint: disable=too-many-positional-arguments
+    ):  # pylint: disable=too-many-positional-arguments
         """
         Initializes the OLED screen using the SSH1106 driver.
         """
