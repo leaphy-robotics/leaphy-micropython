@@ -38,6 +38,7 @@ class TimeOfFlight(I2CDevice):
     # the following attribute is used by decorator handle_i2c_errors
     ADDRESS = 0x29
 
+    # pylint: disable=too-many-positional-arguments
     def __init__(
         self,
         channel=255,

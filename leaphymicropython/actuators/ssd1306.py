@@ -12,7 +12,7 @@ from micropython import const
 from leaphymicropython.utils.i2c_helper import I2CDevice
 from leaphymicropython.utils.i2c_helper import handle_i2c_errors
 
-# pylint: disable=no-member,too-many-function-args,unnecessary-pass
+# pylint: disable=no-member,disable=too-many-positional-arguments,unnecessary-pass
 
 # register definitions
 SET_CONTRAST = const(0x81)

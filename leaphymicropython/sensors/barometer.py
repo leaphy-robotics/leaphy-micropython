@@ -30,6 +30,7 @@ class BarometricPressure(I2CDevice):
 
     ADDRESS = 0x76  # or 0x77, depending on your setup
 
+    # pylint: disable=too-many-positional-arguments
     def __init__(
         self,
         channel=255,
