@@ -98,7 +98,6 @@ class OLEDSH1106(I2CDevice):
             y (int, optional): Y-coordinate of the text. Defaults to 0.
             color (int, optional): Text color (0 = black, 1 = white). Defaults to 1.
         """
-        print("hello")
         color_digit = self._color_to_digit(color)
         self.screen.sleep(False)
         self.screen.text(text, x, y, color_digit)
