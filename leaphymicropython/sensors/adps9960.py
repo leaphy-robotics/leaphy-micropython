@@ -214,3 +214,4 @@ class Adps9960(I2CDevice):
             return None
         return self.i2c.readfrom_mem(self.ADDRESS, start, length)
     
+    
