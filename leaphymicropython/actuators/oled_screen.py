@@ -68,7 +68,7 @@ class OLEDSH1106(I2CDevice):
         super().initialize_device()
         self.screen = SH1106_I2C(self.width, self.height, self.i2c, addr=self.ADDRESS)
 
-    def _color_to_digit(self, color):
+    def _color_to_digit(self, color: str):
         if color == "black":
             return 0
         if color == "white":
@@ -76,12 +76,12 @@ class OLEDSH1106(I2CDevice):
         raise ValueError(f"you gave the input {color}. Use the value black or white")
 
     @handle_i2c_errors
-    def fill(self, color):
+    def fill(self, color: str):
         """
         Fills the entire OLED display with the given color.
 
         Args:
-            color (int): Pixel color (usually 0 for black or 1 for white).
+            color (int): Pixel color ("black" or "white").
         """
         color_digit = self._color_to_digit(color)
         self.screen.sleep(False)
