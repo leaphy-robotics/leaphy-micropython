@@ -54,6 +54,7 @@ class Adps9960(I2CDevice):
     """
 
     ADDRESS = _I2C_ADDRESS
+
     # pylint: disable=too-many-positional-arguments
     def __init__(
         self,
@@ -213,5 +214,3 @@ class Adps9960(I2CDevice):
         if length <= 0 or start < 0 or start > 0xFF:
             return None
         return self.i2c.readfrom_mem(self.ADDRESS, start, length)
-    
-    
