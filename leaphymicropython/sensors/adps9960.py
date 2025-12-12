@@ -55,6 +55,7 @@ class Adps9960(I2CDevice):
 
     ADDRESS = _I2C_ADDRESS
 
+    # pylint: disable=too-many-positional-arguments
     def __init__(
         self,
         gesture_sensitivity=20,

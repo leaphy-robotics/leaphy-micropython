@@ -34,6 +34,9 @@ def handle_i2c_errors(func):
                 instance.find_device(show_warnings=instance.show_warnings)
                 instance.initialize_device()
                 instance.reinitialize = False
+            except RuntimeError:
+                if instance.show_warnings:
+                    print("RuntimeError trying to initialize device")
             except OSError as ex:
                 if ex.errno == 5:
                     result = None
@@ -81,7 +84,9 @@ def select_channel(i2c, multiplexer_address, channel_number) -> None:
         print("Invalid channel number. Please select a channel between 0 and 7 or 255.")
 
 
-class I2CDevice:  # pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-positional-arguments
+# pylint: disable=too-many-instance-attributes
+class I2CDevice:
     """
     Base class for I2C sensors and actuators.
 
