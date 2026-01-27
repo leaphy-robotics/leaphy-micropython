@@ -23,6 +23,7 @@ def handle_i2c_errors(func):
 
     def wrapper(*args, **kwargs):
         instance = args[0]
+        error_codes = {5, 9, 110, 116}
         # check if the class instance is a subclass of I2CDevice
         if not isinstance(instance, I2CDevice):
             return func(*args, **kwargs)
@@ -38,7 +39,7 @@ def handle_i2c_errors(func):
                 if instance.show_warnings:
                     print("RuntimeError trying to initialize device")
             except OSError as ex:
-                if ex.errno == 5:
+                if ex.errno in error_codes:
                     result = None
                 else:
                     raise ex
@@ -49,7 +50,7 @@ def handle_i2c_errors(func):
                 result = func(*args, **kwargs)
                 instance.reinitialize = False
             except OSError as ex:
-                if ex.errno == 5:
+                if ex.errno in error_codes:
                     instance.reinitialize = True
                     result = None
                 else:
@@ -114,7 +115,6 @@ class I2CDevice:
         self.sda_gpio_pin: int = sda_gpio_pin
         self.show_warnings: bool = show_warnings
         self._mux_used = None
-        self.initialize_i2c()
 
     def initialize_i2c(self) -> None:
         """
