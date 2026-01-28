@@ -60,7 +60,6 @@ class TimeOfFlight(I2CDevice):
         """
         super().__init__(channel, sda_gpio_pin, scl_gpio_pin, bus_id, show_warnings)
         self.tof = None
-        self.find_device(show_warnings=self.show_warnings)
 
     def initialize_device(self):
         """
