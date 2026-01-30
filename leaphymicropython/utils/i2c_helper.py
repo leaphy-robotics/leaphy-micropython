@@ -4,6 +4,8 @@ import struct
 from machine import Pin, I2C
 from leaphymicropython.utils.i2c_address_finder import is_device_address_visible
 
+i2c_bus_instances = {}
+
 
 def handle_i2c_errors(func):
     """
@@ -29,6 +31,7 @@ def handle_i2c_errors(func):
             return func(*args, **kwargs)
         # if i2c is used, check if connection is alive
         result = None
+
         if instance.reinitialize:
             try:
                 instance.initialize_i2c()
@@ -123,10 +126,14 @@ class I2CDevice:
         This method sets up the I2C bus with the specified ID, SCL pin, and SDA pin.
         It is called during the initialization of the I2C device.
         """
-        self.i2c = I2C(
-            id=self.bus_id, scl=Pin(self.scl_gpio_pin), sda=Pin(self.sda_gpio_pin)
-        )
-        self._mux_used = None
+
+        if self.bus_id in i2c_bus_instances:
+            self.i2c = i2c_bus_instances[self.bus_id]
+        else:
+            self.i2c = I2C(
+                id=self.bus_id, scl=Pin(self.scl_gpio_pin), sda=Pin(self.sda_gpio_pin)
+            )
+            i2c_bus_instances[self.bus_id] = self.i2c
 
     def initialize_device(self) -> None:
         """
