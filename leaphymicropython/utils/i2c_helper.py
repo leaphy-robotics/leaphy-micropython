@@ -52,6 +52,9 @@ def handle_i2c_errors(func):
                 instance.select_channel()
                 result = func(*args, **kwargs)
                 instance.reinitialize = False
+            except RuntimeError:
+                instance.reinitialize = True
+                result = None
             except OSError as ex:
                 if ex.errno in error_codes:
                     instance.reinitialize = True
