@@ -6,6 +6,21 @@ from leaphymicropython.utils.i2c_address_finder import is_device_address_visible
 
 i2c_bus_instances = {}
 
+_I2C_ERROR_CODES = {5, 9, 110, 116}
+
+
+def _is_recoverable_os_error(ex):
+    """Check if an OSError has a known recoverable I2C error code."""
+    return ex.errno in _I2C_ERROR_CODES
+
+
+def _handle_error(instance, ex, set_reinitialize=False):
+    """Handle a caught I2C error: log warning and optionally flag for reinitialization."""
+    if instance.show_warnings:
+        print(f"{type(ex).__name__} on channel {instance.channel}: {ex}")
+    if set_reinitialize:
+        instance.reinitialize = True
+
 
 def handle_i2c_errors(func):
     """
@@ -25,11 +40,9 @@ def handle_i2c_errors(func):
 
     def wrapper(*args, **kwargs):
         instance = args[0]
-        error_codes = {5, 9, 110, 116}
-        # check if the class instance is a subclass of I2CDevice
         if not isinstance(instance, I2CDevice):
             return func(*args, **kwargs)
-        # if i2c is used, check if connection is alive
+
         result = None
 
         if instance.reinitialize:
@@ -38,29 +51,26 @@ def handle_i2c_errors(func):
                 instance.find_device(show_warnings=instance.show_warnings)
                 instance.initialize_device()
                 instance.reinitialize = False
-            except RuntimeError:
-                if instance.show_warnings:
-                    print("RuntimeError trying to initialize device")
+            except RuntimeError as ex:
+                _handle_error(instance, ex)
             except OSError as ex:
-                if ex.errno in error_codes:
-                    result = None
+                if _is_recoverable_os_error(ex):
+                    _handle_error(instance, ex)
                 else:
-                    raise ex
+                    raise
 
         if not instance.reinitialize:
             try:
                 instance.select_channel()
                 result = func(*args, **kwargs)
                 instance.reinitialize = False
-            except RuntimeError:
-                instance.reinitialize = True
-                result = None
+            except RuntimeError as ex:
+                _handle_error(instance, ex, set_reinitialize=True)
             except OSError as ex:
-                if ex.errno in error_codes:
-                    instance.reinitialize = True
-                    result = None
+                if _is_recoverable_os_error(ex):
+                    _handle_error(instance, ex, set_reinitialize=True)
                 else:
-                    raise ex
+                    raise
         return result
 
     return wrapper
