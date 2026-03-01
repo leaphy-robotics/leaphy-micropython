@@ -44,33 +44,23 @@ def handle_i2c_errors(func):
             return func(*args, **kwargs)
 
         result = None
-
-        if instance.reinitialize:
-            try:
+        try:
+            if instance.reinitialize:
                 instance.initialize_i2c()
                 instance.find_device(show_warnings=instance.show_warnings)
                 instance.initialize_device()
                 instance.reinitialize = False
-            except RuntimeError as ex:
-                _handle_error(instance, ex)
-            except OSError as ex:
-                if _is_recoverable_os_error(ex):
-                    _handle_error(instance, ex)
-                else:
-                    raise
 
-        if not instance.reinitialize:
-            try:
+            if not instance.reinitialize:
                 instance.select_channel()
                 result = func(*args, **kwargs)
-                instance.reinitialize = False
-            except RuntimeError as ex:
+        except RuntimeError as ex:
+            _handle_error(instance, ex, set_reinitialize=True)
+        except OSError as ex:
+            if _is_recoverable_os_error(ex):
                 _handle_error(instance, ex, set_reinitialize=True)
-            except OSError as ex:
-                if _is_recoverable_os_error(ex):
-                    _handle_error(instance, ex, set_reinitialize=True)
-                else:
-                    raise
+            else:
+                raise
         return result
 
     return wrapper
