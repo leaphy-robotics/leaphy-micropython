@@ -45,6 +45,7 @@ class TimeOfFlight(I2CDevice):
         sda_gpio_pin=12,
         scl_gpio_pin=13,
         bus_id=0,
+        freq=400_000,
         show_warnings=True,
     ):
         """
@@ -56,9 +57,12 @@ class TimeOfFlight(I2CDevice):
             sda_gpio_pin (int, optional): The GPIO pin connected to the SDA line. Defaults to 12.
             scl_gpio_pin (int, optional): The GPIO pin connected to the SCL line. Defaults to 13.
             bus_id (int, optional): identifies a particular I2C peripheral, for example bus 0 or 1.
+            freq (int, optional): I2C bus frequency in Hz. Defaults to 400000.
             show_warnings (bool, optional): if True, show warning about device address not found
         """
-        super().__init__(channel, sda_gpio_pin, scl_gpio_pin, bus_id, show_warnings)
+        super().__init__(
+            channel, sda_gpio_pin, scl_gpio_pin, bus_id, freq, show_warnings
+        )
         self.tof = None
 
     def initialize_device(self):

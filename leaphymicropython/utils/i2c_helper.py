@@ -111,6 +111,7 @@ class I2CDevice:
         sda_gpio_pin: int = 12,
         scl_gpio_pin: int = 13,
         bus_id: int = 0,
+        freq: int = 400_000,
         show_warnings: bool = True,
     ):
         self.reinitialize: bool = True
@@ -119,6 +120,7 @@ class I2CDevice:
         self.bus_id: int = bus_id
         self.scl_gpio_pin: int = scl_gpio_pin
         self.sda_gpio_pin: int = sda_gpio_pin
+        self.freq: int = freq
         self.show_warnings: bool = show_warnings
         self._mux_used = None
 
@@ -134,7 +136,10 @@ class I2CDevice:
             self.i2c = i2c_bus_instances[self.bus_id]
         else:
             self.i2c = I2C(
-                id=self.bus_id, scl=Pin(self.scl_gpio_pin), sda=Pin(self.sda_gpio_pin)
+                id=self.bus_id,
+                scl=Pin(self.scl_gpio_pin),
+                sda=Pin(self.sda_gpio_pin),
+                freq=self.freq,
             )
             i2c_bus_instances[self.bus_id] = self.i2c
 

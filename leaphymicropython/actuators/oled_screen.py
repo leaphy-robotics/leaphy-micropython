@@ -47,12 +47,15 @@ class OLEDSH1106(I2CDevice):
         sda_gpio_pin=12,
         scl_gpio_pin=13,
         bus_id=0,
+        freq=400_000,
         show_warnings=True,
     ):
         """
         Initializes the OLED screen using the SSH1106 driver.
         """
-        super().__init__(channel, sda_gpio_pin, scl_gpio_pin, bus_id, show_warnings)
+        super().__init__(
+            channel, sda_gpio_pin, scl_gpio_pin, bus_id, freq, show_warnings
+        )
         self.screen = None
         self.height = height
         self.width = width
