@@ -63,6 +63,7 @@ class Adps9960(I2CDevice):
         sda_gpio_pin=12,
         scl_gpio_pin=13,
         bus_id=0,
+        freq=400_000,
         show_warnings=True,
     ):
         """
@@ -71,7 +72,9 @@ class Adps9960(I2CDevice):
         Args:
             gesture_sensitivity: Minimum amount of movement that is recognised as a gesture-movement.
         """
-        super().__init__(channel, sda_gpio_pin, scl_gpio_pin, bus_id, show_warnings)
+        super().__init__(
+            channel, sda_gpio_pin, scl_gpio_pin, bus_id, freq, show_warnings
+        )
         self._last_gesture = GESTURE_NONE
         self._gesture_sensitivity = gesture_sensitivity
         self._gesture_in = False
