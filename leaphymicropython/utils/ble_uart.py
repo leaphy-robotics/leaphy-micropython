@@ -8,12 +8,8 @@ _IRQ_GATTS_WRITE = const(3)
 
 # Nordic UART Service (NUS)
 _UART_SERVICE_UUID = bluetooth.UUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E")
-_UART_TX_UUID = bluetooth.UUID(
-    "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
-)  # board -> phone
-_UART_RX_UUID = bluetooth.UUID(
-    "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
-)  # phone -> board
+_UART_TX_UUID = bluetooth.UUID("6E400003-B5A3-F393-E0A9-E50E24DCCA9E")  # board -> phone
+_UART_RX_UUID = bluetooth.UUID("6E400002-B5A3-F393-E0A9-E50E24DCCA9E")  # phone -> board
 
 _ADV_TYPE_FLAGS = const(0x01)
 _ADV_TYPE_NAME = const(0x09)
