@@ -39,8 +39,22 @@ _FINAL_RATE_RTN_LIMIT = const(0x44)
 _I2C_BOOT_DELAY_MS = 100
 
 
+# errno that handle_i2c_errors treats as a recoverable I2C fault (see
+# _I2C_ERROR_CODES in utils/i2c_helper.py). 110 == ETIMEDOUT.
+_ETIMEDOUT = 110
+
+
 class VL53L0XTimeoutError(OSError):
-    """Raised when an I2C operation to the VL53L0X times out."""
+    """Raised when an I2C operation to the VL53L0X times out.
+
+    Carries errno ETIMEDOUT so handle_i2c_errors classifies it as a recoverable
+    I2C fault: get_distance() returns the I2C error code 9000 + errno (9110 for
+    this ETIMEDOUT) and the sensor reinitializes on the next call, instead of
+    the exception propagating to user code.
+    """
+
+    def __init__(self, message="VL53L0X I2C operation timed out"):
+        super().__init__(_ETIMEDOUT, message)
 
 
 class VL53L0X:
@@ -191,7 +205,7 @@ class VL53L0X:
         self._flag(_MSRC_CONFIG, 4, True)
 
         # rate_limit = 0.25
-        self._register(_FINAL_RATE_RTN_LIMIT, int(0.1 * (1 << 7)), struct=">H")
+        self._register(_FINAL_RATE_RTN_LIMIT, int(0.25 * (1 << 7)), struct=">H")
 
         self._register(_SYSTEM_SEQUENCE, 0xFF)
 
