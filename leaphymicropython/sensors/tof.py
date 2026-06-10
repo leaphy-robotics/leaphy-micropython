@@ -20,9 +20,9 @@ class TimeOfFlight(I2CDevice):
       * 0..~8090 - valid distance in millimeters
       * TimeOfFlight.OUT_OF_RANGE (8191) - sensor responded but the target is
                                     out of range: too far / no target (or
-                                    saturation at maximum distance), or too
-                                    close (below ~50 mm, where the chip clamps
-                                    to ~0 and readings are unreliable)
+                                    saturation at maximum distance), or a
+                                    clamped 0 (target nearer than the sensor's
+                                    minimum range)
       * 9000 + errno - I2C communication failed (e.g. 9005, 9009, 9110, 9116).
                        Decode the errno as value - 9000. The next
                        get_distance() will attempt reinitialization.
@@ -53,11 +53,6 @@ class TimeOfFlight(I2CDevice):
     # configuration. A long-range preset would push the legitimate maximum
     # higher and this constant would need to follow.
     _OUT_OF_RANGE_MM = 8000
-
-    # Distance below which a reading is treated as out-of-range. The VL53L0X
-    # clamps to ~0 and is unreliable below a few cm, so values under this floor
-    # (notably the impossible 0) are rejected as "too close".
-    _MIN_VALID_MM = 50
 
     # VL53L0X device range status that indicates a valid measurement. Any other
     # status (sigma/phase/signal-rate failure, etc.) means the reported distance
@@ -150,7 +145,7 @@ class TimeOfFlight(I2CDevice):
             int: distance in mm (0..~8090) for a valid reading.
             TimeOfFlight.OUT_OF_RANGE (8191) if the sensor responded but the
             measurement was invalid (bad range status), no target was detected,
-            the target was too far, or the target was too close (below ~50 mm).
+            the target was too far, or the reading was a clamped 0.
             9000 + errno if I2C communication failed (decode errno as
             value - 9000), or TimeOfFlight.UNKNOWN_ERROR (9999) for an error
             without an errno.
@@ -158,7 +153,7 @@ class TimeOfFlight(I2CDevice):
         distance = self.tof.read()
         if self.tof.last_range_status != self._VALID_RANGE_STATUS:
             return self.OUT_OF_RANGE
-        if distance < self._MIN_VALID_MM or distance >= self._OUT_OF_RANGE_MM:
+        if distance == 0 or distance >= self._OUT_OF_RANGE_MM:
             return self.OUT_OF_RANGE
         return distance
 
