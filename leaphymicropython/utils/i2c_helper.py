@@ -188,6 +188,114 @@ class I2CDevice:
         """
         if self.is_mux_used():
             select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
+    
+class I2CRegisterDevice(I2CDevice):
+    def __init__(
+        self,
+        register_width: int = 1,
+        addrsize: int = 8,
+        big_endian: bool = True,
+        channel: int = 255,
+        sda_gpio_pin: int = 12,
+        scl_gpio_pin: int = 13,
+        bus_id: int = 0,
+        freq: int = 400_000,
+        show_warnings: bool = True,
+    ):
+        """
+        Base class for I2C devices, with additional features to read/write on-device
+        memory and registers.
+
+        Args:
+            register_width: Size of a register's contents, in bytes. If the device operates with 8-bit values, this should be 1.
+            addrsize: Size of a register's address, in bits.
+            big_endian: whether the first byte in a multi-byte sequence is the highest, or lowest byte.
+        """
+        __super__().__init__(
+            channel, sda_gpio_pin, scl_gpio_pin, bus_id, freq, show_warnings
+        )
+        self.register_width = register_width
+        self.addrsize = addrsize
+        value_mask = 0x00
+        for _ in range(register_width):
+            value_mask = value_mask << 8
+            value_mask = value_mask | 0xFF
+        self.value_mask = value_mask
+        if register_width == 1:
+            self.value_format = "B"
+        elif register_width == 2:
+            self.value_format = "H"
+        elif register_width == 4:
+            self.value_format = "I"
+        else:
+            self.value_format = None
+            return
+        if big_endian:
+            self.value_format = ">" + self.value_format
+        else:
+            self.value_format = "<" + self.value_format
+    
+    @handle_i2c_errors
+    def register_read(self,register) -> int|bytes:
+        """
+        Read the current value in a register. Since this goes over the I2C line,
+        errors may occur.
+        
+        Args:
+            register: The register to read.
+        
+        Returns:
+            int: The value read from the register, formatted as a single unsigned number.
+            bytes: The value read from the register, formatted as a series of raw bytes. Fallback in case no format is specified.
+        """
+        byte_buffer = self.i2c.readfrom_mem(self.ADDRESS, register, self.register_width)
+        if self.value_format is not None:
+            return struct.unpack(self.value_format,byte_buffer)[0]
+        return byte_buffer
+    
+    @handle_i2c_errors
+    def register_write(self,register,value):
+        """
+        Set a register to a value. Since this goes over the I2C line, errors may
+        occur.
+
+        Args:
+            register: The address of the register to set.
+            value: The value that the register will be set to.
+        """
+        value_buffer = None
+        if self.value_format is not None:
+            value_buffer = struct.pack(self.value_format,value)
+        else:
+            value_buffer = bytes([value])
+        self.i2c.writeto_mem(self.ADDRESS, register, value_buffer)
+    
+    def register_update(self,register,to_set,to_clear) -> int:
+        """
+        Attempt to set/clear the bits held in a register, quitting early if no operation.
+        Since this goes over the I2C line, errors may occur.
+
+        Args:
+            register: The address of the register to update.
+            to_set: A bitmask of all the bits in the destination register that need to be on.
+            to_clear: A bitmask of all the bits in the destination register that need to be off.
+
+        Returns:
+            int: The new value in the register, or `None` if no change was written out.
+        """
+        #If nothing has to change, no point in checking.
+        if to_set == 0 and to_clear == 0:
+            return None
+        #If all the bits that need to be set *are* set, and all the bits that need
+        #to be cleared *are* cleared, no point in writing any changes through.
+        original_value = self.register_read(register)
+        if original_value & to_set == to_set and original_value & to_clear == 0:
+            return None
+        #Calculate the intended value for the register, then write all at once.
+        new_value = original_value | to_set
+        new_value = new_value & (self.value_mask ^ to_clear)
+        self.register_write(register,new_value)
+        return new_value
 
 
 class CBits:
