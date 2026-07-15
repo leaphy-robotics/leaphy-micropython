@@ -188,7 +188,8 @@ class I2CDevice:
         """
         if self.is_mux_used():
             select_channel(self.i2c, self.MULTIPLEXER_ADDRESS, self.channel)
-    
+
+
 class I2CRegisterDevice(I2CDevice):
     def __init__(
         self,
@@ -234,27 +235,27 @@ class I2CRegisterDevice(I2CDevice):
             self.value_format = ">" + self.value_format
         else:
             self.value_format = "<" + self.value_format
-    
+
     @handle_i2c_errors
-    def register_read(self,register) -> int|bytes:
+    def register_read(self, register) -> int | bytes:
         """
         Read the current value in a register. Since this goes over the I2C line,
         errors may occur.
-        
+
         Args:
             register: The register to read.
-        
+
         Returns:
             int: The value read from the register, formatted as a single unsigned number.
             bytes: The value read from the register, formatted as a series of raw bytes. Fallback in case no format is specified.
         """
         byte_buffer = self.i2c.readfrom_mem(self.ADDRESS, register, self.register_width)
         if self.value_format is not None:
-            return struct.unpack(self.value_format,byte_buffer)[0]
+            return struct.unpack(self.value_format, byte_buffer)[0]
         return byte_buffer
-    
+
     @handle_i2c_errors
-    def register_write(self,register,value):
+    def register_write(self, register, value):
         """
         Set a register to a value. Since this goes over the I2C line, errors may
         occur.
@@ -265,12 +266,12 @@ class I2CRegisterDevice(I2CDevice):
         """
         value_buffer = None
         if self.value_format is not None:
-            value_buffer = struct.pack(self.value_format,value)
+            value_buffer = struct.pack(self.value_format, value)
         else:
             value_buffer = bytes([value])
         self.i2c.writeto_mem(self.ADDRESS, register, value_buffer)
-    
-    def register_update(self,register,to_set,to_clear) -> int:
+
+    def register_update(self, register, to_set, to_clear) -> int:
         """
         Attempt to set/clear the bits held in a register, quitting early if no operation.
         Since this goes over the I2C line, errors may occur.
@@ -283,18 +284,18 @@ class I2CRegisterDevice(I2CDevice):
         Returns:
             int: The new value in the register, or `None` if no change was written out.
         """
-        #If nothing has to change, no point in checking.
+        # If nothing has to change, no point in checking.
         if to_set == 0 and to_clear == 0:
             return None
-        #If all the bits that need to be set *are* set, and all the bits that need
-        #to be cleared *are* cleared, no point in writing any changes through.
+        # If all the bits that need to be set *are* set, and all the bits that need
+        # to be cleared *are* cleared, no point in writing any changes through.
         original_value = self.register_read(register)
         if original_value & to_set == to_set and original_value & to_clear == 0:
             return None
-        #Calculate the intended value for the register, then write all at once.
+        # Calculate the intended value for the register, then write all at once.
         new_value = original_value | to_set
         new_value = new_value & (self.value_mask ^ to_clear)
-        self.register_write(register,new_value)
+        self.register_write(register, new_value)
         return new_value
 
 
