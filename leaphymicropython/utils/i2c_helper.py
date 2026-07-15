@@ -6,6 +6,8 @@ from leaphymicropython.utils.i2c_address_finder import is_device_address_visible
 
 i2c_bus_instances = {}
 
+# Recoverable I2C errno values. 110 (ETIMEDOUT) also covers VL53L0X timeouts
+# (see VL53L0XTimeoutError in sensors/vl53l0x.py).
 _I2C_ERROR_CODES = {5, 9, 110, 116}
 
 
@@ -56,9 +58,11 @@ def handle_i2c_errors(func):
                 result = func(*args, **kwargs)
         except RuntimeError as ex:
             _handle_error(instance, ex, set_reinitialize=True)
+            result = instance.on_i2c_error(ex)
         except OSError as ex:
             if _is_recoverable_os_error(ex):
                 _handle_error(instance, ex, set_reinitialize=True)
+                result = instance.on_i2c_error(ex)
             else:
                 raise
         return result
@@ -147,6 +151,15 @@ class I2CDevice:
         """
         Abstract method. Initializes the I2C device attached to the bus.
         """
+
+    def on_i2c_error(self, ex):  # pylint: disable=unused-argument
+        """Value returned by an @handle_i2c_errors method when a recoverable
+        I2C error is caught.
+
+        Defaults to None; subclasses override to surface an error sentinel
+        instead of None.
+        """
+        return None
 
     def find_device(self, show_warnings=True) -> None:
         """Finds the I2C device on the bus.
