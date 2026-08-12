@@ -76,7 +76,6 @@ from micropython import const
 import utime as time
 import framebuf
 
-
 # a few register definitions
 _SET_CONTRAST = const(0x81)
 _SET_NORM_INV = const(0xA6)
@@ -167,7 +166,7 @@ class SH1106(framebuf.FrameBuffer):
 
     def show(self, full_update=False):
         # self.* lookups in loops take significant time (~4fps).
-        (w, p, db, rb) = (self.width, self.pages, self.displaybuf, self.renderbuf)
+        w, p, db, rb = (self.width, self.pages, self.displaybuf, self.renderbuf)
         if self.rotate90:
             for i in range(self.bufsize):
                 db[w * (i % p) + (i // p)] = rb[i]

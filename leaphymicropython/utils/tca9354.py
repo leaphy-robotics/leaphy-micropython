@@ -35,7 +35,7 @@ class Tca9354(I2CRegisterDevice):
         Initialize the TCA9354 multiplexer.
 
         Args:
-            io_config: 8-bit bitfield describing the input/output configuration. 
+            io_config: 8-bit bitfield describing the input/output configuration.
             0 configures a pin as input, 1 configures a pin as output.
         """
 
@@ -66,7 +66,7 @@ class Tca9354(I2CRegisterDevice):
 
         Args:
             pin: The number of the pin to be configured. Values outside the range [0..7] will be quietly ignored.
-            direction: One of TCA9354_CONFIG_IN or TCA9354_CONFIG_OUT, 
+            direction: One of TCA9354_CONFIG_IN or TCA9354_CONFIG_OUT,
             indicating if the pin should be configured as input/output.
         """
         if pin < 0 or pin > 7:

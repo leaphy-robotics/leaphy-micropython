@@ -14,7 +14,7 @@ _CONFIG_SINGLE_SHOT_BASE = const(0b1_100_010_1_100_0_0_0_11)
 # FSR setting of 2.048v, continuous, data-rate of 128SPS,
 # traditional comparator, active low, nonlatching,
 # disable-and-ignore-ALERT
-_CONFIG_CONTINUOUS_BASE =  const(0b0_100_010_0_100_0_0_0_11)
+_CONFIG_CONTINUOUS_BASE = const(0b0_100_010_0_100_0_0_0_11)
 _CONFIG_READY_STATUS = const(0x8000)
 _CONFIG_CHANNEL_OFFSET = const(12)
 _LOWTRESH_ADDRESS = const(0x02)
@@ -80,7 +80,7 @@ class Adc1115(I2CRegisterDevice):
             return result - const(0x10000)
         return result
 
-    def start_continuous_read(self, channel:int):
+    def start_continuous_read(self, channel: int):
         """
         Starts continuously reading from the given channel.
         Args:
@@ -89,11 +89,13 @@ class Adc1115(I2CRegisterDevice):
             ValueError: an invalid channel-number was supplied.
         """
         if channel < 0 or channel > 3:
-            raise ValueError("Channel needs to be between 0 and 3,  was "+str(channel))
+            raise ValueError(
+                "Channel needs to be between 0 and 3,  was " + str(channel)
+            )
         config = _CONFIG_CONTINUOUS_BASE | (channel << _CONFIG_CHANNEL_OFFSET)
-        self.register_write(_CONFIG_ADDRESS,config)
-        self.register_write(_HITRESH_ADDRESS,_HITRESH_DEFAULT)
-        self.register_write(_LOWTRESH_ADDRESS,_LOWTRESH_DEFAULT)
+        self.register_write(_CONFIG_ADDRESS, config)
+        self.register_write(_HITRESH_ADDRESS, _HITRESH_DEFAULT)
+        self.register_write(_LOWTRESH_ADDRESS, _LOWTRESH_DEFAULT)
         self.continuous = True
 
     def latest_read(self) -> int:
