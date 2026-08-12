@@ -1,10 +1,11 @@
 from micropython import const
-from utime import sleep_ms
-from leaphymicropython.utils.i2c_helper import handle_i2c_errors, I2CRegisterDevice
+from leaphymicropython.utils.i2c_helper import I2CRegisterDevice
 
 # This file is in "utils" since the device is capable of both
 # sending a value out (making it an actuator) and receiving
 # values that the processor can interpret (making it a sensor.)
+
+# pylint: disable=too-many-positional-arguments
 
 TCA9354_REG_INPUT = const(0x00)
 TCA9354_REG_OUTPUT = const(0x01)
@@ -34,7 +35,8 @@ class Tca9354(I2CRegisterDevice):
         Initialize the TCA9354 multiplexer.
 
         Args:
-            io_config: 8-bit bitfield describing the input/output configuration. 0 configures a pin as input, 1 configures a pin as output.
+            io_config: 8-bit bitfield describing the input/output configuration. 
+            0 configures a pin as input, 1 configures a pin as output.
         """
 
         super().__init__(
@@ -64,7 +66,8 @@ class Tca9354(I2CRegisterDevice):
 
         Args:
             pin: The number of the pin to be configured. Values outside the range [0..7] will be quietly ignored.
-            direction: One of TCA9354_CONFIG_IN or TCA9354_CONFIG_OUT, indicating if the pin should be configured as input/output.
+            direction: One of TCA9354_CONFIG_IN or TCA9354_CONFIG_OUT, 
+            indicating if the pin should be configured as input/output.
         """
         if pin < 0 or pin > 7:
             return
