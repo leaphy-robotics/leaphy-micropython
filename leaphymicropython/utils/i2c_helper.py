@@ -204,6 +204,11 @@ class I2CDevice:
 
 
 class I2CRegisterDevice(I2CDevice):
+    """
+    Base class for I2C devices, with additional features to read/write on-device
+    memory and registers.
+    """
+
     def __init__(
         self,
         register_width: int = 1,
@@ -216,16 +221,7 @@ class I2CRegisterDevice(I2CDevice):
         freq: int = 400_000,
         show_warnings: bool = True,
     ):
-        """
-        Base class for I2C devices, with additional features to read/write on-device
-        memory and registers.
-
-        Args:
-            register_width: Size of a register's contents, in bytes. If the device operates with 8-bit values, this should be 1.
-            addrsize: Size of a register's address, in bits.
-            big_endian: whether the first byte in a multi-byte sequence is the highest, or lowest byte.
-        """
-        __super__().__init__(
+        super().__init__(
             channel, sda_gpio_pin, scl_gpio_pin, bus_id, freq, show_warnings
         )
         self.register_width = register_width
@@ -260,7 +256,8 @@ class I2CRegisterDevice(I2CDevice):
 
         Returns:
             int: The value read from the register, formatted as a single unsigned number.
-            bytes: The value read from the register, formatted as a series of raw bytes. Fallback in case no format is specified.
+            bytes: The value read from the register, formatted as a series of raw bytes.
+                Fallback in case no format is specified.
         """
         byte_buffer = self.i2c.readfrom_mem(self.ADDRESS, register, self.register_width)
         if self.value_format is not None:

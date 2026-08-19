@@ -31,14 +31,7 @@ class Tca9354(I2CRegisterDevice):
         freq=400_000,
         show_warnings=True,
     ):
-        """
-        Initialize the TCA9354 multiplexer.
-
-        Args:
-            io_config: 8-bit bitfield describing the input/output configuration.
-            0 configures a pin as input, 1 configures a pin as output.
-        """
-
+        # pylint: disable=duplicate-code
         super().__init__(
             register_width=1,
             addrsize=8,
@@ -49,7 +42,7 @@ class Tca9354(I2CRegisterDevice):
             freq=freq,
             show_warnings=show_warnings,
         )
-
+        # pylint: enable=duplicate-code
         self.io_config = io_config
 
     def begin(self):

@@ -23,13 +23,12 @@ _HITRESH_ADDRESS = const(0x03)
 _HITRESH_DEFAULT = const(0x8000)
 
 
-
-
 class Adc1115(I2CRegisterDevice):
     """
     An ADC1115 analog-to-digital converter, capable of reading out up to 4 channels
     as 16-bit integer levels.
     """
+
     def __init__(
         self,
         channel=255,
@@ -39,6 +38,7 @@ class Adc1115(I2CRegisterDevice):
         freq=400_000,
         show_warnings=True,
     ):
+        # pylint: disable=duplicate-code
         super().__init__(
             register_width=2,
             addrsize=8,
@@ -50,6 +50,7 @@ class Adc1115(I2CRegisterDevice):
             freq=freq,
             show_warnings=show_warnings,
         )
+        # pylint: enable=duplicate-code
         self.continuous = False
 
     def readadc_single_ended(self, channel: int) -> int:
