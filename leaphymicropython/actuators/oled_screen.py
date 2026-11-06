@@ -1,5 +1,6 @@
 """This module provides OLED SSH1106 methods"""
 
+import framebuf
 from leaphymicropython.actuators.sh1106 import SH1106_I2C
 from leaphymicropython.utils.i2c_helper import I2CDevice
 from leaphymicropython.utils.i2c_helper import handle_i2c_errors
@@ -91,7 +92,7 @@ class OLEDSH1106(I2CDevice):
         self.screen.fill(color_digit)
 
     @handle_i2c_errors
-    def text(self, text, x=0, y=0, color="black"):
+    def text(self, text, x=0, y=0, color="black", scale=1):
         """
         Draws a text string onto the OLED display.
 
@@ -100,10 +101,24 @@ class OLEDSH1106(I2CDevice):
             x (int, optional): X-coordinate of the text. Defaults to 0.
             y (int, optional): Y-coordinate of the text. Defaults to 0.
             color (int, optional): Text color (0 = black, 1 = white). Defaults to 1.
+            scale (int, optional): Scale factor for the text. Defaults to 1.
         """
+        char_buf = bytearray(8)
+        fb = framebuf.FrameBuffer(char_buf, 8, 8, framebuf.MONO_VLSB)
         color_digit = self._color_to_digit(color)
-        self.screen.sleep(False)
-        self.screen.text(text, x, y, color_digit)
+
+        for idx, char in enumerate(text):
+            fb.fill(0)
+            fb.text(char, 0, 0, 1)
+
+            for px in range(8):
+                for py in range(8):
+                    if fb.pixel(px, py) == 1:
+                        x_pos = x + (idx * 8 * scale) + (px * scale)
+                        y_pos = y + (py * scale)
+                        self.screen.fill_rect(
+                            x=x_pos, y=y_pos, w=scale, h=scale, color=color_digit
+                        )
 
     @handle_i2c_errors
     def show(self):
