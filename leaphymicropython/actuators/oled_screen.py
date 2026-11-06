@@ -96,29 +96,42 @@ class OLEDSH1106(I2CDevice):
         """
         Draws a text string onto the OLED display.
 
+        Each character is 8x8 pixels at scale 1 (8*scale x 8*scale when scaled).
+        Text is not wrapped: characters beyond the screen edge are clipped,
+        and a newline character is drawn as a glyph instead of starting a new line.
+
         Args:
             text (str): The text to display.
             x (int, optional): X-coordinate of the text. Defaults to 0.
             y (int, optional): Y-coordinate of the text. Defaults to 0.
-            color (int, optional): Text color (0 = black, 1 = white). Defaults to 1.
-            scale (int, optional): Scale factor for the text. Defaults to 1.
+            color (str, optional): Text color ("black" or "white"). Defaults to "black".
+            scale (int, optional): Whole-number scale factor (1 or higher). Defaults to 1.
         """
-        char_buf = bytearray(8)
-        fb = framebuf.FrameBuffer(char_buf, 8, 8, framebuf.MONO_VLSB)
+        if not isinstance(scale, int) or isinstance(scale, bool) or scale < 1:
+            raise ValueError(
+                f"you gave the scale {scale}. Use a whole number of 1 or higher"
+            )
         color_digit = self._color_to_digit(color)
+        self.screen.sleep(False)
 
-        for idx, char in enumerate(text):
-            fb.fill(0)
-            fb.text(char, 0, 0, 1)
+        if scale == 1:
+            self.screen.text(text, x, y, color_digit)
+            return
 
-            for px in range(8):
-                for py in range(8):
-                    if fb.pixel(px, py) == 1:
-                        x_pos = x + (idx * 8 * scale) + (px * scale)
-                        y_pos = y + (py * scale)
-                        self.screen.fill_rect(
-                            x=x_pos, y=y_pos, w=scale, h=scale, color=color_digit
-                        )
+        # render the whole string once at normal size, then enlarge each lit pixel
+        width = 8 * len(text)
+        if width == 0:
+            return
+        fb = framebuf.FrameBuffer(bytearray(width), width, 8, framebuf.MONO_VLSB)
+        fb.text(text, 0, 0, 1)
+
+        fill_rect = self.screen.fill_rect
+        pixel = fb.pixel
+        for px in range(width):
+            x_pos = x + px * scale
+            for py in range(8):
+                if pixel(px, py):
+                    fill_rect(x_pos, y + py * scale, scale, scale, color_digit)
 
     @handle_i2c_errors
     def show(self):
